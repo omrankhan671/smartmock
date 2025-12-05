@@ -1,0 +1,928 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SmartMock – Championship Edition | 3D AI Robot Experience</title>
+    <meta name="description" content="Award-winning AI-powered interview platform with 3D robot, dark theme, and immersive experience">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    
+    <style>
+      /* ============================================
+         PREMIUM DARK BLACK THEME
+         ============================================ */
+      :root {
+        --black-pure: #000000;
+        --black-deep: #0a0a0a;
+        --black-soft: #121212;
+        --purple-primary: #a855f7;
+        --purple-light: #c084fc;
+        --purple-neon: #d946ef;
+        --purple-glow: rgba(168, 85, 247, 0.5);
+        --text-primary: #ffffff;
+        --text-secondary: #e5e5e5;
+        --text-muted: #a1a1a1;
+      }
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Inter', -apple-system, system-ui, sans-serif;
+        background: var(--black-pure);
+        color: var(--text-primary);
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
+      /* Subtle gradient overlay */
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at 50% 50%,
+          rgba(168, 85, 247, 0.05) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+        z-index: 0;
+      }
+      
+      /* ============================================
+         3D ROBOT CANVAS CONTAINER
+         ============================================ */
+      #robot-canvas-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+      }
+      
+      #robot-canvas-container canvas {
+        width: 100%;
+        height: 100%;
+        pointer-events: auto;
+      }
+      
+      /* ============================================
+         FLOATING PARTICLES
+         ============================================ */
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 2;
+        overflow: hidden;
+      }
+      
+      .particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: var(--purple-primary);
+        border-radius: 50%;
+        box-shadow: 0 0 10px var(--purple-glow), 0 0 20px var(--purple-glow);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      /* ============================================
+         CONTENT LAYER
+         ============================================ */
+      .content-layer {
+        position: relative;
+        z-index: 10;
+      }
+      
+      /* Navigation */
+      .champion-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(10, 10, 10, 0.8);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        z-index: 100;
+        padding: 20px 0;
+      }
+      
+      .nav-inner {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .brand {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2rem;
+        font-weight: 900;
+        text-decoration: none;
+      }
+      
+      .brand-smart {
+        color: #00f0ff;
+        text-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+      }
+      
+      .brand-mock {
+        color: var(--purple-primary);
+        text-shadow: 0 0 20px var(--purple-glow);
+      }
+      
+      .nav-links {
+        display: flex;
+        gap: 32px;
+        align-items: center;
+        list-style: none;
+      }
+      
+      .nav-link {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+      
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--purple-primary);
+        transition: width 0.3s ease;
+      }
+      
+      .nav-link:hover {
+        color: var(--text-primary);
+      }
+      
+      .nav-link:hover::after {
+        width: 100%;
+      }
+      
+      /* Hero Section */
+      .hero-section {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 120px 40px 60px;
+        position: relative;
+      }
+      
+      .hero-badge {
+        display: inline-block;
+        padding: 12px 32px;
+        background: rgba(168, 85, 247, 0.1);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        border-radius: 50px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.9rem;
+        margin-bottom: 32px;
+        animation: fadeInUp 0.8s ease;
+        box-shadow: 0 0 30px rgba(168, 85, 247, 0.3);
+      }
+      
+      .hero-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: clamp(3rem, 8vw, 7rem);
+        font-weight: 900;
+        line-height: 1.1;
+        margin-bottom: 24px;
+        background: linear-gradient(135deg, #00f0ff 0%, #a855f7 50%, #d946ef 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: fadeInUp 0.8s ease 0.2s backwards, titleGlow 3s ease-in-out infinite;
+      }
+      
+      @keyframes titleGlow {
+        0%, 100% { filter: brightness(1); }
+        50% { filter: brightness(1.2); }
+      }
+      
+      .hero-subtitle {
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+        font-weight: 600;
+        color: var(--text-secondary);
+        margin-bottom: 16px;
+        animation: fadeInUp 0.8s ease 0.4s backwards;
+      }
+      
+      .hero-description {
+        font-size: 1.1rem;
+        color: var(--text-muted);
+        max-width: 700px;
+        margin: 0 auto 40px;
+        line-height: 1.6;
+        animation: fadeInUp 0.8s ease 0.6s backwards;
+      }
+      
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      /* Buttons */
+      .cta-buttons {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+        animation: fadeInUp 0.8s ease 0.8s backwards;
+      }
+      
+      .btn {
+        padding: 16px 36px;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .btn-primary {
+        background: linear-gradient(135deg, var(--purple-primary), var(--purple-neon));
+        color: white;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+      }
+      
+      .btn-secondary {
+        background: rgba(168, 85, 247, 0.1);
+        color: var(--text-primary);
+        border: 2px solid var(--purple-primary);
+      }
+      
+      .btn-secondary:hover {
+        background: rgba(168, 85, 247, 0.2);
+        transform: translateY(-2px);
+      }
+      
+      /* Features Section */
+      .features-section {
+        padding: 100px 40px;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      
+      .section-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        text-align: center;
+        margin-bottom: 60px;
+        background: linear-gradient(135deg, var(--purple-light), var(--purple-neon));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+      }
+      
+      .feature-card {
+        background: rgba(18, 18, 18, 0.8);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        border-radius: 20px;
+        padding: 40px;
+        transition: all 0.4s ease;
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      
+      .feature-card.reveal {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      .feature-card:hover {
+        transform: translateY(-10px) rotateX(5deg);
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+      
+      .feature-icon {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        display: block;
+      }
+      
+      .feature-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: var(--text-primary);
+      }
+      
+      .feature-description {
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+      
+      /* Scroll Progress */
+      .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 3px;
+        background: linear-gradient(90deg, var(--purple-primary), var(--purple-neon));
+        z-index: 1000;
+        transition: width 0.1s ease;
+      }
+      
+      /* Responsive */
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+        }
+        
+        .hero-section {
+          padding: 100px 20px 40px;
+        }
+        
+        .cta-buttons {
+          flex-direction: column;
+        }
+        
+        .btn {
+          width: 100%;
+          justify-content: center;
+        }
+        
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    
+    <!-- Scroll Progress -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+    
+    <!-- 3D Robot Canvas -->
+    <div id="robot-canvas-container"></div>
+    
+    <!-- Floating Particles -->
+    <div class="particles-container" id="particlesContainer"></div>
+    
+    <!-- Content Layer -->
+    <div class="content-layer">
+      
+      <!-- Navigation -->
+      <nav class="champion-nav">
+        <div class="nav-inner">
+          <a href="home.html" class="brand">
+            <span class="brand-smart">Smart</span><span class="brand-mock">Mock</span>
+          </a>
+          <ul class="nav-links">
+            <li><a href="home.html" class="nav-link">Home</a></li>
+            <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+            <li><a href="interview.html" class="nav-link">Interview</a></li>
+            <li><a href="leaderboard.html" class="nav-link">🏆 Leaderboard</a></li>
+            <li><a href="profile.html" class="nav-link">Profile</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- Hero Section -->
+      <section class="hero-section">
+        <div class="hero-badge">
+          🏆 CHAMPIONSHIP EDITION
+        </div>
+        
+        <h1 class="hero-title">
+          SMARTMOCK
+        </h1>
+        
+        <p class="hero-subtitle">
+          The Future of AI-Powered Interview Mastery
+        </p>
+        
+        <p class="hero-description">
+          Experience the most advanced interview preparation platform with cutting-edge 3D robot companion, 
+          real-time emotion detection, and immersive dark theme experience that sets new standards in EdTech.
+        </p>
+        
+        <div class="cta-buttons">
+          <a href="interview.html" class="btn btn-primary">
+            🚀 Start Interview Now
+          </a>
+          <a href="dashboard.html" class="btn btn-secondary">
+            📊 View Dashboard
+          </a>
+          <a href="leaderboard.html" class="btn btn-secondary">
+            🏆 Global Leaderboard
+          </a>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section class="features-section">
+        <h2 class="section-title">Cutting-Edge Features</h2>
+        
+        <div class="features-grid">
+          <div class="feature-card">
+            <span class="feature-icon">🤖</span>
+            <h3 class="feature-title">3D AI Robot Companion</h3>
+            <p class="feature-description">
+              Interactive 3D robot with realistic eye tracking, blinking animations, and cursor-following movements. 
+              Built with Three.js for smooth 60fps performance.
+            </p>
+          </div>
+          
+          <div class="feature-card">
+            <span class="feature-icon">🎨</span>
+            <h3 class="feature-title">Premium Dark Theme</h3>
+            <p class="feature-description">
+              Pure black background with glowing purple accents and floating particles. 
+              Designed for extended usage with reduced eye strain.
+            </p>
+          </div>
+          
+          <div class="feature-card">
+            <span class="feature-icon">🎭</span>
+            <h3 class="feature-title">Real-Time Emotion Detection</h3>
+            <p class="feature-description">
+              Advanced MediaPipe FaceMesh technology tracks facial expressions during interviews 
+              to analyze confidence and emotional state.
+            </p>
+          </div>
+          
+          <div class="feature-card">
+            <span class="feature-icon">⚡</span>
+            <h3 class="feature-title">Speech Analysis & WPM</h3>
+            <p class="feature-description">
+              Automatic speech recognition with Words Per Minute tracking to measure speaking speed 
+              and answer quality.
+            </p>
+          </div>
+          
+          <div class="feature-card">
+            <span class="feature-icon">🎯</span>
+            <h3 class="feature-title">5 Engineering Disciplines</h3>
+            <p class="feature-description">
+              Tailored question banks for CS, EE, ME, CE, and EC with field-specific technical questions 
+              and HR scenarios.
+            </p>
+          </div>
+          
+          <div class="feature-card">
+            <span class="feature-icon">📊</span>
+            <h3 class="feature-title">Comprehensive Reports</h3>
+            <p class="feature-description">
+              Detailed analytics with overall scores, emotion analysis, WPM breakdown, 
+              and question-by-question performance review.
+            </p>
+          </div>
+          
+          <div class="feature-card">
+            <span class="feature-icon">🏆</span>
+            <h3 class="feature-title">Achievement Certificates</h3>
+            <p class="feature-description">
+              Earn verifiable certificates with unique IDs. Share achievements with employers 
+              through our validation system.
+            </p>
+          </div>
+          
+          <div class="feature-card">
+            <span class="feature-icon">🔄</span>
+            <h3 class="feature-title">Parallax & 3D Effects</h3>
+            <p class="feature-description">
+              Smooth scroll-based animations, 3D card rotations, and parallax movements 
+              for immersive user experience.
+            </p>
+          </div>
+          
+          <div class="feature-card">
+            <span class="feature-icon">💾</span>
+            <h3 class="feature-title">Progress Tracking</h3>
+            <p class="feature-description">
+              All interview data securely saved to Firebase. Track improvement over time 
+              across all departments.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Three.js Import Map -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.138.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.138.0/examples/jsm/"
+        }
+      }
+    </script>
+
+    <!-- Enhanced 3D Robot Script -->
+    <script type="module">
+      import * as THREE from 'three';
+
+      let scene, camera, renderer, robot, robotHead, leftEye, rightEye;
+      let mouse = { x: 0, y: 0 };
+      let targetRotation = { x: 0, y: 0 };
+      let currentRotation = { x: 0, y: 0 };
+      let blinkInterval;
+      let scrollY = 0;
+
+      function init() {
+        // Scene
+        scene = new THREE.Scene();
+        scene.background = null; // Transparent
+
+        // Camera
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        // Renderer
+        const container = document.getElementById('robot-canvas-container');
+        renderer = new THREE.WebGLRenderer({ 
+          antialias: true, 
+          alpha: true // Transparent background
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        // Lights
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+        scene.add(ambientLight);
+
+        const purpleLight = new THREE.PointLight(0xa855f7, 2, 100);
+        purpleLight.position.set(0, 2, 5);
+        scene.add(purpleLight);
+
+        const cyanLight = new THREE.PointLight(0x00f0ff, 1.5, 100);
+        cyanLight.position.set(-3, 0, 3);
+        scene.add(cyanLight);
+
+        const pinkLight = new THREE.PointLight(0xd946ef, 1.5, 100);
+        pinkLight.position.set(3, 0, 3);
+        scene.add(pinkLight);
+
+        // Create Enhanced Robot
+        createEnhancedRobot();
+
+        // Events
+        window.addEventListener('resize', onWindowResize, false);
+        document.addEventListener('mousemove', onDocumentMouseMove, false);
+        window.addEventListener('scroll', onScroll, false);
+
+        // Start blinking
+        startBlinking();
+
+        animate();
+      }
+
+      function createEnhancedRobot() {
+        robot = new THREE.Group();
+        robot.position.y = 0;
+
+        // Head (more rounded with segments)
+        const headGeometry = new THREE.BoxGeometry(1.2, 1.2, 1.2, 10, 10, 10);
+        const headMaterial = new THREE.MeshStandardMaterial({ 
+          color: 0x333333,
+          roughness: 0.3,
+          metalness: 0.8,
+          emissive: 0xa855f7,
+          emissiveIntensity: 0.1
+        });
+        robotHead = new THREE.Mesh(headGeometry, headMaterial);
+        robotHead.name = 'head';
+        robot.add(robotHead);
+
+        // Antenna
+        const antennaGeometry = new THREE.CylinderGeometry(0.03, 0.03, 0.5, 16);
+        const antennaMaterial = new THREE.MeshStandardMaterial({ 
+          color: 0xa855f7,
+          emissive: 0xa855f7,
+          emissiveIntensity: 0.5
+        });
+        const antenna = new THREE.Mesh(antennaGeometry, antennaMaterial);
+        antenna.position.set(0, 0.85, 0);
+        robotHead.add(antenna);
+
+        // Antenna ball
+        const ballGeometry = new THREE.SphereGeometry(0.1, 16, 16);
+        const ballMaterial = new THREE.MeshStandardMaterial({ 
+          color: 0xd946ef,
+          emissive: 0xd946ef,
+          emissiveIntensity: 1
+        });
+        const ball = new THREE.Mesh(ballGeometry, ballMaterial);
+        ball.position.set(0, 1.1, 0);
+        robotHead.add(ball);
+
+        // Eyes (larger, more expressive)
+        const eyeGeometry = new THREE.SphereGeometry(0.15, 32, 32);
+        const eyeMaterial = new THREE.MeshStandardMaterial({ 
+          color: 0x000000,
+          roughness: 0.1,
+          metalness: 0.9
+        });
+        
+        // Eye sockets (glowing purple)
+        const socketGeometry = new THREE.SphereGeometry(0.18, 32, 32);
+        const socketMaterial = new THREE.MeshStandardMaterial({ 
+          color: 0xa855f7,
+          emissive: 0xa855f7,
+          emissiveIntensity: 0.8
+        });
+        
+        const leftSocket = new THREE.Mesh(socketGeometry, socketMaterial);
+        leftSocket.position.set(-0.3, 0.2, 0.55);
+        robotHead.add(leftSocket);
+        
+        const rightSocket = new THREE.Mesh(socketGeometry, socketMaterial);
+        rightSocket.position.set(0.3, 0.2, 0.55);
+        robotHead.add(rightSocket);
+
+        leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+        leftEye.position.set(-0.3, 0.2, 0.6);
+        leftEye.name = 'leftEye';
+        robotHead.add(leftEye);
+
+        rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+        rightEye.position.set(0.3, 0.2, 0.6);
+        rightEye.name = 'rightEye';
+        robotHead.add(rightEye);
+
+        // Pupils (glowing cyan)
+        const pupilGeometry = new THREE.SphereGeometry(0.06, 16, 16);
+        const pupilMaterial = new THREE.MeshStandardMaterial({ 
+          color: 0x00f0ff,
+          emissive: 0x00f0ff,
+          emissiveIntensity: 2
+        });
+        
+        const leftPupil = new THREE.Mesh(pupilGeometry, pupilMaterial);
+        leftPupil.position.set(0, 0, 0.1);
+        leftEye.add(leftPupil);
+
+        const rightPupil = new THREE.Mesh(pupilGeometry, pupilMaterial);
+        rightPupil.position.set(0, 0, 0.1);
+        rightEye.add(rightPupil);
+
+        // Mouth
+        const mouthGeometry = new THREE.TorusGeometry(0.2, 0.03, 16, 32, Math.PI);
+        const mouthMaterial = new THREE.MeshStandardMaterial({ 
+          color: 0xa855f7,
+          emissive: 0xa855f7,
+          emissiveIntensity: 0.5
+        });
+        const mouth = new THREE.Mesh(mouthGeometry, mouthMaterial);
+        mouth.position.set(0, -0.2, 0.6);
+        mouth.rotation.x = Math.PI;
+        robotHead.add(mouth);
+
+        // Body
+        const bodyGeometry = new THREE.BoxGeometry(1.5, 2, 1, 10, 10, 10);
+        const bodyMaterial = new THREE.MeshStandardMaterial({ 
+          color: 0x222222,
+          roughness: 0.4,
+          metalness: 0.9,
+          emissive: 0xa855f7,
+          emissiveIntensity: 0.05
+        });
+        const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+        body.position.y = -1.8;
+        robot.add(body);
+
+        // Core (glowing sphere in chest)
+        const coreGeometry = new THREE.SphereGeometry(0.3, 32, 32);
+        const coreMaterial = new THREE.MeshStandardMaterial({ 
+          color: 0xd946ef,
+          emissive: 0xd946ef,
+          emissiveIntensity: 2
+        });
+        const core = new THREE.Mesh(coreGeometry, coreMaterial);
+        core.position.y = -1.5;
+        robot.add(core);
+
+        // Add subtle rotation animation to core
+        core.userData.animate = true;
+
+        scene.add(robot);
+      }
+
+      function startBlinking() {
+        blinkInterval = setInterval(() => {
+          blink();
+        }, 3000 + Math.random() * 4000); // Random 3-7 seconds
+      }
+
+      function blink() {
+        // Scale eyes vertically for blink effect
+        const blinkDuration = 150;
+        
+        leftEye.scale.y = 0.1;
+        rightEye.scale.y = 0.1;
+        
+        setTimeout(() => {
+          leftEye.scale.y = 1;
+          rightEye.scale.y = 1;
+        }, blinkDuration);
+      }
+
+      function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+
+      function onDocumentMouseMove(event) {
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        
+        // Update target rotation based on mouse
+        targetRotation.y = mouse.x * 0.5;
+        targetRotation.x = mouse.y * -0.3;
+      }
+
+      function onScroll() {
+        scrollY = window.scrollY;
+      }
+
+      function animate() {
+        requestAnimationFrame(animate);
+
+        // Smooth rotation interpolation
+        currentRotation.x += (targetRotation.x - currentRotation.x) * 0.05;
+        currentRotation.y += (targetRotation.y - currentRotation.y) * 0.05;
+
+        if (robotHead) {
+          robotHead.rotation.y = currentRotation.y;
+          robotHead.rotation.x = currentRotation.x;
+        }
+
+        // Parallax effect on scroll
+        if (robot) {
+          robot.position.y = -scrollY * 0.001;
+          robot.rotation.y = Math.sin(Date.now() * 0.0003) * 0.1; // Subtle idle rotation
+          
+          // Scale and fade based on scroll
+          const scale = Math.max(0.5, 1 - scrollY * 0.0003);
+          robot.scale.set(scale, scale, scale);
+        }
+
+        // Animate core
+        scene.traverse((child) => {
+          if (child.userData.animate) {
+            child.rotation.y += 0.01;
+            child.scale.x = 1 + Math.sin(Date.now() * 0.003) * 0.1;
+            child.scale.y = 1 + Math.sin(Date.now() * 0.003) * 0.1;
+            child.scale.z = 1 + Math.sin(Date.now() * 0.003) * 0.1;
+          }
+        });
+
+        renderer.render(scene, camera);
+      }
+
+      init();
+    </script>
+
+    <!-- Particles & Scroll Effects -->
+    <script>
+      // Create floating particles (enhanced)
+      const particlesContainer = document.getElementById('particlesContainer');
+      const particleCount = 140; // increased for richer atmosphere
+
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+
+        // Random size (2px - 6px)
+        const size = 2 + Math.random() * 4;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+
+        // Random horizontal position (center-focused band)
+        const leftPos = 35 + Math.random() * 30;
+        particle.style.left = `${leftPos}%`;
+
+        // Random animation duration (12s - 27s)
+        const duration = 12 + Math.random() * 15;
+        particle.style.animationDuration = `${duration}s`;
+
+        // Random delay
+        const delay = Math.random() * 10;
+        particle.style.animationDelay = `${delay}s`;
+
+        // Random horizontal drift
+        const drift = (Math.random() - 0.5) * 150;
+        particle.style.setProperty('--drift', `${drift}px`);
+
+        particlesContainer.appendChild(particle);
+      }
+
+      // Scroll progress
+      window.addEventListener('scroll', () => {
+        const scrollProgress = document.getElementById('scrollProgress');
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        scrollProgress.style.width = scrollPercent + '%';
+      });
+
+      // Scroll reveal for feature cards
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.add('reveal');
+            }, index * 100);
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll('.feature-card').forEach((card) => {
+        observer.observe(card);
+      });
+    </script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="assets/js/firebase-config.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/auto-purple-bg.js"></script>
+
+  </body>
+</html>

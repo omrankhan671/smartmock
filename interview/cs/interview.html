@@ -1,0 +1,769 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SmartMock – Computer Science Interview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/styles.css" />
+      <style>
+      /* Dark Black Theme with Purple Particles */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  
+    <style>
+      /* Dark Black Theme with Purple Particles & Parallax */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at var(--gradient-x, 50%) var(--gradient-y, 50%), 
+          rgba(168, 85, 247, 0.05) 0%, 
+          transparent 70%
+        );
+        pointer-events: none;
+        z-index: 0;
+        will-change: transform;
+        transition: background 0.3s ease;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        z-index: 2000 !important;
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- Floating Particles -->
+    <div class="particles-container" id="particlesContainer"></div>
+    <!-- Fullscreen Background Robot with Parallax Depth -->
+    <style>
+      #bg-robot-container { 
+        position: fixed; 
+        inset: 0; 
+        z-index: -1; 
+        pointer-events: none;
+        will-change: transform;
+        transform-style: preserve-3d;
+        perspective: 2000px;
+      }
+      #bg-robot-container canvas { 
+        width: 100%; 
+        height: 100%; 
+        display: block; 
+      }
+      
+      /* Full-screen 3D rotation animation */
+      @keyframes rotate3D {
+        0% { transform: perspective(2000px) rotateX(0deg) rotateY(0deg); }
+        25% { transform: perspective(2000px) rotateX(3deg) rotateY(90deg); }
+        50% { transform: perspective(2000px) rotateX(0deg) rotateY(180deg); }
+        75% { transform: perspective(2000px) rotateX(-3deg) rotateY(270deg); }
+        100% { transform: perspective(2000px) rotateX(0deg) rotateY(360deg); }
+      }
+      
+      #bg-robot-container {
+        animation: none !important;
+      }
+    </style>
+    <div id="bg-robot-container">
+      <canvas id="bg-robot-canvas"></canvas>
+    </div>
+    <header class="site-header">
+      <div class="site-header-inner container">
+        <nav class="menu menu-left">
+          <div class="menu-button">☰ Menu</div>
+          <ul class="dropdown">
+            <li><a href="../../home.html">Home</a></li>
+            <li><a href="../../dashboard.html">Dashboard</a></li>
+            <li class="has-submenu"><a href="../../interview.html">Interview</a>
+              <ul class="submenu">
+                <li class="has-submenu"><a href="../cs/courses.html">Computer Science</a>
+                  <ul class="submenu">
+                    <li><a href="../cs/courses.html">Courses</a></li>
+                    <li><a href="../cs/interview.html">Interview</a></li>
+                    <li><a href="../cs/preparation.html">Interview Preparation</a></li>
+                    <li><a href="../cs/report.html">Report</a></li>
+                    <li><a href="../cs/ai-interview.html">AI Interview</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="../ee/courses.html">Electrical</a>
+                  <ul class="submenu">
+                    <li><a href="../ee/courses.html">Courses</a></li>
+                    <li><a href="../ee/interview.html">Interview</a></li>
+                    <li><a href="../ee/preparation.html">Interview Preparation</a></li>
+                    <li><a href="../ee/report.html">Report</a></li>
+                    <li><a href="../ee/ai-interview.html">AI Interview</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="../me/courses.html">Mechanical</a>
+                  <ul class="submenu">
+                    <li><a href="../me/courses.html">Courses</a></li>
+                    <li><a href="../me/interview.html">Interview</a></li>
+                    <li><a href="../me/preparation.html">Interview Preparation</a></li>
+                    <li><a href="../me/report.html">Report</a></li>
+                    <li><a href="../me/ai-interview.html">AI Interview</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="../ce/courses.html">Civil</a>
+                  <ul class="submenu">
+                    <li><a href="../ce/courses.html">Courses</a></li>
+                    <li><a href="../ce/interview.html">Interview</a></li>
+                    <li><a href="../ce/preparation.html">Interview Preparation</a></li>
+                    <li><a href="../ce/report.html">Report</a></li>
+                    <li><a href="../ce/ai-interview.html">AI Interview</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="../ec/courses.html">Electronic Communication</a>
+                  <ul class="submenu">
+                    <li><a href="../ec/courses.html">Courses</a></li>
+                    <li><a href="../ec/interview.html">Interview</a></li>
+                    <li><a href="../ec/preparation.html">Interview Preparation</a></li>
+                    <li><a href="../ec/report.html">Report</a></li>
+                    <li><a href="../ec/ai-interview.html">AI Interview</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li><a href="../../about.html">About</a></li>
+            <li><a href="../../report.html">Report</a></li>
+            <li><a href="../../community.html">Community</a></li>
+            <li><a href="../../contact.html">Contact Us</a></li>
+          </ul>
+        </nav>
+        <div class="brand"><a href="../../home.html"><span class="logo">Smart</span><span class="logo-accent">Mock</span></a></div>
+        <div class="menu" style="margin-left:auto;">
+          <a class="btn" href="../../profile.html">Profile</a>
+          <a class="btn" href="#" onclick="signOut(); return false;">Sign out</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section>
+        <h2>Computer Science – Interview Quiz</h2>
+        <div class="section-card">
+          <p class="muted">Test your knowledge with multiple-choice questions and get instant feedback.</p>
+          
+          <div style="margin: 20px 0;">
+            <label for="quiz-topic">Select Topic:</label>
+            <select id="quiz-topic" style="margin-left: 10px; padding: 8px;">
+              <option value="javascript">JavaScript</option>
+              <option value="python">Python</option>
+              <option value="dsa">Data Structures & Algorithms</option>
+            </select>
+            
+            <label for="quiz-level" style="margin-left: 20px;">Select Level:</label>
+            <select id="quiz-level" style="margin-left: 10px; padding: 8px;">
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+            
+            <button id="start-quiz-btn" class="btn" style="margin-left: 20px;">Start Quiz</button>
+          </div>
+          
+          <div id="quiz-container" style="display: none; margin-top: 30px;">
+            <div id="question-counter" style="margin-bottom: 15px; font-weight: bold; color: #4a90e2;"></div>
+            <div id="question-text" style="font-size: 1.2em; margin-bottom: 20px; font-weight: 600;"></div>
+            <div id="options-container" style="margin-bottom: 20px;"></div>
+            <div id="feedback-box" style="margin-top: 20px; padding: 15px; border-radius: 8px; display: none;"></div>
+            <button id="next-question-btn" class="btn" style="display: none; margin-top: 15px;">Next Question</button>
+            <button id="finish-quiz-btn" class="btn" style="display: none; margin-top: 15px;">Finish Quiz</button>
+          </div>
+          
+          <div id="results-container" style="display: none; margin-top: 30px;">
+            <h3>Quiz Results</h3>
+            <div id="score-display" style="font-size: 1.5em; margin: 20px 0; font-weight: bold;"></div>
+            <div id="performance-summary"></div>
+            <button id="restart-quiz-btn" class="btn" style="margin-top: 20px;">Start New Quiz</button>
+          </div>
+          
+          <div class="cta-row" style="margin-top:30px;">
+            <a class="btn" href="courses.html">View CS Courses</a>
+            <a class="btn" href="preparation.html">Open CS Preparation</a>
+            <a class="btn" href="report.html">View CS Reports</a>
+            <a class="btn" href="ai-interview.html">AI Interview</a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">© <span id="year"></span> SmartMock.</footer>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="../../assets/js/firebase-config.js"></script>
+  <script src="../../assets/js/main.js"></script>
+    <script>
+      // Quiz MCQ Bank
+      const quizBank = {
+        javascript: {
+          beginner: [
+            { q: "What keyword is used to declare a block-scoped variable?", options: ["var", "let", "const", "function"], correct: 1, explanation: "`let` creates block-scoped variables that can be reassigned." },
+            { q: "Which of these is NOT a primitive data type in JavaScript?", options: ["string", "number", "array", "boolean"], correct: 2, explanation: "Arrays are objects, not primitive types. Primitives include string, number, boolean, null, undefined, symbol, and bigint." },
+            { q: "What does `===` check in JavaScript?", options: ["Value only", "Type only", "Value and type", "Reference"], correct: 2, explanation: "`===` is strict equality—it checks both value and type without coercion." },
+            { q: "How do you create a single-line comment in JavaScript?", options: ["/* comment */", "// comment", "# comment", "<!-- comment -->"], correct: 1, explanation: "Single-line comments use `//`. Multi-line use `/* */`." },
+            { q: "What is the result of `typeof null`?", options: ["'null'", "'undefined'", "'object'", "'number'"], correct: 2, explanation: "A historical bug: `typeof null` returns 'object'." }
+          ],
+          intermediate: [
+            { q: "What does the `map()` method return?", options: ["Modified original array", "New array", "undefined", "Boolean"], correct: 1, explanation: "`map()` returns a new array without modifying the original." },
+            { q: "Which method stops event bubbling?", options: ["preventDefault()", "stopPropagation()", "stopBubbling()", "cancelEvent()"], correct: 1, explanation: "`stopPropagation()` prevents the event from bubbling up." },
+            { q: "What does `async` keyword do to a function?", options: ["Makes it faster", "Returns a Promise", "Runs in parallel", "Blocks execution"], correct: 1, explanation: "`async` functions always return a Promise." },
+            { q: "Which is NOT a way to create an object?", options: ["Object literal", "Constructor function", "Object.create()", "object()"], correct: 3, explanation: "JavaScript doesn't have a built-in `object()` function." },
+            { q: "What is closure in JavaScript?", options: ["A loop construct", "Function with access to outer scope", "A class method", "An event handler"], correct: 1, explanation: "Closures allow inner functions to access outer function variables." }
+          ],
+          advanced: [
+            { q: "What is the output of `+[] + []`?", options: ["0", "NaN", "''", "[]"], correct: 2, explanation: "`+[]` coerces to 0, then `0 + []` coerces to '0' + '', resulting in '0'... actually it's '' (empty string)." },
+            { q: "Which design pattern is `Promise.all` an example of?", options: ["Singleton", "Observer", "Concurrent composition", "Factory"], correct: 2, explanation: "`Promise.all` composes multiple async operations concurrently." },
+            { q: "What does `Object.freeze()` do?", options: ["Stops execution", "Makes object immutable (shallow)", "Deep freezes object", "Deletes object"], correct: 1, explanation: "`Object.freeze()` prevents modification at the top level only." },
+            { q: "What is a generator function identified by?", options: ["async", "function*", "gen", "yield"], correct: 1, explanation: "Generator functions use `function*` syntax and can `yield` values." },
+            { q: "What does the `Proxy` object allow?", options: ["Asynchronous operations", "Intercept object operations", "Create classes", "Handle errors"], correct: 1, explanation: "`Proxy` lets you intercept and customize operations like property access." }
+          ]
+        },
+        python: {
+          beginner: [
+            { q: "Which keyword is used to define a function in Python?", options: ["func", "def", "function", "define"], correct: 1, explanation: "Python uses `def` to define functions." },
+            { q: "What is the correct way to create a list?", options: ["list = {}", "list = ()", "list = []", "list = <>"], correct: 2, explanation: "Lists use square brackets `[]`." },
+            { q: "Which method adds an item to the end of a list?", options: ["add()", "append()", "insert()", "push()"], correct: 1, explanation: "`append()` adds items to the end of a list." },
+            { q: "What does `len()` return?", options: ["Length", "Size in bytes", "Type", "Value"], correct: 0, explanation: "`len()` returns the number of items in a sequence." },
+            { q: "How do you start a comment in Python?", options: ["//", "/*", "#", "<!--"], correct: 2, explanation: "Python comments start with `#`." }
+          ],
+          intermediate: [
+            { q: "What does `@decorator` syntax do?", options: ["Creates annotation", "Wraps a function", "Defines class", "Imports module"], correct: 1, explanation: "Decorators wrap functions to modify their behavior." },
+            { q: "What is the difference between `==` and `is`?", options: ["No difference", "`==` checks value, `is` checks identity", "`is` is faster", "`==` is deprecated"], correct: 1, explanation: "`==` compares values, `is` checks if objects are the same in memory." },
+            { q: "What does `*args` allow in a function?", options: ["Keyword arguments", "Variable number of positional arguments", "Default arguments", "Type hints"], correct: 1, explanation: "`*args` collects extra positional arguments into a tuple." },
+            { q: "Which method creates a shallow copy of a list?", options: ["list.clone()", "list[:]", "copy.deepcopy()", "list.duplicate()"], correct: 1, explanation: "`list[:]` creates a shallow copy." },
+            { q: "What is a lambda function?", options: ["Named function", "Anonymous function", "Class method", "Generator"], correct: 1, explanation: "Lambda functions are small anonymous functions." }
+          ],
+          advanced: [
+            { q: "What is the GIL?", options: ["Global Import Lock", "Global Interpreter Lock", "General Interface Layer", "Garbage Iteration Loop"], correct: 1, explanation: "The GIL prevents multiple threads from executing Python code simultaneously." },
+            { q: "What does `__new__` do?", options: ["Initializes object", "Creates object", "Destroys object", "Copies object"], correct: 1, explanation: "`__new__` creates the instance before `__init__` initializes it." },
+            { q: "What is a metaclass?", options: ["Parent class", "Class of a class", "Abstract class", "Static class"], correct: 1, explanation: "Metaclasses define the behavior of classes themselves." },
+            { q: "What does `yield` do in a generator?", options: ["Returns and exits", "Pauses and returns value", "Raises exception", "Imports module"], correct: 1, explanation: "`yield` pauses execution and returns a value, resuming on next call." },
+            { q: "What is monkey patching?", options: ["Bug fixing", "Runtime modification of code", "Type checking", "Performance optimization"], correct: 1, explanation: "Monkey patching modifies classes/modules at runtime." }
+          ]
+        },
+        dsa: {
+          beginner: [
+            { q: "What is the time complexity of accessing an array element by index?", options: ["O(1)", "O(n)", "O(log n)", "O(n²)"], correct: 0, explanation: "Array access by index is constant time O(1)." },
+            { q: "What data structure follows LIFO principle?", options: ["Queue", "Stack", "Array", "Tree"], correct: 1, explanation: "Stacks follow Last-In-First-Out (LIFO)." },
+            { q: "What is Big O notation used for?", options: ["Syntax checking", "Performance analysis", "Memory allocation", "Type checking"], correct: 1, explanation: "Big O describes algorithm time/space complexity." },
+            { q: "Which search is faster on sorted data?", options: ["Linear", "Binary", "Random", "Sequential"], correct: 1, explanation: "Binary search is O(log n) on sorted data." },
+            { q: "What does a queue follow?", options: ["LIFO", "FIFO", "FILO", "Random"], correct: 1, explanation: "Queues follow First-In-First-Out (FIFO)." }
+          ],
+          intermediate: [
+            { q: "What is the average time complexity of quicksort?", options: ["O(n)", "O(n log n)", "O(n²)", "O(log n)"], correct: 1, explanation: "Quicksort averages O(n log n), worst case O(n²)." },
+            { q: "What property must a binary search tree satisfy?", options: ["Balanced height", "Left < Root < Right", "Complete tree", "All leaves same level"], correct: 1, explanation: "BST: left subtree < root < right subtree." },
+            { q: "What is a hash table collision?", options: ["Memory overflow", "Two keys hash to same index", "Invalid key", "NULL pointer"], correct: 1, explanation: "Collisions occur when different keys hash to the same slot." },
+            { q: "What is dynamic programming based on?", options: ["Randomization", "Memoization of subproblems", "Greedy choice", "Backtracking"], correct: 1, explanation: "DP stores solutions to subproblems to avoid recomputation." },
+            { q: "What traversal visits root between left and right?", options: ["Preorder", "Inorder", "Postorder", "Level-order"], correct: 1, explanation: "Inorder: left, root, right." }
+          ],
+          advanced: [
+            { q: "What is the space complexity of merge sort?", options: ["O(1)", "O(log n)", "O(n)", "O(n²)"], correct: 2, explanation: "Merge sort requires O(n) auxiliary space for merging." },
+            { q: "What data structure does Dijkstra's algorithm typically use?", options: ["Stack", "Queue", "Min-heap", "Hash table"], correct: 2, explanation: "Dijkstra's uses a min-heap (priority queue) for efficiency." },
+            { q: "What is amortized analysis?", options: ["Worst case only", "Average cost over sequence", "Best case scenario", "Space analysis"], correct: 1, explanation: "Amortized analysis averages cost over a sequence of operations." },
+            { q: "Which tree guarantees O(log n) operations?", options: ["Binary tree", "Red-black tree", "Binary search tree", "Complete tree"], correct: 1, explanation: "Red-black trees self-balance to guarantee O(log n)." },
+            { q: "What is the purpose of a trie?", options: ["Sorting numbers", "String prefix matching", "Graph traversal", "Priority queue"], correct: 1, explanation: "Tries efficiently store and search strings by prefix." }
+          ]
+        }
+      };
+      
+      let currentTopic = 'javascript';
+      let currentLevel = 'beginner';
+      let currentQuestions = [];
+      let currentQuestionIndex = 0;
+      let score = 0;
+      let answers = [];
+      
+      const startQuizBtn = document.getElementById('start-quiz-btn');
+      const quizContainer = document.getElementById('quiz-container');
+      const resultsContainer = document.getElementById('results-container');
+      const questionCounter = document.getElementById('question-counter');
+      const questionText = document.getElementById('question-text');
+      const optionsContainer = document.getElementById('options-container');
+      const feedbackBox = document.getElementById('feedback-box');
+      const nextBtn = document.getElementById('next-question-btn');
+      const finishBtn = document.getElementById('finish-quiz-btn');
+      const restartBtn = document.getElementById('restart-quiz-btn');
+      
+      startQuizBtn.addEventListener('click', startQuiz);
+      nextBtn.addEventListener('click', nextQuestion);
+      finishBtn.addEventListener('click', showResults);
+      restartBtn.addEventListener('click', resetQuiz);
+      
+      function startQuiz() {
+        currentTopic = document.getElementById('quiz-topic').value;
+        currentLevel = document.getElementById('quiz-level').value;
+        currentQuestions = [...quizBank[currentTopic][currentLevel]].sort(() => Math.random() - 0.5);
+        currentQuestionIndex = 0;
+        score = 0;
+        answers = [];
+        
+        document.querySelector('.section-card > p').style.display = 'none';
+        document.querySelector('.section-card > div').style.display = 'none';
+        quizContainer.style.display = 'block';
+        resultsContainer.style.display = 'none';
+        
+        showQuestion();
+      }
+      
+      function showQuestion() {
+        const q = currentQuestions[currentQuestionIndex];
+        questionCounter.textContent = `Question ${currentQuestionIndex + 1} of ${currentQuestions.length}`;
+        questionText.textContent = q.q;
+        optionsContainer.innerHTML = '';
+        feedbackBox.style.display = 'none';
+        nextBtn.style.display = 'none';
+        finishBtn.style.display = 'none';
+        
+        q.options.forEach((option, idx) => {
+          const label = document.createElement('label');
+          label.style.display = 'block';
+          label.style.padding = '12px';
+          label.style.margin = '8px 0';
+          label.style.border = '2px solid #ddd';
+          label.style.borderRadius = '8px';
+          label.style.cursor = 'pointer';
+          label.style.transition = 'all 0.2s';
+          
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = 'quiz-option';
+          radio.value = idx;
+          radio.style.marginRight = '10px';
+          radio.addEventListener('change', () => checkAnswer(idx));
+          
+          label.appendChild(radio);
+          label.appendChild(document.createTextNode(option));
+          optionsContainer.appendChild(label);
+          
+          label.addEventListener('mouseenter', () => {
+            if (!radio.checked) label.style.backgroundColor = '#f0f0f0';
+          });
+          label.addEventListener('mouseleave', () => {
+            if (!radio.checked) label.style.backgroundColor = 'transparent';
+          });
+        });
+      }
+      
+      function checkAnswer(selected) {
+        const q = currentQuestions[currentQuestionIndex];
+        const isCorrect = selected === q.correct;
+        answers.push({ question: q.q, selected, correct: q.correct, isCorrect });
+        
+        if (isCorrect) {
+          score++;
+          feedbackBox.style.backgroundColor = '#d4edda';
+          feedbackBox.style.color = '#155724';
+          feedbackBox.innerHTML = `<strong>✓ Correct!</strong><br>${q.explanation}`;
+        } else {
+          feedbackBox.style.backgroundColor = '#f8d7da';
+          feedbackBox.style.color = '#721c24';
+          feedbackBox.innerHTML = `<strong>✗ Incorrect.</strong> Correct answer: <strong>${q.options[q.correct]}</strong><br>${q.explanation}`;
+        }
+        
+        feedbackBox.style.display = 'block';
+        
+        // Disable all options
+        document.querySelectorAll('input[name="quiz-option"]').forEach(r => r.disabled = true);
+        
+        // Highlight correct/incorrect
+        const labels = optionsContainer.querySelectorAll('label');
+        labels[selected].style.backgroundColor = isCorrect ? '#d4edda' : '#f8d7da';
+        labels[selected].style.borderColor = isCorrect ? '#28a745' : '#dc3545';
+        labels[q.correct].style.backgroundColor = '#d4edda';
+        labels[q.correct].style.borderColor = '#28a745';
+        
+        if (currentQuestionIndex < currentQuestions.length - 1) {
+          nextBtn.style.display = 'inline-block';
+        } else {
+          finishBtn.style.display = 'inline-block';
+        }
+      }
+      
+      function nextQuestion() {
+        currentQuestionIndex++;
+        showQuestion();
+      }
+      
+      function showResults() {
+        quizContainer.style.display = 'none';
+        resultsContainer.style.display = 'block';
+        
+        const percentage = Math.round((score / currentQuestions.length) * 100);
+        document.getElementById('score-display').innerHTML = `Score: ${score}/${currentQuestions.length} (${percentage}%)`;
+        document.getElementById('score-display').style.color = percentage >= 70 ? '#28a745' : percentage >= 50 ? '#ffc107' : '#dc3545';
+        
+        let summary = '<h4>Question Review:</h4><ul style="text-align:left;">';
+        answers.forEach((a, i) => {
+          const icon = a.isCorrect ? '✓' : '✗';
+          const color = a.isCorrect ? '#28a745' : '#dc3545';
+          summary += `<li style="margin: 8px 0; color: ${color};"><strong>${icon} Q${i+1}:</strong> ${currentQuestions[i].q}</li>`;
+        });
+        summary += '</ul>';
+        
+        if (percentage >= 70) summary += '<p style="color: #28a745; font-weight: bold;">Great job! You have a strong understanding.</p>';
+        else if (percentage >= 50) summary += '<p style="color: #ffc107; font-weight: bold;">Good effort! Review the explanations to improve.</p>';
+        else summary += '<p style="color: #dc3545; font-weight: bold;">Keep practicing! Review the topics and try again.</p>';
+        
+        document.getElementById('performance-summary').innerHTML = summary;
+      }
+      
+      function resetQuiz() {
+        resultsContainer.style.display = 'none';
+        document.querySelector('.section-card > p').style.display = 'block';
+        document.querySelector('.section-card > div').style.display = 'block';
+      }
+    </script>
+  
+    <!-- Particle Generation Script -->
+    <script>
+      // Create 120 floating purple particles
+      if (document.getElementById('particlesContainer')) {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 120;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          // Random size (2-6px)
+          const size = 2 + Math.random() * 4;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          // Random horizontal position
+          const leftPos = Math.random() * 100;
+          particle.style.left = `${leftPos}%`;
+          
+          // Random animation duration (12-25 seconds)
+          const duration = 12 + Math.random() * 13;
+          particle.style.animationDuration = `${duration}s`;
+          
+          // Random delay
+          const delay = Math.random() * 10;
+          particle.style.animationDelay = `${delay}s`;
+          
+          // Random horizontal drift
+          const drift = (Math.random() - 0.5) * 150;
+          particle.style.setProperty('--drift', `${drift}px`);
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+  
+    <!-- Particle Generation Script -->
+    <script>
+      // Create 120 floating purple particles
+      if (document.getElementById('particlesContainer')) {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 120;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          const size = 2 + Math.random() * 4;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          const leftPos = Math.random() * 100;
+          particle.style.left = `${leftPos}%`;
+          
+          const duration = 12 + Math.random() * 13;
+          particle.style.animationDuration = `${duration}s`;
+          
+          const delay = Math.random() * 10;
+          particle.style.animationDelay = `${delay}s`;
+          
+          const drift = (Math.random() - 0.5) * 150;
+          particle.style.setProperty('--drift', `${drift}px`);
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+    
+    <!-- Three.js + Robot Interviewer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="assets/js/robot-interviewer.js"></script>
+    <script>
+      // Initialize Background Robot
+      (function initBgRobot(){
+        if (typeof THREE === 'undefined' || typeof window.RobotInterviewer === 'undefined') {
+          return setTimeout(initBgRobot, 100);
+        }
+        try {
+          window.bgRobot = new window.RobotInterviewer('bg-robot-container', THREE, {
+            canvasId: 'bg-robot-canvas',
+            trackCursor: true
+          });
+          window.bgRobot.setState('neutral');
+          console.log('✅ Background robot initialized');
+        } catch (e) {
+          console.error('❌ Failed to init background robot:', e);
+        }
+      })();
+      
+      // Advanced Parallax and Depth Effect
+      let targetX = 0, targetY = 0;
+      let currentX = 0, currentY = 0;
+      
+      document.addEventListener('mousemove', (e) => {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        targetX = (x - 0.5);
+        targetY = (y - 0.5);
+      });
+      
+      function animateParallax() {
+        currentX += (targetX - currentX) * 0.1;
+        currentY += (targetY - currentY) * 0.1;
+        
+        const container = document.getElementById('bg-robot-container');
+        if (container) {
+          const moveX1 = currentX * 80;
+          const moveY1 = currentY * 80;
+          const rotateY1 = currentX * 20;
+          const rotateX1 = -currentY * 20;
+          const scale1 = 1 + (Math.abs(currentX) + Math.abs(currentY)) * 0.05;
+          
+          container.style.transform = `
+            perspective(2000px) 
+            translateX(${moveX1}px) 
+            translateY(${moveY1}px) 
+            translateZ(-100px)
+            rotateX(${rotateX1}deg) 
+            rotateY(${rotateY1}deg)
+            scale(${scale1})
+          `;
+        }
+        
+        const particles = document.getElementById('particlesContainer');
+        if (particles) {
+          const moveX2 = currentX * 40;
+          const moveY2 = currentY * 40;
+          particles.style.transform = `
+            translateX(${moveX2}px) 
+            translateY(${moveY2}px)
+            translateZ(50px)
+          `;
+        }
+        
+        const bodyBefore = document.body;
+        if (bodyBefore) {
+          const gradientX = 50 + currentX * 10;
+          const gradientY = 50 + currentY * 10;
+          bodyBefore.style.setProperty('--gradient-x', `${gradientX}%`);
+          bodyBefore.style.setProperty('--gradient-y', `${gradientY}%`);
+        }
+        
+        const main = document.querySelector('main');
+        if (main) {
+          const moveX4 = -currentX * 15;
+          const moveY4 = -currentY * 15;
+          main.style.transform = `
+            translateX(${moveX4}px) 
+            translateY(${moveY4}px)
+            translateZ(100px)
+          `;
+        }
+        
+        requestAnimationFrame(animateParallax);
+      }
+      
+      animateParallax();
+    </script>
+  </body>
+  </html>
+
+

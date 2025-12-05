@@ -1,0 +1,112 @@
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null",
+    
+    "users": {
+      "$uid": {
+        ".read": "auth != null && auth.uid == $uid",
+        ".write": "auth != null && auth.uid == $uid"
+      }
+    },
+    
+    "aiInterviews": {
+      "$uid": {
+        ".read": "auth != null && auth.uid == $uid",
+        ".write": "auth != null && auth.uid == $uid",
+        "$interviewId": {
+          ".validate": "newData.hasChildren(['department', 'startTime', 'questions', 'answers', 'emotions', 'performance'])"
+        }
+      }
+    },
+
+    "certificates": {
+      "$uid": {
+        ".read": "auth != null && auth.uid == $uid",
+        ".write": "auth != null && auth.uid == $uid",
+        "$certId": {
+          ".validate": "newData.hasChildren(['certificateId', 'courseName', 'dateIssued', 'score'])"
+        }
+      }
+    },
+
+    "completedCourses": {
+      "$uid": {
+        ".read": "auth != null && auth.uid == $uid",
+        ".write": "auth != null && auth.uid == $uid"
+      }
+    },
+
+    "activity": {
+      "$uid": {
+        ".read": "auth != null && auth.uid == $uid",
+        ".write": "auth != null && auth.uid == $uid",
+        "$timestamp": {
+          ".validate": "newData.hasChildren(['type', 'title', 'description'])"
+        }
+      }
+    },
+    
+    "community": {
+      "posts": {
+        ".read": "auth != null",
+        ".indexOn": ["timestamp", "type", "likes"],
+        "$postId": {
+          ".write": "auth != null && (!data.exists() || data.child('authorId').val() == auth.uid)",
+          ".validate": "newData.hasChildren(['authorId', 'authorName', 'type', 'title', 'content', 'timestamp'])",
+          "comments": {
+            "$commentId": {
+              ".write": "auth != null",
+              ".validate": "newData.hasChildren(['authorId', 'authorName', 'text', 'timestamp'])"
+            }
+          },
+          "likedBy": {
+            "$uid": {
+              ".write": "auth != null && auth.uid == $uid"
+            }
+          }
+        }
+      },
+      "stats": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
+    
+    "leaderboard": {
+      ".read": "auth != null",
+      ".indexOn": ["bestScore", "department", "lastActive"],
+      "$uid": {
+        ".write": "auth != null && auth.uid == $uid",
+        ".validate": "newData.hasChildren(['name', 'email', 'department', 'bestScore', 'totalInterviews', 'totalScore', 'recentScores', 'grade', 'improvement', 'lastActive', 'totalStars', 'starHistory'])"
+      }
+    }
+    ,
+    "recruiters": {
+      "$uid": {
+        ".read": "auth != null && auth.uid == $uid",
+        ".write": "auth != null && auth.uid == $uid",
+        ".validate": "newData.hasChildren(['email', 'role']) && newData.child('role').val() == 'recruiter'"
+      }
+    }
+    ,
+    "schedules": {
+      ".indexOn": ["organizerId", "candidateId", "time"],
+      "$id": {
+        ".read": "auth != null && (data.child('organizerId').val() == auth.uid || data.child('candidateId').val() == auth.uid)",
+        ".write": "auth != null && (!data.exists() ? newData.child('organizerId').val() == auth.uid : data.child('organizerId').val() == auth.uid)",
+        ".validate": "newData.hasChildren(['organizerId','candidateId','department','time','roomName','status','createdAt'])"
+      }
+    }
+    ,
+    "notes": {
+      "$scheduleId": {
+        "$noteId": {
+          ".read": "auth != null && (root.child('schedules/'+$scheduleId+'/organizerId').val() == auth.uid)",
+          ".write": "auth != null && (root.child('schedules/'+$scheduleId+'/organizerId').val() == auth.uid)",
+          ".validate": "newData.hasChildren(['scheduleId','authorId','rating','tags','text','createdAt']) && newData.child('authorId').val() == auth.uid && newData.child('scheduleId').val() == $scheduleId"
+        }
+      }
+    }
+  }
+}

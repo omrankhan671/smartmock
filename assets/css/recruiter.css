@@ -1,0 +1,30 @@
+/* Recruiter Portal Styles - Futuristic Dark UI */
+
+.header .inner{display:flex;align-items:center;gap:20px;padding:12px 18px}
+.brand{font-weight:800;letter-spacing:1px}
+.brand .accent{color:var(--accent-2)}
+.nav{margin-left:auto;display:flex;gap:10px}
+.nav a{color:#E5E7EB;text-decoration:none;padding:10px 12px;border-radius:10px}
+.nav a.active,.nav a:hover{background:linear-gradient(135deg,rgba(var(--accent-rgb),.12),rgba(var(--accent-2-rgb),.12));border:1px solid rgba(var(--accent-rgb),.35)}
+.container{max-width:1280px;margin:24px auto;padding:0 20px}
+.section-title{font-size:20px;font-weight:800;margin:16px 0}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{padding:12px;border-bottom:1px solid rgba(var(--text-rgb),.06);text-align:left}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.kpi{background:rgba(var(--text-rgb),.04);border:1px solid rgba(var(--text-rgb),.06);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.kpi .label{color:var(--muted);font-size:12px}
+.kpi .value{font-size:22px;font-weight:900}
+.pill{padding:6px 10px;border-radius:999px;background:rgba(var(--accent-2-rgb),.12);border:1px solid rgba(var(--accent-2-rgb),.35);color:#bff7ff;font-weight:700;font-size:12px;display:inline-block}
+.pill.success{background:rgba(var(--success-rgb),.12);border-color:rgba(var(--success-rgb),.35);color:#86efac}
+.pill.warning{background:rgba(var(--warning-rgb),.12);border-color:rgba(var(--warning-rgb),.35);color:#fdba74}
+.pill.info{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.35);color:#bfdbfe}
+.pill.error{background:rgba(var(--danger-rgb),.12);border-color:rgba(var(--danger-rgb),.35);color:#fca5a5}
+.table tr:hover{background:rgba(var(--text-rgb),0.02)}
+@media(max-width:768px){.nav{flex-wrap:wrap}}
+/* Utility */
+.muted{color:var(--muted)}
+/* Stars */
+.stars{display:flex;align-items:center}
+.star{color:#ffd54f;text-shadow:0 0 8px rgba(255,213,79,.25);font-size:16px}
+.star.dim{color:rgba(255,213,79,.25)}
+.star.half{color:#ffe082}

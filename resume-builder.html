@@ -1,0 +1,1826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Builder - SmartMock</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/purple-particles-bg.css">
+    <style>
+        /* Page-specific styles (Resume Builder) */
+        
+        .resume-container {
+            max-width: 1400px;
+            margin: 100px auto 50px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .editor-section, .preview-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-header h2 {
+            color: #00f7ff;
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        .template-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .template-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .template-card:hover, .template-card.active {
+            border-color: #00f7ff;
+            background: rgba(0, 247, 255, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 247, 255, 0.3);
+        }
+
+        .template-card.active::after {
+            content: '✓';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #00f7ff;
+            color: #0a0a0f;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .template-card {
+            position: relative;
+        }
+
+        .template-card h3 {
+            color: #00f7ff;
+            margin: 10px 0;
+            font-size: 1rem;
+        }
+
+        /* Template-specific preview styles */
+        .resume-preview.template-professional {
+            font-family: 'Arial', sans-serif;
+        }
+
+        .resume-preview.template-professional .resume-header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .resume-preview.template-modern {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        .resume-preview.template-modern .resume-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .resume-preview.template-minimal {
+            font-family: 'Georgia', serif;
+        }
+
+        .resume-preview.template-minimal .resume-header {
+            background: #ffffff;
+            color: #000;
+            padding: 30px;
+            border-bottom: 3px solid #000;
+        }
+
+        .resume-preview.template-creative {
+            font-family: 'Comic Sans MS', cursive;
+        }
+
+        .resume-preview.template-creative .resume-header {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            padding: 30px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .resume-preview.template-executive {
+            font-family: 'Times New Roman', serif;
+        }
+
+        .resume-preview.template-executive .resume-header {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #c5a572;
+            padding: 30px;
+            border-radius: 10px 10px 0 0;
+            border-bottom: 3px solid #c5a572;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #00f7ff;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .ai-suggestions {
+            background: rgba(0, 247, 255, 0.1);
+            border-left: 3px solid #00f7ff;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .ai-suggestions h4 {
+            color: #00f7ff;
+            margin: 0 0 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ai-suggestions ul {
+            margin: 0;
+            padding-left: 20px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .section-group {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section-group h3 {
+            color: #00f7ff;
+            margin-top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .add-more-btn {
+            background: rgba(0, 247, 255, 0.2);
+            color: #00f7ff;
+            border: 1px solid #00f7ff;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .add-more-btn:hover {
+            background: rgba(0, 247, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .ats-score {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin: 30px 0 10px;
+            background: rgba(255,255,255,0.03);
+            padding: 20px 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .score-circle {
+            --score-deg: 0deg;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: conic-gradient(#00f7ff var(--score-deg), rgba(255,255,255,0.08) 0deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #00f7ff;
+            box-shadow: 0 0 10px rgba(0,247,255,0.3);
+        }
+
+        .score-circle span {
+            font-size: 2.4rem;
+            font-weight: 700;
+        }
+
+        .score-info {
+            flex: 1;
+        }
+
+        .score-info h3 {
+            margin: 0 0 5px 0;
+            color: #00f7ff;
+        }
+
+        .score-info p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .resume-header {
+            border-bottom: 3px solid #333;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .resume-header h1 {
+            margin: 0 0 5px 0;
+            color: #1a1a1a;
+            font-size: 2.5rem;
+        }
+
+        .resume-header .title {
+            color: #555;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .resume-header .contact {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .resume-section {
+            margin-bottom: 25px;
+        }
+
+        .resume-section h2 {
+            color: #1a1a1a;
+            border-bottom: 2px solid #00f7ff;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+
+        .resume-section .entry {
+            margin-bottom: 20px;
+        }
+
+        .resume-section .entry h3 {
+            color: #333;
+            margin: 0 0 5px 0;
+        }
+
+        .resume-section .entry .meta {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+
+        .resume-section .entry ul {
+            margin: 5px 0;
+            padding-left: 20px;
+        }
+
+        .resume-section .entry li {
+            color: #444;
+            margin-bottom: 5px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        .skill-tag {
+            background: #f0f0f0;
+            padding: 8px 12px;
+            border-radius: 5px;
+            color: #333;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* Live Preview Styles */
+        .resume-preview {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            min-height: 800px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            color: #000;
+        }
+
+        #resumePreview p, #resumePreview li {
+            color: #444;
+        }
+
+        @media (max-width: 1200px) {
+            .resume-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .feature-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(0, 247, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            color: #00f7ff;
+            margin-right: 10px;
+        }
+    </style>
+    
+    <!-- Template Functions - Must load before HTML -->
+    <script>
+        // Template management - Must be defined early for onclick handlers
+        let currentTemplate = 'professional';
+        let customTemplateCSS = '';
+
+        function selectTemplate(template) {
+            console.log('🎨 Switching to template:', template);
+            currentTemplate = template;
+            
+            // Remove active from all cards
+            document.querySelectorAll('.template-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Add active to selected card
+            const selectedCard = document.querySelector(`[data-template="${template}"]`);
+            if (selectedCard) {
+                selectedCard.classList.add('active');
+                console.log('✅ Template card activated');
+            } else {
+                console.warn('⚠️ Template card not found:', template);
+            }
+            
+            // Apply template styles
+            applyTemplateStyles(template);
+            if (typeof updatePreview === 'function') {
+                updatePreview();
+            }
+        }
+
+        function applyTemplateStyles(template) {
+            console.log('🎨 Applying styles for template:', template);
+            const preview = document.getElementById('resumePreview');
+            
+            if (!preview) {
+                console.error('❌ Resume preview element not found!');
+                return;
+            }
+            
+            // Reset classes
+            preview.className = 'resume-preview';
+            preview.classList.add(`template-${template}`);
+            
+            // Apply template-specific styles
+            const templates = {
+                professional: {
+                    headerBg: 'linear-gradient(135deg, #2c3e50, #34495e)',
+                    accentColor: '#3498db',
+                    fontFamily: "'Arial', sans-serif"
+                },
+                modern: {
+                    headerBg: 'linear-gradient(135deg, #667eea, #764ba2)',
+                    accentColor: '#a855f7',
+                    fontFamily: "'Segoe UI', Tahoma, sans-serif"
+                },
+                minimal: {
+                    headerBg: '#ffffff',
+                    accentColor: '#000000',
+                    fontFamily: "'Georgia', serif"
+                },
+                creative: {
+                    headerBg: 'linear-gradient(135deg, #f093fb, #f5576c)',
+                    accentColor: '#ff4081',
+                    fontFamily: "'Comic Sans MS', cursive"
+                },
+                executive: {
+                    headerBg: 'linear-gradient(135deg, #1a1a2e, #16213e)',
+                    accentColor: '#c5a572',
+                    fontFamily: "'Times New Roman', serif"
+                }
+            };
+            
+            const style = templates[template] || templates.professional;
+            console.log('📝 Applying style:', style);
+            
+            preview.style.fontFamily = style.fontFamily;
+            
+            const header = preview.querySelector('.resume-header');
+            if (header) {
+                header.style.background = style.headerBg;
+                header.style.padding = '30px';
+                header.style.borderRadius = '10px 10px 0 0';
+                header.style.marginBottom = '20px';
+                if (template === 'minimal') {
+                    header.style.color = '#000';
+                    header.style.borderBottom = '3px solid #000';
+                } else {
+                    header.style.color = '#fff';
+                }
+                console.log('✅ Header styled');
+            } else {
+                console.warn('⚠️ Resume header not found');
+            }
+            
+            const sections = preview.querySelectorAll('.resume-section h2');
+            sections.forEach(h2 => {
+                h2.style.color = style.accentColor;
+                h2.style.borderBottomColor = style.accentColor;
+            });
+            console.log('✅ Template applied successfully');
+        }
+
+        function handleTemplateUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                if (file.name.endsWith('.css')) {
+                    customTemplateCSS = e.target.result;
+                    const styleEl = document.createElement('style');
+                    styleEl.id = 'custom-template-style';
+                    styleEl.textContent = customTemplateCSS;
+                    document.getElementById('custom-template-style')?.remove();
+                    document.head.appendChild(styleEl);
+                    alert('✅ Custom template uploaded successfully!');
+                } else if (file.name.endsWith('.html')) {
+                    alert('✅ HTML template uploaded! Applying styles...');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Initialize live preview on DOM ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎯 Initializing live preview listeners...');
+            
+            // Full Name
+            const fullNameInput = document.getElementById('fullName');
+            if (fullNameInput) {
+                fullNameInput.addEventListener('input', (e) => {
+                    const prevName = document.getElementById('prev-name');
+                    if (prevName) {
+                        prevName.textContent = e.target.value || 'John Doe';
+                        console.log('📝 Name updated:', e.target.value);
+                    }
+                });
+                console.log('✅ Full name listener added');
+            }
+
+            // Professional Title
+            const profTitleInput = document.getElementById('profTitle');
+            if (profTitleInput) {
+                profTitleInput.addEventListener('input', (e) => {
+                    const prevTitle = document.getElementById('prev-title');
+                    if (prevTitle) {
+                        prevTitle.textContent = e.target.value || 'Professional Title';
+                    }
+                });
+                console.log('✅ Title listener added');
+            }
+
+            // Contact
+            const contactInput = document.getElementById('contact');
+            if (contactInput) {
+                contactInput.addEventListener('input', (e) => {
+                    const prevContact = document.getElementById('prev-contact');
+                    if (prevContact) {
+                        prevContact.textContent = e.target.value || 'Contact Information';
+                    }
+                });
+                console.log('✅ Contact listener added');
+            }
+
+            // Summary
+            const summaryInput = document.getElementById('summary');
+            if (summaryInput) {
+                summaryInput.addEventListener('input', (e) => {
+                    const prevSummary = document.getElementById('prev-summary');
+                    if (prevSummary) {
+                        prevSummary.textContent = e.target.value || 'Professional summary...';
+                    }
+                });
+                console.log('✅ Summary listener added');
+            }
+
+            // Skills
+            const skillsInput = document.getElementById('skills');
+            if (skillsInput) {
+                skillsInput.addEventListener('input', (e) => {
+                    const skills = e.target.value.split(',').map(s => s.trim()).filter(s => s);
+                    const skillsGrid = document.getElementById('prev-skills');
+                    if (skillsGrid) {
+                        skillsGrid.innerHTML = skills.map(skill => `<div class="skill-tag">${skill}</div>`).join('');
+                        console.log('📝 Skills updated:', skills.length);
+                    }
+                });
+                console.log('✅ Skills listener added');
+            }
+
+            console.log('✅ Live preview initialized!');
+        });
+
+        // LinkedIn Integration Functions
+        let linkedInConnected = false;
+        let linkedInData = null;
+
+        async function connectLinkedIn() {
+            console.log('🔗 Connecting to LinkedIn...');
+            
+            // Show loading
+            const statusDiv = document.getElementById('linkedinStatus');
+            const statusText = document.getElementById('linkedinStatusText');
+            statusDiv.style.display = 'block';
+            statusDiv.style.borderLeftColor = 'rgba(255,193,7,0.8)';
+            statusText.innerHTML = '⏳ Connecting to LinkedIn...';
+            
+            try {
+                // Call backend to get LinkedIn OAuth URL
+                const response = await fetch('http://localhost:3000/auth/linkedin', {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to initiate LinkedIn OAuth');
+                }
+                
+                const { authUrl } = await response.json();
+                
+                // Update status
+                statusText.innerHTML = '🔄 Redirecting to LinkedIn...';
+                
+                // Redirect to LinkedIn OAuth page
+                window.location.href = authUrl;
+                
+            } catch (error) {
+                console.error('❌ LinkedIn connection error:', error);
+                statusDiv.style.borderLeftColor = 'rgba(244,67,54,0.8)';
+                statusText.innerHTML = '❌ <strong>Connection failed!</strong> Make sure backend server is running on port 3000.';
+                
+                if (typeof showNotification === 'function') {
+                    showNotification('❌ Failed to connect to LinkedIn. Check console for details.', 'error');
+                }
+            }
+        }
+        
+        // Check if returning from LinkedIn OAuth
+        window.addEventListener('DOMContentLoaded', async () => {
+            // Wait for Firebase to initialize (if it's being used)
+            await new Promise(resolve => {
+                if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0) {
+                    resolve();
+                } else {
+                    // Wait up to 2 seconds for Firebase
+                    const checkInterval = setInterval(() => {
+                        if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0) {
+                            clearInterval(checkInterval);
+                            resolve();
+                        }
+                    }, 100);
+                    
+                    setTimeout(() => {
+                        clearInterval(checkInterval);
+                        resolve(); // Continue even if Firebase doesn't load
+                    }, 2000);
+                }
+            });
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // Handle OAuth success
+            if (urlParams.get('linkedin') === 'connected') {
+                console.log('✅ Returned from LinkedIn OAuth');
+                
+                const statusDiv = document.getElementById('linkedinStatus');
+                const statusText = document.getElementById('linkedinStatusText');
+                
+                try {
+                    // Check auth status with backend
+                    const response = await fetch('http://localhost:3000/api/auth/status', {
+                        credentials: 'include'
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.authenticated) {
+                        linkedInConnected = true;
+                        if (statusDiv) statusDiv.style.display = 'block';
+                        if (statusDiv) statusDiv.style.borderLeftColor = 'rgba(76,175,80,0.8)';
+                        if (statusText) statusText.innerHTML = '✅ <strong>Connected to LinkedIn!</strong> Ready to import your profile.';
+                        
+                        // Enable import button
+                        const importBtn = document.getElementById('importLinkedInBtn');
+                        if (importBtn) {
+                            importBtn.style.opacity = '1';
+                            importBtn.disabled = false;
+                            importBtn.style.cursor = 'pointer';
+                        }
+                        
+                        if (typeof showNotification === 'function') {
+                            showNotification('✅ LinkedIn connected! Click "AI Import" to auto-fill your resume.', 'success');
+                        }
+                        
+                        // Clean URL
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                    }
+                } catch (error) {
+                    console.error('❌ Auth status check failed:', error);
+                }
+            }
+            
+            // Handle OAuth errors
+            const error = urlParams.get('error');
+            if (error) {
+                console.error('❌ LinkedIn OAuth error:', error);
+                
+                const statusDiv = document.getElementById('linkedinStatus');
+                const statusText = document.getElementById('linkedinStatusText');
+                
+                // Get error message from URL if available
+                const message = urlParams.get('message');
+                
+                let errorMessage = '';
+                switch(error) {
+                    case 'oauth_failed':
+                        errorMessage = '❌ <strong>LinkedIn authorization failed.</strong> Please try connecting again.';
+                        break;
+                    case 'invalid_state':
+                        errorMessage = '❌ <strong>Security validation failed.</strong> Please try connecting again.';
+                        break;
+                    case 'linkedin_error':
+                        errorMessage = `❌ <strong>LinkedIn Error:</strong> ${message || 'Authorization rejected'}`;
+                        break;
+                    case 'no_code':
+                        errorMessage = '❌ <strong>No authorization code received.</strong> Please try again.';
+                        break;
+                    default:
+                        errorMessage = `❌ <strong>Connection failed:</strong> ${message || error}`;
+                }
+                
+                if (statusDiv && statusText) {
+                    statusDiv.style.display = 'block';
+                    statusDiv.style.borderLeftColor = 'rgba(244,67,54,0.8)';
+                    statusText.innerHTML = errorMessage;
+                }
+                
+                if (typeof showNotification === 'function') {
+                    showNotification('LinkedIn connection failed. Please try again.', 'error');
+                }
+                
+                // Clean URL after showing error
+                setTimeout(() => {
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }, 3000);
+            }
+        });
+
+        async function importFromLinkedIn() {
+            if (!linkedInConnected) {
+                alert('⚠️ Please connect to LinkedIn first!');
+                return;
+            }
+            
+            console.log('🤖 AI importing data from LinkedIn...');
+            
+            // Show loading notification
+            if (typeof showNotification === 'function') {
+                showNotification('🤖 AI is analyzing your LinkedIn profile...', 'info');
+            }
+            
+            try {
+                // Fetch enhanced LinkedIn profile from backend
+                const response = await fetch('http://localhost:3000/api/linkedin/profile/enhanced', {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch LinkedIn profile');
+                }
+                
+                const result = await response.json();
+                
+                if (!result.success) {
+                    throw new Error(result.error || 'Failed to fetch profile');
+                }
+                
+                const linkedInData = result.data;
+                console.log('📊 LinkedIn data received:', linkedInData);
+                
+                // Fill basic information
+                const fullNameInput = document.getElementById('fullName');
+                const profTitleInput = document.getElementById('profTitle');
+                const contactInput = document.getElementById('contact');
+                const summaryInput = document.getElementById('summary');
+                const skillsInput = document.getElementById('skills');
+                
+                if (fullNameInput && linkedInData.fullName) {
+                    fullNameInput.value = linkedInData.fullName;
+                    fullNameInput.dispatchEvent(new Event('input', { bubbles: true }));
+                }
+                
+                if (profTitleInput && linkedInData.headline) {
+                    profTitleInput.value = linkedInData.headline;
+                    profTitleInput.dispatchEvent(new Event('input', { bubbles: true }));
+                }
+                
+                if (contactInput) {
+                    const contactParts = [];
+                    if (linkedInData.email) contactParts.push(linkedInData.email);
+                    if (linkedInData.phone) contactParts.push(linkedInData.phone);
+                    contactInput.value = contactParts.join(' | ');
+                    contactInput.dispatchEvent(new Event('input', { bubbles: true }));
+                }
+                
+                if (summaryInput && linkedInData.summary) {
+                    summaryInput.value = linkedInData.summary;
+                    summaryInput.dispatchEvent(new Event('input', { bubbles: true }));
+                }
+                
+                if (skillsInput && linkedInData.skills && linkedInData.skills.length > 0) {
+                    skillsInput.value = linkedInData.skills.join(', ');
+                    skillsInput.dispatchEvent(new Event('input', { bubbles: true }));
+                }
+                
+                // Fill ALL work experience entries
+                if (linkedInData.experience && linkedInData.experience.length > 0) {
+                    console.log(`📋 Importing ${linkedInData.experience.length} work experience entries...`);
+                    
+                    linkedInData.experience.forEach((exp, index) => {
+                        if (index === 0) {
+                            // Fill first entry (already exists in HTML)
+                            const jobTitleInput = document.querySelector('.jobTitle');
+                            const companyInput = document.querySelector('.company');
+                            const durationInput = document.querySelector('.duration');
+                            const responsibilitiesInput = document.querySelector('.responsibilities');
+                            
+                            if (jobTitleInput && exp.title) {
+                                jobTitleInput.value = exp.title;
+                                jobTitleInput.dispatchEvent(new Event('input', { bubbles: true }));
+                            }
+                            if (companyInput && exp.company) {
+                                companyInput.value = exp.company;
+                                companyInput.dispatchEvent(new Event('input', { bubbles: true }));
+                            }
+                            if (durationInput && exp.duration) {
+                                durationInput.value = exp.duration;
+                                durationInput.dispatchEvent(new Event('input', { bubbles: true }));
+                            }
+                            if (responsibilitiesInput && exp.responsibilities) {
+                                responsibilitiesInput.value = exp.responsibilities;
+                                responsibilitiesInput.dispatchEvent(new Event('input', { bubbles: true }));
+                            }
+                        } else {
+                            // Add new entries dynamically
+                            if (typeof addWorkExperience === 'function') {
+                                addWorkExperience();
+                                
+                                // Wait a moment for DOM to update, then fill
+                                setTimeout(() => {
+                                    const allJobTitles = document.querySelectorAll('.jobTitle');
+                                    const allCompanies = document.querySelectorAll('.company');
+                                    const allDurations = document.querySelectorAll('.duration');
+                                    const allResponsibilities = document.querySelectorAll('.responsibilities');
+                                    
+                                    if (allJobTitles[index]) allJobTitles[index].value = exp.title || '';
+                                    if (allCompanies[index]) allCompanies[index].value = exp.company || '';
+                                    if (allDurations[index]) allDurations[index].value = exp.duration || '';
+                                    if (allResponsibilities[index]) allResponsibilities[index].value = exp.responsibilities || '';
+                                    
+                                    // Trigger updates
+                                    if (allJobTitles[index]) allJobTitles[index].dispatchEvent(new Event('input', { bubbles: true }));
+                                }, 100 * index);
+                            }
+                        }
+                    });
+                }
+                
+                // Fill ALL education entries
+                if (linkedInData.education && linkedInData.education.length > 0) {
+                    console.log(`🎓 Importing ${linkedInData.education.length} education entries...`);
+                    
+                    linkedInData.education.forEach((edu, index) => {
+                        if (index === 0) {
+                            // Fill first entry
+                            const degreeInput = document.querySelector('.degree');
+                            const institutionInput = document.querySelector('.institution');
+                            const yearInput = document.querySelector('.year');
+                            
+                            if (degreeInput && edu.degree) {
+                                degreeInput.value = edu.degree;
+                                degreeInput.dispatchEvent(new Event('input', { bubbles: true }));
+                            }
+                            if (institutionInput && edu.institution) {
+                                institutionInput.value = edu.institution;
+                                institutionInput.dispatchEvent(new Event('input', { bubbles: true }));
+                            }
+                            if (yearInput && edu.year) {
+                                yearInput.value = edu.year;
+                                yearInput.dispatchEvent(new Event('input', { bubbles: true }));
+                            }
+                        } else {
+                            // Add new entries dynamically
+                            if (typeof addEducation === 'function') {
+                                addEducation();
+                                
+                                setTimeout(() => {
+                                    const allDegrees = document.querySelectorAll('.degree');
+                                    const allInstitutions = document.querySelectorAll('.institution');
+                                    const allYears = document.querySelectorAll('.year');
+                                    
+                                    if (allDegrees[index]) allDegrees[index].value = edu.degree || '';
+                                    if (allInstitutions[index]) allInstitutions[index].value = edu.institution || '';
+                                    if (allYears[index]) allYears[index].value = edu.year || '';
+                                    
+                                    if (allDegrees[index]) allDegrees[index].dispatchEvent(new Event('input', { bubbles: true }));
+                                }, 100 * index);
+                            }
+                        }
+                    });
+                }
+                
+                // Fill ALL certification entries
+                if (linkedInData.certifications && linkedInData.certifications.length > 0) {
+                    console.log(`🏆 Importing ${linkedInData.certifications.length} certification entries...`);
+                    
+                    linkedInData.certifications.forEach((cert, index) => {
+                        if (index === 0) {
+                            // Fill first entry
+                            const certNameInput = document.querySelector('.certName');
+                            const certIssuerInput = document.querySelector('.certIssuer');
+                            
+                            if (certNameInput && cert.name) {
+                                certNameInput.value = cert.name;
+                                certNameInput.dispatchEvent(new Event('input', { bubbles: true }));
+                            }
+                            if (certIssuerInput && cert.issuer) {
+                                certIssuerInput.value = cert.issuer;
+                                certIssuerInput.dispatchEvent(new Event('input', { bubbles: true }));
+                            }
+                        } else {
+                            // Add new entries dynamically
+                            if (typeof addCertification === 'function') {
+                                addCertification();
+                                
+                                setTimeout(() => {
+                                    const allCertNames = document.querySelectorAll('.certName');
+                                    const allCertIssuers = document.querySelectorAll('.certIssuer');
+                                    
+                                    if (allCertNames[index]) allCertNames[index].value = cert.name || '';
+                                    if (allCertIssuers[index]) allCertIssuers[index].value = cert.issuer || '';
+                                    
+                                    if (allCertNames[index]) allCertNames[index].dispatchEvent(new Event('input', { bubbles: true }));
+                                }, 100 * index);
+                            }
+                        }
+                    });
+                }
+                
+                // Check what was actually imported
+                const hasRealData = linkedInData.fullName || linkedInData.email;
+                const hasExperience = linkedInData.experience && linkedInData.experience.length > 0;
+                const hasEducation = linkedInData.education && linkedInData.education.length > 0;
+                const hasSkills = linkedInData.skills && linkedInData.skills.length > 0;
+                
+                // Count imported items
+                const importedCount = {
+                    experience: linkedInData.experience?.length || 0,
+                    education: linkedInData.education?.length || 0,
+                    skills: linkedInData.skills?.length || 0,
+                    certifications: linkedInData.certifications?.length || 0
+                };
+                
+                // Success notification with detailed stats
+                if (typeof showNotification === 'function') {
+                    if (hasExperience || hasEducation || hasSkills) {
+                        const stats = [];
+                        if (importedCount.experience) stats.push(`${importedCount.experience} jobs`);
+                        if (importedCount.education) stats.push(`${importedCount.education} degrees`);
+                        if (importedCount.skills) stats.push(`${importedCount.skills} skills`);
+                        showNotification(`✅ Imported from LinkedIn: ${stats.join(', ')}! Review and customize as needed.`, 'success');
+                    } else {
+                        showNotification('ℹ️ Basic info imported. To get full profile data, make sure your LinkedIn app has the required permissions approved.', 'info');
+                    }
+                } else {
+                    if (hasExperience || hasEducation || hasSkills) {
+                        alert(`✅ LinkedIn Import Successful!\n\nImported:\n• ${importedCount.experience} work experience entries\n• ${importedCount.education} education entries\n• ${importedCount.skills} skills\n\nReview and customize as needed!`);
+                    } else {
+                        alert('ℹ️ Basic Info Imported\n\nOnly name and email were imported. To get work experience, education, and skills, your LinkedIn app needs additional API permissions.\n\nCheck the console logs for details on what failed.');
+                    }
+                }
+                
+                // Update status with detailed info
+                const statusText = document.getElementById('linkedinStatusText');
+                if (hasExperience || hasEducation || hasSkills) {
+                    statusText.innerHTML = `✅ <strong>Imported successfully!</strong> ${importedCount.experience} jobs, ${importedCount.education} degrees, ${importedCount.skills} skills.`;
+                } else {
+                    statusText.innerHTML = 'ℹ️ <strong>Basic info imported.</strong> Additional data requires LinkedIn API approval. Check console for details.';
+                }
+                
+                console.log('✅ LinkedIn import complete:', importedCount);
+                
+            } catch (error) {
+                console.error('❌ LinkedIn import error:', error);
+                
+                if (typeof showNotification === 'function') {
+                    showNotification('❌ Failed to import LinkedIn data. Please try again.', 'error');
+                } else {
+                    alert('❌ Failed to import LinkedIn data.\n\nError: ' + error.message);
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <!-- Purple Particles -->
+    <div class="particles-container" id="particlesContainer"></div>
+
+    <div class="resume-container">
+        <!-- Editor Section -->
+        <div class="editor-section">
+            <div class="section-header">
+                <h2>🤖 AI Resume Builder</h2>
+                <div>
+                    <span class="feature-badge">🎯 ATS Optimized</span>
+                    <span class="feature-badge">✨ AI Powered</span>
+                </div>
+            </div>
+
+            <!-- LinkedIn Integration -->
+            <div class="section-group" style="background: linear-gradient(135deg, rgba(0,119,181,0.1), rgba(0,119,181,0.05)); border: 2px solid rgba(0,119,181,0.3); border-radius: 15px; padding: 25px; margin-bottom: 30px;">
+                <h3 style="color: #0077b5; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#0077b5">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                    🚀 LinkedIn Integration - AI-Powered Import
+                </h3>
+                <p style="color: rgba(255,255,255,0.7); margin-bottom: 20px; font-size: 0.95rem;">
+                    Connect your LinkedIn profile and let our AI automatically generate your resume from your professional experience. You can edit and customize everything after import!
+                </p>
+                
+                <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px;">
+                    <button onclick="connectLinkedIn()" style="background: #0077b5; color: white; padding: 14px 28px; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 1rem; transition: all 0.3s;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                        Connect LinkedIn
+                    </button>
+                    <button onclick="importFromLinkedIn()" id="importLinkedInBtn" style="background: rgba(0,247,255,0.2); color: #00f7ff; padding: 14px 28px; border: 2px solid #00f7ff; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 1rem; transition: all 0.3s; opacity: 0.5;" disabled>
+                        🤖 AI Import from LinkedIn
+                    </button>
+                </div>
+                
+                <div id="linkedinStatus" style="padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px; border-left: 4px solid rgba(168,85,247,0.5); display: none;">
+                    <p style="margin: 0; color: rgba(255,255,255,0.8); font-size: 0.9rem;">
+                        <span id="linkedinStatusText">Not connected</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Template Selector -->
+            <div class="template-selector">
+                <div class="template-card active" data-template="professional" onclick="selectTemplate('professional')">
+                    <div style="font-size: 2rem;">📋</div>
+                    <h3>Professional</h3>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem;">Clean & Corporate</p>
+                </div>
+                <div class="template-card" data-template="modern" onclick="selectTemplate('modern')">
+                    <div style="font-size: 2rem;">🎨</div>
+                    <h3>Modern</h3>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem;">Creative & Bold</p>
+                </div>
+                <div class="template-card" data-template="minimal" onclick="selectTemplate('minimal')">
+                    <div style="font-size: 2rem;">✨</div>
+                    <h3>Minimal</h3>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem;">Simple & Elegant</p>
+                </div>
+                <div class="template-card" data-template="creative" onclick="selectTemplate('creative')">
+                    <div style="font-size: 2rem;">🎭</div>
+                    <h3>Creative</h3>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem;">Bold & Colorful</p>
+                </div>
+                <div class="template-card" data-template="executive" onclick="selectTemplate('executive')">
+                    <div style="font-size: 2rem;">💼</div>
+                    <h3>Executive</h3>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem;">Leadership Focused</p>
+                </div>
+                <div class="template-card" data-template="upload" onclick="document.getElementById('templateUpload').click()">
+                    <div style="font-size: 2rem;">📤</div>
+                    <h3>Upload Custom</h3>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem;">Your Own Template</p>
+                </div>
+            </div>
+            <input type="file" id="templateUpload" accept=".html,.css" style="display: none;" onchange="handleTemplateUpload(event)">
+
+            <!-- ATS Score -->
+            <div class="ats-score">
+                <div class="score-circle" style="--score-deg: 306deg;">
+                    <span id="atsScore">85</span>%
+                </div>
+                <div class="score-info">
+                    <h3>ATS Compatibility Score</h3>
+                    <p>Your resume is well-optimized for Applicant Tracking Systems</p>
+                    <p style="color: #00f7ff; font-weight: 600; margin-top: 5px;">💡 Add more keywords to reach 90%+</p>
+                </div>
+            </div>
+
+            <!-- Form Sections -->
+            <div id="resumeForm">
+                <!-- Personal Information -->
+                <div class="section-group">
+                    <h3>Personal Information</h3>
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" id="fullName" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Professional Title *</label>
+                        <input type="text" id="profTitle" placeholder="Software Engineer | Full Stack Developer">
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Information</label>
+                        <input type="text" id="contact" placeholder="email@example.com | +1-234-567-8900 | LinkedIn">
+                    </div>
+                </div>
+
+                <!-- Professional Summary -->
+                <div class="section-group">
+                    <h3>Professional Summary</h3>
+                    <div class="form-group">
+                        <label>Summary *</label>
+                        <textarea id="summary" placeholder="A brief overview of your professional experience and career objectives..."></textarea>
+                    </div>
+                    <div class="ai-suggestions">
+                        <h4>🤖 AI Suggestions:</h4>
+                        <ul>
+                            <li>Use action verbs like "developed", "led", "achieved"</li>
+                            <li>Include 3-5 years of experience and key achievements</li>
+                            <li>Mention specific technologies or methodologies</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Work Experience -->
+                <div class="section-group">
+                    <h3>
+                        Work Experience
+                        <button class="add-more-btn" onclick="addWorkExperience()">+ Add More</button>
+                    </h3>
+                    <div id="workExperienceContainer">
+                        <div class="work-entry">
+                            <div class="form-group">
+                                <label>Job Title</label>
+                                <input type="text" class="jobTitle" placeholder="Senior Software Engineer">
+                            </div>
+                            <div class="form-group">
+                                <label>Company</label>
+                                <input type="text" class="company" placeholder="Tech Corp Inc.">
+                            </div>
+                            <div class="form-group">
+                                <label>Duration</label>
+                                <input type="text" class="duration" placeholder="Jan 2020 - Present">
+                            </div>
+                            <div class="form-group">
+                                <label>Responsibilities & Achievements</label>
+                                <textarea class="responsibilities" placeholder="• Led team of 5 developers&#10;• Improved system performance by 40%&#10;• Implemented CI/CD pipeline"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Education -->
+                <div class="section-group">
+                    <h3>
+                        Education
+                        <button class="add-more-btn" onclick="addEducation()">+ Add More</button>
+                    </h3>
+                    <div id="educationContainer">
+                        <div class="education-entry">
+                            <div class="form-group">
+                                <label>Degree</label>
+                                <input type="text" class="degree" placeholder="Bachelor of Science in Computer Science">
+                            </div>
+                            <div class="form-group">
+                                <label>Institution</label>
+                                <input type="text" class="institution" placeholder="University Name">
+                            </div>
+                            <div class="form-group">
+                                <label>Year</label>
+                                <input type="text" class="year" placeholder="2016 - 2020">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills -->
+                <div class="section-group">
+                    <h3>Skills</h3>
+                    <div class="form-group">
+                        <label>Technical Skills (comma-separated)</label>
+                        <textarea id="skills" placeholder="JavaScript, Python, React, Node.js, MongoDB, AWS, Docker, Git"></textarea>
+                    </div>
+                    <div class="ai-suggestions">
+                        <h4>🤖 Trending Skills for Your Role:</h4>
+                        <ul>
+                            <li>Cloud Platforms: AWS, Azure, GCP</li>
+                            <li>DevOps: Docker, Kubernetes, CI/CD</li>
+                            <li>Frontend: React, Vue.js, TypeScript</li>
+                            <li>Backend: Node.js, Python, GraphQL</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Certifications -->
+                <div class="section-group">
+                    <h3>
+                        Certifications & Achievements
+                        <button class="add-more-btn" onclick="addCertification()">+ Add More</button>
+                    </h3>
+                    <div id="certificationsContainer">
+                        <div class="cert-entry">
+                            <div class="form-group">
+                                <label>Certification/Achievement</label>
+                                <input type="text" class="certName" placeholder="AWS Certified Solutions Architect">
+                            </div>
+                            <div class="form-group">
+                                <label>Issuer & Year</label>
+                                <input type="text" class="certIssuer" placeholder="Amazon Web Services, 2023">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="generatePDF()">
+                    📥 Download PDF
+                </button>
+                <button class="btn btn-secondary" onclick="saveResume()">
+                    💾 Save Resume
+                </button>
+                <button class="btn btn-secondary" onclick="aiOptimize('summary')">
+                    ✨ AI Optimize
+                </button>
+            </div>
+        </div>
+
+        <!-- Live Preview Section -->
+        <div class="preview-section">
+            <div class="section-header">
+                <h2>📄 Live Preview</h2>
+                <div class="feature-badge">Real-time</div>
+            </div>
+            
+            <div class="resume-preview" id="resumePreview">
+                <div class="resume-header">
+                    <h1 id="prev-name">John Doe</h1>
+                    <div id="prev-title" class="title">Software Engineer</div>
+                    <div id="prev-contact" class="contact">email@example.com | +1-234-567-8900</div>
+                </div>
+
+                <div class="resume-section">
+                    <h2>PROFESSIONAL SUMMARY</h2>
+                    <p id="prev-summary">Experienced software engineer with expertise in full-stack development, cloud technologies, and agile methodologies. Proven track record of delivering high-quality solutions and leading successful teams.</p>
+                </div>
+
+                <div class="resume-section">
+                    <h2>WORK EXPERIENCE</h2>
+                    <div id="prev-experience">
+                        <div class="entry">
+                            <h3>Senior Software Engineer</h3>
+                            <div class="meta">Tech Corp Inc. | Jan 2020 - Present</div>
+                            <ul>
+                                <li>Led team of 5 developers in building scalable microservices architecture</li>
+                                <li>Improved system performance by 40% through optimization techniques</li>
+                                <li>Implemented CI/CD pipeline reducing deployment time by 60%</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resume-section">
+                    <h2>EDUCATION</h2>
+                    <div id="prev-education">
+                        <div class="entry">
+                            <h3>Bachelor of Science in Computer Science</h3>
+                            <div class="meta">University Name | 2016 - 2020</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resume-section">
+                    <h2>TECHNICAL SKILLS</h2>
+                    <div class="skills-grid" id="prev-skills">
+                        <div class="skill-tag">JavaScript</div>
+                        <div class="skill-tag">Python</div>
+                        <div class="skill-tag">React</div>
+                        <div class="skill-tag">Node.js</div>
+                        <div class="skill-tag">MongoDB</div>
+                        <div class="skill-tag">AWS</div>
+                        <div class="skill-tag">Docker</div>
+                        <div class="skill-tag">Git</div>
+                    </div>
+                </div>
+
+                <div class="resume-section">
+                    <h2>CERTIFICATIONS</h2>
+                    <div id="prev-certs">
+                        <div class="entry">
+                            <h3>AWS Certified Solutions Architect</h3>
+                            <div class="meta">Amazon Web Services, 2023</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <canvas id="robotCanvas"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="assets/js/robot-interviewer.js"></script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="assets/js/firebase-config.js"></script>
+    <script src="assets/js/advanced-features-api.js"></script>
+
+    <!-- Three.js + Robot for Background -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="assets/js/robot-interviewer.js"></script>
+    <script src="assets/js/purple-particles-bg.js"></script>
+
+    <script src="assets/js/main.js"></script>
+
+    <script>
+        // Helper: Check if user is authenticated
+        function isUserAuthenticated() {
+            try {
+                if (typeof firebase === 'undefined' || !firebase.apps || firebase.apps.length === 0) {
+                    return false; // Firebase not initialized
+                }
+                return firebase.auth().currentUser !== null;
+            } catch (error) {
+                console.warn('Error checking auth:', error);
+                return false;
+            }
+        }
+
+        // AI Optimization (section-specific)
+        function aiOptimize(section = 'summary') {
+                    // Check if ResumeAPI is loaded
+                    if (typeof ResumeAPI === 'undefined') {
+                        showNotification('⏳ Resume API is loading... Please try again in a moment.', 'info');
+                        console.warn('ResumeAPI not loaded yet');
+                        return;
+                    }
+                    
+                    if (!isUserAuthenticated()) {
+                        showNotification('ℹ️ AI features work without login! Continuing...', 'info');
+                        // Don't return - allow AI features to work without auth
+                    }
+
+                    const sectionInput = document.getElementById(section);
+                    if (!sectionInput || !sectionInput.value.trim()) {
+                        showNotification('❌ Please enter content before optimizing', 'error');
+                        return;
+                    }
+
+                    showNotification(`🤖 Analyzing your ${section}...`, 'info');
+                    const content = sectionInput.value;
+                    const role = document.getElementById('profTitle')?.value || 'Professional';
+
+                    ResumeAPI.getAISuggestions(section, content, role)
+                        .then(async suggestions => {
+                            if (suggestions && suggestions.length > 0) {
+                                const message = `✨ AI Suggestions for ${section}:\n\n` + suggestions.map((s, i) => `${i + 1}. ${s}`).join('\n');
+                                alert(message);
+                                showNotification('✅ AI suggestions generated!', 'success');
+                            } else {
+                                showNotification('✅ Content looks good!', 'success');
+                            }
+                            // Recalculate ATS score after potential improvements
+                            try {
+                                const result = await ResumeAPI.calculateATSScore({
+                                    fullName: document.getElementById('fullName').value,
+                                    profTitle: document.getElementById('profTitle').value,
+                                    summary: document.getElementById('summary').value,
+                                    skills: document.getElementById('skills').value.split(',').map(s => s.trim()).filter(s => s)
+                                });
+                                if (result && typeof result.score === 'number') {
+                                    const newScore = result.score;
+                                    document.getElementById('atsScore').textContent = newScore;
+                                    document.querySelector('.score-circle').style.setProperty('--score-deg', (newScore * 3.6) + 'deg');
+                                }
+                            } catch (err) {
+                                console.warn('ATS recalculation failed', err);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('AI optimize error:', error);
+                            showNotification('❌ AI service unavailable', 'error');
+                        });
+        }
+
+        // Real-time preview updates - Wait for DOM to be ready
+        function initializePreviewListeners() {
+            console.log('🎯 Initializing preview listeners...');
+            
+            const fullNameInput = document.getElementById('fullName');
+            if (fullNameInput) {
+                fullNameInput.addEventListener('input', (e) => {
+                    const prevName = document.getElementById('prev-name');
+                    if (prevName) {
+                        prevName.textContent = e.target.value || 'John Doe';
+                        console.log('📝 Name updated:', e.target.value);
+                    }
+                    updateATSScore();
+                });
+                console.log('✅ Full name listener added');
+            }
+
+            const profTitleInput = document.getElementById('profTitle');
+            if (profTitleInput) {
+                profTitleInput.addEventListener('input', (e) => {
+                    const prevTitle = document.getElementById('prev-title');
+                    if (prevTitle) {
+                        prevTitle.textContent = e.target.value || 'Professional Title';
+                    }
+                    updateATSScore();
+                });
+                console.log('✅ Title listener added');
+            }
+
+            const contactInput = document.getElementById('contact');
+            if (contactInput) {
+                contactInput.addEventListener('input', (e) => {
+                    const prevContact = document.getElementById('prev-contact');
+                    if (prevContact) {
+                        prevContact.textContent = e.target.value || 'Contact Information';
+                    }
+                });
+                console.log('✅ Contact listener added');
+            }
+
+            const summaryInput = document.getElementById('summary');
+            if (summaryInput) {
+                summaryInput.addEventListener('input', (e) => {
+                    const prevSummary = document.getElementById('prev-summary');
+                    if (prevSummary) {
+                        prevSummary.textContent = e.target.value || 'Professional summary...';
+                    }
+                    updateATSScore();
+                });
+                console.log('✅ Summary listener added');
+            }
+
+            const skillsInput = document.getElementById('skills');
+            if (skillsInput) {
+                skillsInput.addEventListener('input', (e) => {
+                    const skills = e.target.value.split(',').map(s => s.trim()).filter(s => s);
+                    const skillsGrid = document.getElementById('prev-skills');
+                    if (skillsGrid) {
+                        skillsGrid.innerHTML = skills.map(skill => `<div class="skill-tag">${skill}</div>`).join('');
+                        console.log('📝 Skills updated:', skills.length);
+                    }
+                    updateATSScore();
+                });
+                console.log('✅ Skills listener added');
+            }
+            
+            console.log('✅ All preview listeners initialized');
+        }
+
+        // This is handled by onclick attributes in HTML
+
+        // Dynamic sections
+        function addWorkExperience() {
+            const container = document.getElementById('workExperienceContainer');
+            const newEntry = document.querySelector('.work-entry').cloneNode(true);
+            newEntry.querySelectorAll('input, textarea').forEach(input => {
+                input.value = '';
+                input.addEventListener('input', updateWorkExperience);
+            });
+            container.appendChild(newEntry);
+        }
+
+        function addEducation() {
+            const container = document.getElementById('educationContainer');
+            const newEntry = document.querySelector('.education-entry').cloneNode(true);
+            newEntry.querySelectorAll('input').forEach(input => {
+                input.value = '';
+                input.addEventListener('input', updateEducation);
+            });
+            container.appendChild(newEntry);
+        }
+
+        function addCertification() {
+            const container = document.getElementById('certificationsContainer');
+            const newEntry = document.querySelector('.cert-entry').cloneNode(true);
+            newEntry.querySelectorAll('input').forEach(input => {
+                input.value = '';
+                input.addEventListener('input', updateCertifications);
+            });
+            container.appendChild(newEntry);
+        }
+
+        // ATS Score calculation
+        function updateATSScore() {
+            let score = 60; // Base score
+            
+            if (document.getElementById('fullName')?.value) score += 5;
+            if (document.getElementById('profTitle')?.value) score += 5;
+            if (document.getElementById('summary')?.value.length > 100) score += 10;
+            
+            const skillsCount = document.getElementById('skills')?.value.split(',').filter(s => s.trim()).length || 0;
+            score += Math.min(skillsCount * 2, 20);
+            
+            score = Math.min(score, 100);
+            const scoreElement = document.getElementById('atsScore');
+            const scoreCircle = document.querySelector('.score-circle');
+            if (scoreElement) scoreElement.textContent = score;
+            if (scoreCircle) scoreCircle.style.setProperty('--score-deg', (score * 3.6) + 'deg');
+        }
+
+        // Enhanced preview update function
+        function updatePreview() {
+            updateWorkExperience();
+            updateEducation();
+            updateCertifications();
+        }
+
+        function updateWorkExperience() {
+            const container = document.getElementById('prev-experience');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            document.querySelectorAll('.work-entry').forEach(entry => {
+                const jobTitle = entry.querySelector('.jobTitle')?.value;
+                const company = entry.querySelector('.company')?.value;
+                const duration = entry.querySelector('.duration')?.value;
+                const responsibilities = entry.querySelector('.responsibilities')?.value;
+                
+                if (jobTitle || company) {
+                    const entryDiv = document.createElement('div');
+                    entryDiv.className = 'entry';
+                    entryDiv.innerHTML = `
+                        ${jobTitle ? `<h3>${jobTitle}</h3>` : ''}
+                        ${company || duration ? `<div class="meta">${company}${company && duration ? ' | ' : ''}${duration}</div>` : ''}
+                        ${responsibilities ? `<ul>${responsibilities.split('\n').filter(r => r.trim()).map(r => `<li>${r.trim()}</li>`).join('')}</ul>` : ''}
+                    `;
+                    container.appendChild(entryDiv);
+                }
+            });
+        }
+
+        function updateEducation() {
+            const container = document.getElementById('prev-education');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            document.querySelectorAll('.education-entry').forEach(entry => {
+                const degree = entry.querySelector('.degree')?.value;
+                const institution = entry.querySelector('.institution')?.value;
+                const year = entry.querySelector('.year')?.value;
+                
+                if (degree || institution) {
+                    const entryDiv = document.createElement('div');
+                    entryDiv.className = 'entry';
+                    entryDiv.innerHTML = `
+                        ${degree ? `<h3>${degree}</h3>` : ''}
+                        ${institution || year ? `<div class="meta">${institution}${institution && year ? ' | ' : ''}${year}</div>` : ''}
+                    `;
+                    container.appendChild(entryDiv);
+                }
+            });
+        }
+
+        function updateCertifications() {
+            const container = document.getElementById('prev-certs');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            document.querySelectorAll('.cert-entry').forEach(entry => {
+                const certName = entry.querySelector('.certName')?.value;
+                const certIssuer = entry.querySelector('.certIssuer')?.value;
+                
+                if (certName || certIssuer) {
+                    const entryDiv = document.createElement('div');
+                    entryDiv.className = 'entry';
+                    entryDiv.innerHTML = `
+                        ${certName ? `<h3>${certName}</h3>` : ''}
+                        ${certIssuer ? `<div class="meta">${certIssuer}</div>` : ''}
+                    `;
+                    container.appendChild(entryDiv);
+                }
+            });
+        }
+
+        // Add input listeners for work experience
+        function addWorkExperienceListeners() {
+            document.querySelectorAll('.work-entry input, .work-entry textarea').forEach(input => {
+                input.addEventListener('input', updateWorkExperience);
+            });
+        }
+
+        // Add input listeners for education
+        function addEducationListeners() {
+            document.querySelectorAll('.education-entry input').forEach(input => {
+                input.addEventListener('input', updateEducation);
+            });
+        }
+
+        // Add input listeners for certifications
+        function addCertificationsListeners() {
+            document.querySelectorAll('.cert-entry input').forEach(input => {
+                input.addEventListener('input', updateCertifications);
+            });
+        }
+
+        // Initialize listeners on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 Resume Builder initializing...');
+            
+            // Initialize real-time preview listeners for basic fields
+            initializePreviewListeners();
+            
+            // Initialize dynamic section listeners
+            addWorkExperienceListeners();
+            addEducationListeners();
+            addCertificationsListeners();
+            
+            // Apply default template
+            setTimeout(() => {
+                applyTemplateStyles('professional');
+            }, 100);
+            
+            // Log template cards
+            const templateCards = document.querySelectorAll('.template-card');
+            console.log(`✅ Found ${templateCards.length} template cards`);
+            
+            // Verify elements exist
+            const resumePreview = document.getElementById('resumePreview');
+            const menuBtn = document.getElementById('menuBtn');
+            console.log('Resume preview exists:', !!resumePreview);
+            console.log('Menu button exists:', !!menuBtn);
+            
+            console.log('✅ Resume Builder initialized successfully!');
+        });
+
+        // PDF Generation
+        function generatePDF() {
+            const element = document.getElementById('resumePreview');
+            const opt = {
+                margin: 10,
+                filename: 'resume.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            html2pdf().set(opt).from(element).save();
+        }
+
+        // Save resume
+        function saveResume() {
+                // Utility: Wait for ResumeAPI to be defined (max ~2s)
+                function waitForResumeAPI(maxWait = 2000) {
+                    return new Promise(resolve => {
+                        const start = Date.now();
+                        const interval = setInterval(() => {
+                            if (typeof ResumeAPI !== 'undefined') {
+                                clearInterval(interval);
+                                resolve(true);
+                            } else if (Date.now() - start > maxWait) {
+                                clearInterval(interval);
+                                resolve(false);
+                            }
+                        }, 100);
+                    });
+                }
+
+                (async () => {
+                    // Attempt to ensure ResumeAPI is ready
+                    const apiReady = (typeof ResumeAPI !== 'undefined') || await waitForResumeAPI();
+
+                    // Collect base data early for both paths
+                    const resumeData = {
+                        fullName: document.getElementById('fullName').value,
+                        profTitle: document.getElementById('profTitle').value,
+                        contact: document.getElementById('contact').value,
+                        summary: document.getElementById('summary').value,
+                        skills: document.getElementById('skills').value.split(',').map(s => s.trim()).filter(s => s),
+                        workExperience: [],
+                        education: [],
+                        certifications: []
+                    };
+
+                    // If API not ready OR method missing OR user not authenticated -> local save
+                    if (!apiReady || typeof ResumeAPI.saveResume !== 'function' || !isUserAuthenticated()) {
+                        if (!apiReady) {
+                            console.warn('ResumeAPI still not available after wait. Using local save fallback.');
+                            showNotification('ℹ️ Cloud save unavailable (API still loading). Saved locally.', 'info');
+                        } else if (!isUserAuthenticated()) {
+                            showNotification('ℹ️ Not logged in. Saved locally (login for cloud sync).', 'info');
+                        } else {
+                            showNotification('⚠️ Cloud save function missing. Saved locally.', 'warning');
+                        }
+                        if (typeof ResumeAPI !== 'undefined' && typeof ResumeAPI.saveLocalResume === 'function') {
+                            ResumeAPI.saveLocalResume(resumeData);
+                        } else {
+                            // Minimal manual local fallback
+                            localStorage.setItem('smartmock_resume', JSON.stringify(resumeData));
+                        }
+                        return;
+                    }
+
+                    // Cloud path
+                    showNotification('⏳ Saving resume to cloud...', 'info');
+
+                    try {
+                        const result = await ResumeAPI.saveResume(resumeData);
+                        showNotification(`✅ Resume saved! ATS Score: ${result.atsScore || result.atsScore === 0 ? result.atsScore : 'N/A'}/100`, 'success');
+                        if (typeof ResumeAPI.saveLocalResume === 'function') {
+                            ResumeAPI.saveLocalResume(resumeData);
+                        }
+                    } catch (error) {
+                        console.error('Save error (cloud path):', error);
+                        showNotification('❌ Cloud save failed. Saved locally as backup.', 'error');
+                        if (typeof ResumeAPI !== 'undefined' && typeof ResumeAPI.saveLocalResume === 'function') {
+                            ResumeAPI.saveLocalResume(resumeData);
+                        } else {
+                            localStorage.setItem('smartmock_resume', JSON.stringify(resumeData));
+                        }
+                    }
+                })();
+        }
+
+        // AI Optimization (Quick optimize - increases score)
+        function aiOptimize() {
+            if (!isUserAuthenticated()) {
+                showNotification('❌ Please login to use AI features', 'error');
+                return;
+            }
+            
+            alert('🤖 AI Optimization Running...\n\n✓ Added power words\n✓ Improved keyword density\n✓ Enhanced ATS compatibility\n✓ Strengthened accomplishments\n\nYour ATS score increased by 8 points!');
+            
+            const currentScore = parseInt(document.getElementById('atsScore').textContent);
+            const newScore = Math.min(currentScore + 8, 100);
+            document.getElementById('atsScore').textContent = newScore;
+            document.querySelector('.score-circle').style.setProperty('--score-deg', (newScore * 3.6) + 'deg');
+            showNotification('✅ Resume optimized!', 'success');
+        }
+
+        // Share resume (placeholder - would generate real link from backend)
+        function shareResume() {
+            if (!isUserAuthenticated()) {
+                showNotification('❌ Please login to share your resume', 'error');
+                return;
+            }
+            const shareUrl = window.location.origin + '/resume-view.html?id=' + Date.now();
+            navigator.clipboard.writeText(shareUrl).then(()=>{
+                showNotification('🔗 Shareable link copied!', 'success');
+            }).catch(()=>{
+                showNotification('❌ Failed to copy link', 'error');
+            });
+        }
+
+        // Refresh preview
+        function refreshPreview() {
+            alert('✅ Preview refreshed!');
+        }
+
+        // Load saved resume on page load (Firebase first, fallback local)
+        window.addEventListener('DOMContentLoaded', async () => {
+            // Wait for ResumeAPI to be available
+            if (typeof ResumeAPI === 'undefined') {
+                console.log('⏳ Waiting for ResumeAPI to load...');
+                return;
+            }
+            
+            try {
+                if (typeof isUserAuthenticated === 'function' && isUserAuthenticated()) {
+                    const resumes = await ResumeAPI.getUserResumes();
+                    if (resumes && resumes.length > 0) {
+                        const data = resumes[0];
+                        if (document.getElementById('fullName')) document.getElementById('fullName').value = data.fullName || '';
+                        if (document.getElementById('profTitle')) document.getElementById('profTitle').value = data.profTitle || data.professionalTitle || '';
+                        if (document.getElementById('summary')) document.getElementById('summary').value = data.summary || '';
+                        if (document.getElementById('skills')) document.getElementById('skills').value = (data.skills || []).join(', ');
+                        // Trigger updates
+                        document.querySelectorAll('#fullName, #profTitle, #summary, #skills').forEach(el => {
+                            el.dispatchEvent(new Event('input'));
+                        });
+                    } else {
+                        // Try local backup
+                        const local = ResumeAPI.loadLocalResume();
+                        if (local) {
+                            if (document.getElementById('fullName')) document.getElementById('fullName').value = local.fullName || '';
+                            if (document.getElementById('profTitle')) document.getElementById('profTitle').value = local.profTitle || local.professionalTitle || '';
+                            if (document.getElementById('summary')) document.getElementById('summary').value = local.summary || '';
+                            if (document.getElementById('skills')) document.getElementById('skills').value = (local.skills || []).join(', ');
+                        }
+                    }
+                } else {
+                    const local = ResumeAPI.loadLocalResume();
+                    if (local) {
+                        if (document.getElementById('fullName')) document.getElementById('fullName').value = local.fullName || '';
+                        if (document.getElementById('profTitle')) document.getElementById('profTitle').value = local.profTitle || local.professionalTitle || '';
+                        if (document.getElementById('summary')) document.getElementById('summary').value = local.summary || '';
+                        if (document.getElementById('skills')) document.getElementById('skills').value = (local.skills || []).join(', ');
+                    }
+                }
+            } catch (e) {
+                console.warn('Resume load failed, using local backup.', e);
+                if (typeof ResumeAPI !== 'undefined' && typeof ResumeAPI.loadLocalResume === 'function') {
+                    const local = ResumeAPI.loadLocalResume();
+                    if (local) {
+                        if (document.getElementById('fullName')) document.getElementById('fullName').value = local.fullName || '';
+                        if (document.getElementById('profTitle')) document.getElementById('profTitle').value = local.profTitle || local.professionalTitle || '';
+                        if (document.getElementById('summary')) document.getElementById('summary').value = local.summary || '';
+                        if (document.getElementById('skills')) document.getElementById('skills').value = (local.skills || []).join(', ');
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

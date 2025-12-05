@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Recruiter – Leaderboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="stylesheet" href="../assets/css/recruiter.css" />
+    <style>
+      /* Dark Black Theme (background visuals handled by auto loader) */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  </head>
+<body>
+  <header class="site-header">
+    <div class="site-header-inner container">
+      <nav class="menu menu-left">
+        <div class="menu-button">☰ Menu</div>
+        <ul class="dropdown">
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="candidates.html">Candidates</a></li>
+          <li><a href="schedule.html">Schedule</a></li>
+          <li><a href="reports.html">Reports</a></li>
+          <li><a href="leaderboard.html">Leaderboard</a></li>
+          <li><a href="settings.html">Settings</a></li>
+          <li><a href="../index.html">Exit Recruiter View</a></li>
+        </ul>
+      </nav>
+      <div class="brand"><a href="../home.html"><span class="logo">Smart</span><span class="logo-accent">Mock</span></a></div>
+      <div class="menu" style="margin-left:auto;">
+        <a class="btn" href="../profile.html">Profile</a>
+        <a class="btn" href="#" onclick="signOut(); return false;">Sign out</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2 class="section-title">Top Candidates</h2>
+    <div class="row" style="margin-bottom:12px;">
+      <select class="input" id="dept-filter">
+        <option value="all">All Departments</option>
+        <option value="cs">CS</option>
+        <option value="ee">EE</option>
+        <option value="me">ME</option>
+        <option value="ce">CE</option>
+        <option value="ec">EC</option>
+      </select>
+      <select class="input" id="time-filter">
+        <option value="all-time">All Time</option>
+        <option value="month">This Month</option>
+        <option value="week">This Week</option>
+        <option value="today">Today</option>
+      </select>
+      <input class="input" id="search" placeholder="Search name or email" />
+    </div>
+
+    <div class="card">
+      <div style="overflow:auto">
+        <table class="table" id="leaderboard-table">
+          <thead><tr>
+            <th>Rank</th><th>User</th><th>Dept</th><th>Avg Stars</th><th>Best Score</th><th>Interviews</th><th>Last Active</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Standardized Firebase version -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="../assets/js/firebase-config.js"></script>
+  <script src="../assets/js/recruiter/auth.js"></script>
+  <script src="../assets/js/recruiter/leaderboard.js"></script>
+  <script src="../assets/js/recruiter/menu.js"></script>
+  <script>
+    (function(){
+      if (window.RecruiterAuth?.requireRecruiter) {
+        window.RecruiterAuth.requireRecruiter().catch(()=>{ location.href = './login.html' });
+      }
+    })();
+  </script>
+  <!-- Background visuals handled by auto loader below -->
+    <script src="../assets/js/auto-purple-bg.js"></script>
+  </body>
+</html>

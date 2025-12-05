@@ -1,0 +1,674 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SMARTMOCK - Futuristic AI Interview Platform</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Futuristic UI Styles -->
+  <link rel="stylesheet" href="assets/css/futuristic-ui.css">
+
+    <style>
+      /* Dark Black Theme with Purple Particles & Parallax */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at var(--gradient-x, 50%) var(--gradient-y, 50%), 
+          rgba(168, 85, 247, 0.05) 0%, 
+          transparent 70%
+        );
+        pointer-events: none;
+        z-index: 0;
+        will-change: transform;
+        transition: background 0.3s ease;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        z-index: 2000 !important;
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  </head>
+<body>
+
+    <!-- Floating Particles -->
+    <div class="particles-container" id="particlesContainer"></div>
+    <!-- Fullscreen Background Robot with Parallax Depth -->
+    <style>
+      #bg-robot-container { 
+        position: fixed; 
+        inset: 0; 
+        z-index: 1; 
+        pointer-events: none;
+        will-change: transform;
+        transform-style: preserve-3d;
+        perspective: 2000px;
+      }
+      #bg-robot-container canvas { 
+        width: 100%; 
+        height: 100%; 
+        display: block; 
+      }
+      
+      /* Full-screen 3D rotation animation */
+      @keyframes rotate3D {
+        0% { transform: perspective(2000px) rotateX(0deg) rotateY(0deg); }
+        25% { transform: perspective(2000px) rotateX(3deg) rotateY(90deg); }
+        50% { transform: perspective(2000px) rotateX(0deg) rotateY(180deg); }
+        75% { transform: perspective(2000px) rotateX(-3deg) rotateY(270deg); }
+        100% { transform: perspective(2000px) rotateX(0deg) rotateY(360deg); }
+      }
+      
+      #bg-robot-container {
+        animation: none !important;
+      }
+    </style>
+    <div id="bg-robot-container">
+      <canvas id="bg-robot-canvas"></canvas>
+    </div>
+  
+  <!-- Preloader -->
+  <div class="preloader" id="preloader">
+    <div class="preloader-ring"></div>
+  </div>
+
+  <!-- Animated Background -->
+  <div class="futuristic-background">
+    <!-- Grid Overlay -->
+    <div class="grid-overlay"></div>
+    
+    <!-- Particles Container -->
+    <div class="particles-container" id="particles"></div>
+    
+    <!-- Light Streaks -->
+    <div class="light-streak" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="light-streak" style="left: 30%; animation-delay: 2s;"></div>
+    <div class="light-streak" style="left: 50%; animation-delay: 4s;"></div>
+    <div class="light-streak" style="left: 70%; animation-delay: 6s;"></div>
+    <div class="light-streak" style="left: 90%; animation-delay: 8s;"></div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="futuristic-container">
+    
+    <!-- Hero Section -->
+    <div class="hero-section">
+      <h1 class="hero-title">SMARTMOCK</h1>
+      <p class="hero-subtitle">Next-Generation AI Interview Platform</p>
+      <div class="status-indicator">
+        <span class="status-dot"></span>
+        <span>System Online • Neural Network Active</span>
+      </div>
+    </div>
+
+    <!-- 3D Avatar -->
+    <div class="avatar-3d-container tilt parallax-layer" data-depth="0.2" id="avatar">
+      <div class="cyber-avatar">
+        <!-- Avatar Face -->
+        <div class="avatar-face">
+          <div class="avatar-eyes">
+            <div class="avatar-eye"></div>
+            <div class="avatar-eye"></div>
+          </div>
+        </div>
+        
+        <!-- Cybernetic Limbs -->
+        <div class="neon-limb limb-left-arm"></div>
+        <div class="neon-limb limb-right-arm"></div>
+        <div class="neon-limb limb-left-leg"></div>
+        <div class="neon-limb limb-right-leg"></div>
+      </div>
+    </div>
+
+    <!-- Glassmorphic UI Panels -->
+    <div class="panels-grid">
+      
+      <!-- Start Interview Panel -->
+      <div class="glass-panel tilt-3d" data-panel="start">
+        <div class="panel-header">
+          <div class="panel-icon">
+            <svg class="neon-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </div>
+          <h2 class="panel-title">Start Interview</h2>
+        </div>
+        <p class="panel-description">
+          Launch your AI-powered interview experience with advanced emotion analysis and real-time feedback.
+        </p>
+        <ul class="feature-list">
+          <li class="feature-item">Adaptive Question Generation</li>
+          <li class="feature-item">Multi-Department Support</li>
+          <li class="feature-item">Voice & Video Analysis</li>
+          <li class="feature-item">Instant Performance Metrics</li>
+        </ul>
+        <button class="neon-btn" onclick="startInterview()">
+          <svg class="neon-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          Launch Interview
+        </button>
+      </div>
+
+      <!-- Live Feedback Panel -->
+      <div class="glass-panel tilt-3d" data-panel="feedback">
+        <div class="panel-header">
+          <div class="panel-icon">
+            <svg class="neon-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <h2 class="panel-title">Live Feedback</h2>
+        </div>
+        <p class="panel-description">
+          Real-time AI coaching provides instant insights to improve your interview performance.
+        </p>
+        <ul class="feature-list">
+          <li class="feature-item">Speech Pattern Analysis</li>
+          <li class="feature-item">Content Quality Assessment</li>
+          <li class="feature-item">Communication Clarity Score</li>
+          <li class="feature-item">Professional Improvement Tips</li>
+        </ul>
+        <button class="neon-btn violet" onclick="viewFeedback()">
+          <svg class="neon-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 002 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+          </svg>
+          View Dashboard
+        </button>
+      </div>
+
+      <!-- Emotion Analysis Panel -->
+      <div class="glass-panel tilt-3d" data-panel="emotion">
+        <div class="panel-header">
+          <div class="panel-icon">
+            <svg class="neon-icon" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="15.5" cy="9.5" r="1.5"/>
+              <circle cx="8.5" cy="9.5" r="1.5"/>
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-.29.02-.58.05-.86 2.36-1.05 4.23-2.98 5.21-5.37C11.07 8.33 14.05 10 17.42 10c.78 0 1.53-.09 2.25-.26.21.71.33 1.47.33 2.26 0 4.41-3.59 8-8 8z"/>
+            </svg>
+          </div>
+          <h2 class="panel-title">Emotion Analysis</h2>
+        </div>
+        <p class="panel-description">
+          Advanced facial recognition and voice analysis detect confidence, stress, and engagement levels.
+        </p>
+        <ul class="feature-list">
+          <li class="feature-item">Micro-Expression Detection</li>
+          <li class="feature-item">Confidence Level Tracking</li>
+          <li class="feature-item">Stress & Anxiety Monitoring</li>
+          <li class="feature-item">Emotional Intelligence Report</li>
+        </ul>
+        <button class="neon-btn" onclick="viewAnalytics()">
+          <svg class="neon-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+          </svg>
+          View Analytics
+        </button>
+      </div>
+
+      <!-- Performance Report Panel -->
+      <div class="glass-panel tilt-3d" data-panel="report">
+        <div class="panel-header">
+          <div class="panel-icon">
+            <svg class="neon-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+            </svg>
+          </div>
+          <h2 class="panel-title">Performance Report</h2>
+        </div>
+        <p class="panel-description">
+          Comprehensive analysis of your interview with actionable insights and improvement recommendations.
+        </p>
+        <ul class="feature-list">
+          <li class="feature-item">Detailed Score Breakdown</li>
+          <li class="feature-item">Comparative Benchmarking</li>
+          <li class="feature-item">Strengths & Weaknesses</li>
+          <li class="feature-item">Downloadable Certificate</li>
+        </ul>
+        <button class="neon-btn violet" onclick="viewReport()">
+          <svg class="neon-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+          </svg>
+          Download Report
+        </button>
+      </div>
+
+      <!-- AI Tutor Panel -->
+      <div class="glass-panel tilt-3d" data-panel="tutor">
+        <div class="panel-header">
+          <div class="panel-icon">
+            <svg class="neon-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+            </svg>
+          </div>
+          <h2 class="panel-title">AI Tutor</h2>
+        </div>
+        <p class="panel-description">
+          Personalized coaching from our advanced AI system to prepare you for success.
+        </p>
+        <ul class="feature-list">
+          <li class="feature-item">Practice Question Library</li>
+          <li class="feature-item">Custom Study Plans</li>
+          <li class="feature-item">Mock Interview Sessions</li>
+          <li class="feature-item">24/7 AI Assistant Support</li>
+        </ul>
+        <button class="neon-btn" onclick="launchTutor()">
+          <svg class="neon-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
+          </svg>
+          Start Coaching
+        </button>
+      </div>
+
+      <!-- Leaderboard Panel -->
+      <div class="glass-panel tilt-3d" data-panel="leaderboard">
+        <div class="panel-header">
+          <div class="panel-icon">
+            <svg class="neon-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16 11V3H8v6H2v12h20V11h-6zm-6-6h4v14h-4V5zm-6 6h4v8H4v-8zm16 8h-4v-6h4v6z"/>
+            </svg>
+          </div>
+          <h2 class="panel-title">Global Leaderboard</h2>
+        </div>
+        <p class="panel-description">
+          Compete with candidates worldwide and track your ranking across departments.
+        </p>
+        <ul class="feature-list">
+          <li class="feature-item">Real-Time Rankings</li>
+          <li class="feature-item">Department-Specific Boards</li>
+          <li class="feature-item">Achievement Badges</li>
+          <li class="feature-item">Peer Comparison Insights</li>
+        </ul>
+        <button class="neon-btn violet" onclick="viewLeaderboard()">
+          <svg class="neon-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+          </svg>
+          View Rankings
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- JavaScript for Interactive Effects -->
+  <script>
+    // Preloader
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('preloader').classList.add('hidden');
+      }, 1500);
+    });
+
+    // Generate Particles
+    function createParticles() {
+      const container = document.getElementById('particles');
+      const particleCount = 50;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.width = Math.random() * 4 + 1 + 'px';
+        particle.style.height = particle.style.width;
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 20 + 's';
+        particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+        container.appendChild(particle);
+      }
+    }
+    createParticles();
+
+    // Parallax Effect on Mouse Move
+    document.addEventListener('mousemove', (e) => {
+      const mouseX = e.clientX / window.innerWidth;
+      const mouseY = e.clientY / window.innerHeight;
+      
+      document.querySelectorAll('.parallax-layer').forEach((layer) => {
+        const depth = layer.getAttribute('data-depth') || 0.5;
+        const moveX = (mouseX - 0.5) * depth * 50;
+        const moveY = (mouseY - 0.5) * depth * 50;
+        layer.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
+      });
+    });
+
+    // 3D Tilt Effect on Panels
+    document.querySelectorAll('.tilt-3d').forEach((panel) => {
+      panel.addEventListener('mousemove', (e) => {
+        const rect = panel.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateX = (y - centerY) / 10;
+        const rotateY = (centerX - x) / 10;
+        
+        panel.style.setProperty('--tilt-x', `${rotateX}deg`);
+        panel.style.setProperty('--tilt-y', `${rotateY}deg`);
+        panel.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+      });
+      
+      panel.addEventListener('mouseleave', () => {
+        panel.style.transform = '';
+      });
+    });
+
+    // Avatar Mouse Follow
+    const avatar = document.getElementById('avatar');
+    document.addEventListener('mousemove', (e) => {
+      const mouseX = (e.clientX / window.innerWidth - 0.5) * 20;
+      const mouseY = (e.clientY / window.innerHeight - 0.5) * 20;
+      avatar.style.transform = `translateY(-20px) rotateY(${mouseX}deg) rotateX(${-mouseY}deg)`;
+    });
+
+    // Button Click Handlers
+    function startInterview() {
+      // Navigate to department selection or specific interview
+      console.log('Starting interview...');
+      window.location.href = 'interview.html';
+    }
+
+    function viewFeedback() {
+      console.log('Viewing feedback dashboard...');
+      window.location.href = 'dashboard.html';
+    }
+
+    function viewAnalytics() {
+      console.log('Opening analytics...');
+      window.location.href = 'report.html';
+    }
+
+    function viewReport() {
+      console.log('Downloading report...');
+      window.location.href = 'report.html';
+    }
+
+    function launchTutor() {
+      console.log('Launching AI Tutor...');
+      // Could link to preparation pages
+      alert('AI Tutor feature coming soon!');
+    }
+
+    function viewLeaderboard() {
+      console.log('Opening leaderboard...');
+      window.location.href = 'leaderboard.html';
+    }
+
+    // Smooth Scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Add depth blur on scroll
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      const avatar = document.getElementById('avatar');
+      const blur = Math.min(scrolled / 100, 8);
+      avatar.style.filter = `blur(${blur}px)`;
+    });
+
+    // Performance optimization: Reduce animation on low-power mode
+    if (navigator.getBattery) {
+      navigator.getBattery().then((battery) => {
+        if (battery.level < 0.2) {
+          document.body.classList.add('low-power-mode');
+        }
+      });
+    }
+
+    // Accessibility: Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        // Close any modal or return to main view
+        console.log('Escape pressed');
+      }
+    });
+
+    // Add focus indicators for keyboard navigation
+    document.querySelectorAll('.neon-btn').forEach(btn => {
+      btn.addEventListener('focus', () => {
+        btn.style.boxShadow = '0 0 40px rgba(0, 228, 255, 0.8), 0 0 80px rgba(197, 0, 255, 0.6)';
+      });
+      btn.addEventListener('blur', () => {
+        btn.style.boxShadow = '';
+      });
+    });
+
+    // Console greeting
+    console.log('%cSMARTMOCK', 'font-size: 48px; font-weight: bold; background: linear-gradient(135deg, #00E4FF 0%, #C500FF 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;');
+    console.log('%cFuturistic AI Interview Platform', 'font-size: 16px; color: #00E4FF;');
+    console.log('%cPowered by Advanced Neural Networks', 'font-size: 12px; color: #C500FF;');
+  </script>
+
+
+    <!-- Particle Generation Script -->
+    <script>
+      // Create 120 floating purple particles
+      if (document.getElementById('particlesContainer')) {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 120;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          const size = 2 + Math.random() * 4;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          const leftPos = Math.random() * 100;
+          particle.style.left = `${leftPos}%`;
+          
+          const duration = 12 + Math.random() * 13;
+          particle.style.animationDuration = `${duration}s`;
+          
+          const delay = Math.random() * 10;
+          particle.style.animationDelay = `${delay}s`;
+          
+          const drift = (Math.random() - 0.5) * 150;
+          particle.style.setProperty('--drift', `${drift}px`);
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+    
+    <!-- Three.js + Robot Interviewer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="assets/js/robot-interviewer.js"></script>
+    <script>
+      // Initialize Background Robot
+      (function initBgRobot(){
+        if (typeof THREE === 'undefined' || typeof window.RobotInterviewer === 'undefined') {
+          return setTimeout(initBgRobot, 100);
+        }
+        try {
+          window.bgRobot = new window.RobotInterviewer('bg-robot-container', THREE, {
+            canvasId: 'bg-robot-canvas',
+            trackCursor: true
+          });
+          window.bgRobot.setState('neutral');
+          console.log('✅ Background robot initialized');
+        } catch (e) {
+          console.error('❌ Failed to init background robot:', e);
+        }
+      })();
+      
+      // Advanced Parallax and Depth Effect
+      let targetX = 0, targetY = 0;
+      let currentX = 0, currentY = 0;
+      
+      document.addEventListener('mousemove', (e) => {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        targetX = (x - 0.5);
+        targetY = (y - 0.5);
+      });
+      
+      function animateParallax() {
+        currentX += (targetX - currentX) * 0.1;
+        currentY += (targetY - currentY) * 0.1;
+        
+        const container = document.getElementById('bg-robot-container');
+        if (container) {
+          const moveX1 = currentX * 80;
+          const moveY1 = currentY * 80;
+          const rotateY1 = currentX * 20;
+          const rotateX1 = -currentY * 20;
+          const scale1 = 1 + (Math.abs(currentX) + Math.abs(currentY)) * 0.05;
+          
+          container.style.transform = `
+            perspective(2000px) 
+            translateX(${moveX1}px) 
+            translateY(${moveY1}px) 
+            translateZ(-100px)
+            rotateX(${rotateX1}deg) 
+            rotateY(${rotateY1}deg)
+            scale(${scale1})
+          `;
+        }
+        
+        const particles = document.getElementById('particlesContainer');
+        if (particles) {
+          const moveX2 = currentX * 40;
+          const moveY2 = currentY * 40;
+          particles.style.transform = `
+            translateX(${moveX2}px) 
+            translateY(${moveY2}px)
+            translateZ(50px)
+          `;
+        }
+        
+        const bodyBefore = document.body;
+        if (bodyBefore) {
+          const gradientX = 50 + currentX * 10;
+          const gradientY = 50 + currentY * 10;
+          bodyBefore.style.setProperty('--gradient-x', `${gradientX}%`);
+          bodyBefore.style.setProperty('--gradient-y', `${gradientY}%`);
+        }
+        
+        const main = document.querySelector('main');
+        if (main) {
+          const moveX4 = -currentX * 15;
+          const moveY4 = -currentY * 15;
+          main.style.transform = `
+            translateX(${moveX4}px) 
+            translateY(${moveY4}px)
+            translateZ(100px)
+          `;
+        }
+        
+        requestAnimationFrame(animateParallax);
+      }
+      
+      animateParallax();
+    </script>
+    <script src="assets/js/auto-purple-bg.js"></script>
+  </body>
+</html>
+

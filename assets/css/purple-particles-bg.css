@@ -1,0 +1,137 @@
+/* Purple Particles Background with Robot - Shared Across All Pages */
+
+/* Dark Black Theme with Purple Particles */
+body {
+  background: #000000 !important;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at var(--gradient-x, 50%) var(--gradient-y, 50%), 
+    rgba(168, 85, 247, 0.05) 0%, 
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+  transition: background 0.3s ease;
+}
+
+.particles-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  background: #a855f7;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+  opacity: 0;
+  animation: floatUpward linear infinite;
+}
+
+@keyframes floatUpward {
+  0% {
+    transform: translateY(100vh) translateX(0) scale(0);
+    opacity: 0;
+  }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% {
+    transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+    opacity: 0;
+  }
+}
+
+.site-header, main, section, .card, .hero-card, .resume-container, .editor-section, .preview-section {
+  position: relative;
+  z-index: 10;
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+.site-header {
+  background: rgba(10, 10, 10, 0.8) !important;
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+  z-index: 2000 !important;
+}
+
+.card, .hero-card {
+  background: rgba(18, 18, 18, 0.8) !important;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  transition: all 0.3s ease;
+}
+
+.card:hover, .hero-card:hover {
+  border-color: rgba(168, 85, 247, 0.5);
+  box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+  transform: translateY(-5px);
+}
+
+.logo-accent {
+  color: #a855f7 !important;
+  text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+}
+
+/* Fullscreen Background Robot - STATIC (NO ROTATION) */
+#bg-robot-container { 
+  position: fixed; 
+  inset: 0; 
+  z-index: -1; 
+  pointer-events: none;
+  /* REMOVED: will-change, transform-style, perspective to prevent any 3D transforms */
+  transform: none !important;
+  animation: none !important;
+}
+
+#bg-robot-container canvas { 
+  width: 100%; 
+  height: 100%; 
+  display: block; 
+}
+
+/* Ensure particles float above robot */
+.particles-container { 
+  z-index: 0;
+}
+
+/* REMOVED: All 3D rotation animations and parallax transforms to keep robot completely stable */
+
+/* Additional styling for content sections to ensure visibility */
+.resume-container, .editor-section, .preview-section, .section-group {
+  background: rgba(18, 18, 18, 0.85) !important;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.section-header, .resume-section h2 {
+  border-bottom-color: #a855f7 !important;
+}
+
+/* Make buttons stand out */
+button, .btn, .primary-button, .secondary-button {
+  border-color: rgba(168, 85, 247, 0.5) !important;
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+}
+
+button:hover, .btn:hover, .primary-button:hover {
+  box-shadow: 0 0 30px rgba(168, 85, 247, 0.4);
+  border-color: rgba(168, 85, 247, 0.8) !important;
+}

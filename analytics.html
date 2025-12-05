@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Analytics - SmartMock</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Purple Particles + Robot Theme */
+        body {
+            background: #000000 !important;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background: #a855f7;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+            opacity: 0;
+            animation: floatUpward linear infinite;
+        }
+        
+        @keyframes floatUpward {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% {
+                transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+                opacity: 0;
+            }
+        }
+        
+        #robotCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .analytics-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1600px;
+            margin: 100px auto 50px;
+            padding: 20px;
+        }
+        
+        .site-header {
+            background: rgba(10, 10, 10, 0.8) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+            z-index: 2000 !important;
+        }
+        
+        .logo-accent {
+            color: #a855f7 !important;
+            text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #a855f7 0%, #00f7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .page-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: #a855f7;
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.3);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #a855f7, #00f7ff);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #a855f7 0%, #00f7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-trend {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .stat-trend.up {
+            color: #00ff88;
+        }
+
+        .stat-trend.down {
+            color: #ff4444;
+        }
+
+        .charts-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .chart-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .chart-card h2 {
+            color: #00f7ff;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        .skills-analysis {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .skills-analysis h2 {
+            color: #00f7ff;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+
+        .skill-item {
+            margin-bottom: 25px;
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .skill-name {
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .skill-score {
+            color: #a855f7;
+            font-weight: 700;
+        }
+
+        .skill-bar {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .skill-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #a855f7, #00f7ff);
+            border-radius: 10px;
+            transition: width 1s ease;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+        }
+
+        .recommendations {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .recommendations h2 {
+            color: #00f7ff;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+
+        .recommendation-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid #a855f7;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        .recommendation-item h3 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .recommendation-item p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        .priority-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .priority-high {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .priority-medium {
+            background: rgba(255, 170, 0, 0.2);
+            color: #ffaa00;
+            border: 1px solid #ffaa00;
+        }
+
+        .priority-low {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            border: 1px solid #00ff88;
+        }
+
+        .interview-history {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+        }
+
+        .interview-history h2 {
+            color: #00f7ff;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .history-table th {
+            background: rgba(168, 85, 247, 0.2);
+            color: #00f7ff;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid rgba(168, 85, 247, 0.5);
+        }
+
+        .history-table td {
+            padding: 15px;
+            color: rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .history-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .score-badge {
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .score-excellent {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+
+        .score-good {
+            background: rgba(0, 247, 255, 0.2);
+            color: #00f7ff;
+        }
+
+        .score-average {
+            background: rgba(255, 170, 0, 0.2);
+            color: #ffaa00;
+        }
+
+        .score-poor {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+        }
+
+        @media (max-width: 768px) {
+            .analytics-container {
+                margin: 80px auto 30px;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+
+            .history-table {
+                font-size: 0.85rem;
+            }
+
+            .history-table th,
+            .history-table td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles-container" id="particlesContainer"></div>
+
+    <div class="analytics-container">
+        <div class="page-header">
+            <h1>📈 Advanced Analytics</h1>
+            <p>Track your progress, identify strengths, and discover areas for improvement</p>
+        </div>
+
+        <!-- Key Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-value" id="totalInterviews">24</div>
+                <div class="stat-label">Total Interviews</div>
+                <div class="stat-trend up">↑ 20% this month</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-value" id="avgScore">82.5</div>
+                <div class="stat-label">Average Score</div>
+                <div class="stat-trend up">↑ 12% improvement</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🔥</div>
+                <div class="stat-value" id="currentStreak">7</div>
+                <div class="stat-label">Day Streak</div>
+                <div class="stat-trend up">↑ Keep it up!</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-value" id="strongSkills">12</div>
+                <div class="stat-label">Strong Skills</div>
+                <div class="stat-trend up">↑ 3 new this week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⚡</div>
+                <div class="stat-value" id="completionRate">94%</div>
+                <div class="stat-label">Completion Rate</div>
+                <div class="stat-trend up">↑ 8% increase</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⏱️</div>
+                <div class="stat-value" id="totalTime">42h</div>
+                <div class="stat-label">Total Practice Time</div>
+                <div class="stat-trend up">↑ 15h this month</div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="charts-section">
+            <div class="chart-card">
+                <h2>📊 Performance Over Time</h2>
+                <div class="chart-container">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h2>🎭 Interview Types Distribution</h2>
+                <div class="chart-container">
+                    <canvas id="typeChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="charts-section">
+            <div class="chart-card">
+                <h2>📈 Skill Progress</h2>
+                <div class="chart-container">
+                    <canvas id="skillChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h2>🕐 Weekly Activity</h2>
+                <div class="chart-container">
+                    <canvas id="activityChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills Analysis -->
+        <div class="skills-analysis">
+            <h2>💪 Skills Analysis</h2>
+            <div class="skill-item">
+                <div class="skill-header">
+                    <span class="skill-name">Data Structures & Algorithms</span>
+                    <span class="skill-score">92/100</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-fill" style="width: 92%"></div>
+                </div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-header">
+                    <span class="skill-name">System Design</span>
+                    <span class="skill-score">85/100</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-fill" style="width: 85%"></div>
+                </div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-header">
+                    <span class="skill-name">Problem Solving</span>
+                    <span class="skill-score">88/100</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-fill" style="width: 88%"></div>
+                </div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-header">
+                    <span class="skill-name">Communication</span>
+                    <span class="skill-score">78/100</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-fill" style="width: 78%"></div>
+                </div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-header">
+                    <span class="skill-name">Coding Best Practices</span>
+                    <span class="skill-score">90/100</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-fill" style="width: 90%"></div>
+                </div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-header">
+                    <span class="skill-name">Database Design</span>
+                    <span class="skill-score">72/100</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-fill" style="width: 72%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Recommendations -->
+        <div class="recommendations">
+            <h2>🤖 AI-Powered Recommendations</h2>
+            <div class="recommendation-item">
+                <h3>Focus on Communication Skills <span class="priority-badge priority-high">HIGH PRIORITY</span></h3>
+                <p>Your technical scores are excellent, but communication could use improvement. Practice explaining your thought process out loud during coding sessions. Consider joining study groups or peer review sessions.</p>
+            </div>
+            <div class="recommendation-item">
+                <h3>Strengthen Database Design <span class="priority-badge priority-high">HIGH PRIORITY</span></h3>
+                <p>Your database design score (72/100) is below your average. Focus on normalization, indexing strategies, and query optimization. Recommended: Complete advanced SQL courses and practice schema design problems.</p>
+            </div>
+            <div class="recommendation-item">
+                <h3>Practice More Behavioral Questions <span class="priority-badge priority-medium">MEDIUM PRIORITY</span></h3>
+                <p>Add variety to your practice routine with behavioral interview questions. Use the STAR method (Situation, Task, Action, Result) to structure your responses.</p>
+            </div>
+            <div class="recommendation-item">
+                <h3>Try Mock Interviews with Peers <span class="priority-badge priority-medium">MEDIUM PRIORITY</span></h3>
+                <p>You've been practicing solo for a while. Schedule mock interviews with peers to simulate real interview pressure and get feedback on your performance.</p>
+            </div>
+            <div class="recommendation-item">
+                <h3>Maintain Your Winning Streak <span class="priority-badge priority-low">LOW PRIORITY</span></h3>
+                <p>Great job on your 7-day streak! Keep the momentum going with consistent daily practice. Even 30 minutes a day can make a huge difference.</p>
+            </div>
+        </div>
+
+        <!-- Interview History -->
+        <div class="interview-history">
+            <h2>📝 Recent Interview History</h2>
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Topic</th>
+                        <th>Duration</th>
+                        <th>Score</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Nov 10, 2025</td>
+                        <td>Technical</td>
+                        <td>Binary Trees</td>
+                        <td>45 min</td>
+                        <td><span class="score-badge score-excellent">95/100</span></td>
+                        <td>✅ Completed</td>
+                    </tr>
+                    <tr>
+                        <td>Nov 09, 2025</td>
+                        <td>System Design</td>
+                        <td>URL Shortener</td>
+                        <td>60 min</td>
+                        <td><span class="score-badge score-good">88/100</span></td>
+                        <td>✅ Completed</td>
+                    </tr>
+                    <tr>
+                        <td>Nov 08, 2025</td>
+                        <td>Behavioral</td>
+                        <td>Leadership</td>
+                        <td>30 min</td>
+                        <td><span class="score-badge score-average">75/100</span></td>
+                        <td>✅ Completed</td>
+                    </tr>
+                    <tr>
+                        <td>Nov 07, 2025</td>
+                        <td>Technical</td>
+                        <td>Dynamic Programming</td>
+                        <td>50 min</td>
+                        <td><span class="score-badge score-excellent">92/100</span></td>
+                        <td>✅ Completed</td>
+                    </tr>
+                    <tr>
+                        <td>Nov 06, 2025</td>
+                        <td>Database</td>
+                        <td>Query Optimization</td>
+                        <td>40 min</td>
+                        <td><span class="score-badge score-average">70/100</span></td>
+                        <td>✅ Completed</td>
+                    </tr>
+                    <tr>
+                        <td>Nov 05, 2025</td>
+                        <td>Technical</td>
+                        <td>Graphs</td>
+                        <td>55 min</td>
+                        <td><span class="score-badge score-good">85/100</span></td>
+                        <td>✅ Completed</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <canvas id="robotCanvas"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="assets/js/robot-interviewer.js"></script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="assets/js/firebase-config.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <!-- Purple Particles Generation -->
+    <script>
+        const particlesContainer = document.getElementById('particlesContainer');
+        for (let i = 0; i < 120; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            const size = Math.random() * 4 + 2;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.bottom = '-10px';
+            
+            const duration = Math.random() * 13 + 12;
+            const delay = Math.random() * 10;
+            particle.style.animationDuration = duration + 's';
+            particle.style.animationDelay = delay + 's';
+            
+            const drift = (Math.random() - 0.5) * 150;
+            particle.style.setProperty('--drift', drift + 'px');
+            
+            particlesContainer.appendChild(particle);
+        }
+    </script>
+
+    <!-- Analytics Charts -->
+    <script>
+        // Performance Over Time Chart
+        const perfCtx = document.getElementById('performanceChart').getContext('2d');
+        new Chart(perfCtx, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [{
+                    label: 'Average Score',
+                    data: [65, 72, 78, 82.5],
+                    borderColor: '#a855f7',
+                    backgroundColor: 'rgba(168, 85, 247, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: 'white' }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { color: 'white' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    },
+                    x: {
+                        ticks: { color: 'white' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    }
+                }
+            }
+        });
+
+        // Interview Types Distribution
+        const typeCtx = document.getElementById('typeChart').getContext('2d');
+        new Chart(typeCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Technical', 'System Design', 'Behavioral', 'Database'],
+                datasets: [{
+                    data: [40, 25, 20, 15],
+                    backgroundColor: ['#a855f7', '#00f7ff', '#ff4444', '#ffaa00']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: 'white' }
+                    }
+                }
+            }
+        });
+
+        // Skill Progress Chart
+        const skillCtx = document.getElementById('skillChart').getContext('2d');
+        new Chart(skillCtx, {
+            type: 'radar',
+            data: {
+                labels: ['DSA', 'System Design', 'Communication', 'Coding', 'Database', 'Problem Solving'],
+                datasets: [{
+                    label: 'Current Level',
+                    data: [92, 85, 78, 90, 72, 88],
+                    borderColor: '#a855f7',
+                    backgroundColor: 'rgba(168, 85, 247, 0.2)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: 'white' }
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { color: 'white', backdropColor: 'transparent' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        pointLabels: { color: 'white' }
+                    }
+                }
+            }
+        });
+
+        // Weekly Activity Chart
+        const activityCtx = document.getElementById('activityChart').getContext('2d');
+        new Chart(activityCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Hours Practiced',
+                    data: [2, 3, 2.5, 4, 3, 1.5, 2],
+                    backgroundColor: 'rgba(0, 247, 255, 0.5)',
+                    borderColor: '#00f7ff',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: 'white' }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: 'white' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    },
+                    x: {
+                        ticks: { color: 'white' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    }
+                }
+            }
+        });
+
+        // Animate skill bars on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const skillFills = document.querySelectorAll('.skill-fill');
+            skillFills.forEach(fill => {
+                const width = fill.style.width;
+                fill.style.width = '0';
+                setTimeout(() => {
+                    fill.style.width = width;
+                }, 100);
+            });
+        });
+    </script>
+    <script src="assets/js/auto-purple-bg.js"></script>
+</body>
+</html>

@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Builder - SmartMock</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/purple-particles-bg.css">
+    <style>
+        /* Portfolio specific styles */
+        body {
+            background: #000000 !important;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background: #a855f7;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+            opacity: 0;
+            animation: floatUpward linear infinite;
+        }
+        
+        @keyframes floatUpward {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% {
+                transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+                opacity: 0;
+            }
+        }
+        
+        #robotCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .portfolio-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 100px auto 50px;
+            padding: 20px;
+        }
+        
+        .site-header {
+            background: rgba(10, 10, 10, 0.8) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+            z-index: 2000 !important;
+        }
+        
+        .logo-accent {
+            color: #a855f7 !important;
+            text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #a855f7 0%, #00f7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .page-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem;
+        }
+
+        .templates-section {
+            margin-bottom: 50px;
+        }
+
+        .templates-section h2 {
+            color: #00f7ff;
+            margin-bottom: 25px;
+            font-size: 2rem;
+        }
+
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .template-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .template-card:hover {
+            transform: translateY(-5px);
+            border-color: #a855f7;
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.3);
+        }
+
+        .template-card.active {
+            border-color: #00f7ff;
+            background: rgba(0, 247, 255, 0.1);
+        }
+
+        .template-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #a855f7, #00f7ff);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .template-card.active::before {
+            opacity: 1;
+        }
+
+        .template-preview {
+            width: 100%;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .template-card h3 {
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .template-card p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .editor-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid rgba(168, 85, 247, 0.3);
+            padding-bottom: 15px;
+        }
+
+        .section-header h2 {
+            color: #00f7ff;
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #00f7ff;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #a855f7;
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
+        }
+
+        .projects-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .project-entry {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .project-entry:hover {
+            border-color: rgba(168, 85, 247, 0.5);
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 0, 0, 0.2);
+            border: 1px solid rgba(255, 0, 0, 0.5);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .remove-btn:hover {
+            background: rgba(255, 0, 0, 0.4);
+        }
+
+        .add-btn {
+            background: linear-gradient(135deg, #a855f7 0%, #00f7ff 100%);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(168, 85, 247, 0.4);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #a855f7 0%, #00f7ff 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #a855f7;
+        }
+
+        .feature-badge {
+            background: rgba(168, 85, 247, 0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #00f7ff;
+            border: 1px solid rgba(0, 247, 255, 0.3);
+        }
+
+        .github-connect {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .github-connect-btn {
+            background: #24292e;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .github-connect-btn:hover {
+            background: #1a1e22;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .portfolio-container {
+                margin: 80px auto 30px;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .template-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles-container" id="particlesContainer"></div>
+
+    <div class="portfolio-container">
+        <div class="page-header">
+            <h1>🎓 Portfolio Builder</h1>
+            <p>Create a stunning portfolio to showcase your projects and skills</p>
+        </div>
+
+        <!-- GitHub Integration -->
+        <div class="github-connect">
+            <div>
+                <h3 style="margin: 0 0 5px 0; color: white;">🔗 GitHub Integration</h3>
+                <p style="margin: 0; color: rgba(255,255,255,0.6); font-size: 0.9rem;">Import your repositories automatically</p>
+            </div>
+            <button class="github-connect-btn" onclick="connectGitHub()">
+                <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                </svg>
+                Connect GitHub
+            </button>
+        </div>
+
+        <!-- Template Selection -->
+        <div class="templates-section">
+            <h2>Choose Your Template</h2>
+            <div class="template-grid">
+                <div class="template-card active" data-template="modern" onclick="selectTemplate('modern')">
+                    <div class="template-preview">💼</div>
+                    <h3>Modern Developer</h3>
+                    <p>Clean, minimal design perfect for developers and tech professionals</p>
+                </div>
+                <div class="template-card" data-template="creative" onclick="selectTemplate('creative')">
+                    <div class="template-preview">🎨</div>
+                    <h3>Creative Designer</h3>
+                    <p>Bold, colorful layout ideal for designers and creative professionals</p>
+                </div>
+                <div class="template-card" data-template="corporate" onclick="selectTemplate('corporate')">
+                    <div class="template-preview">🏢</div>
+                    <h3>Corporate Professional</h3>
+                    <p>Professional, elegant style for business and consulting</p>
+                </div>
+                <div class="template-card" data-template="minimal" onclick="selectTemplate('minimal')">
+                    <div class="template-preview">✨</div>
+                    <h3>Minimalist</h3>
+                    <p>Simple, focused design that highlights your work</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- LinkedIn Integration -->
+        <div class="editor-section" style="background: linear-gradient(135deg, rgba(0,119,181,0.1), rgba(0,119,181,0.05)); border: 2px solid rgba(0,119,181,0.3);">
+            <div class="section-header">
+                <h2 style="color: #0077b5; display: flex; align-items: center; gap: 10px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#0077b5">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                    🚀 LinkedIn Integration
+                </h2>
+                <span class="feature-badge">AI-Powered</span>
+            </div>
+            <p style="color: rgba(255,255,255,0.7); margin-bottom: 20px; font-size: 0.95rem;">
+                Connect your LinkedIn profile and let AI automatically generate your portfolio from your professional experience and projects!
+            </p>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px;">
+                <button onclick="connectPortfolioLinkedIn()" style="background: #0077b5; color: white; padding: 14px 28px; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 1rem; transition: all 0.3s;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                    Connect LinkedIn
+                </button>
+                <button onclick="importPortfolioFromLinkedIn()" id="importPortfolioLinkedInBtn" style="background: rgba(0,247,255,0.2); color: #00f7ff; padding: 14px 28px; border: 2px solid #00f7ff; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 1rem; transition: all 0.3s; opacity: 0.5;" disabled>
+                    🤖 AI Import Portfolio
+                </button>
+            </div>
+            <div id="portfolioLinkedinStatus" style="padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px; border-left: 4px solid rgba(168,85,247,0.5); display: none;">
+                <p style="margin: 0; color: rgba(255,255,255,0.8); font-size: 0.9rem;">
+                    <span id="portfolioLinkedinStatusText">Not connected</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Personal Information -->
+        <div class="editor-section">
+            <div class="section-header">
+                <h2>📝 Personal Information</h2>
+                <span class="feature-badge">Required</span>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="fullName" placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label>Professional Title *</label>
+                    <input type="text" id="profTitle" placeholder="Full Stack Developer">
+                </div>
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" id="email" placeholder="john@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" id="phone" placeholder="+1 (234) 567-8900">
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="location" placeholder="San Francisco, CA">
+                </div>
+                <div class="form-group">
+                    <label>Website</label>
+                    <input type="url" id="website" placeholder="https://yourwebsite.com">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Professional Summary</label>
+                <textarea id="summary" placeholder="Brief description of your professional background and expertise..."></textarea>
+            </div>
+        </div>
+
+        <!-- Social Links -->
+        <div class="editor-section">
+            <div class="section-header">
+                <h2>🔗 Social Links</h2>
+                <span class="feature-badge">Optional</span>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>GitHub</label>
+                    <input type="url" id="github" placeholder="https://github.com/username">
+                </div>
+                <div class="form-group">
+                    <label>LinkedIn</label>
+                    <input type="url" id="linkedin" placeholder="https://linkedin.com/in/username">
+                </div>
+                <div class="form-group">
+                    <label>Twitter</label>
+                    <input type="url" id="twitter" placeholder="https://twitter.com/username">
+                </div>
+                <div class="form-group">
+                    <label>Portfolio</label>
+                    <input type="url" id="portfolioLink" placeholder="https://portfolio.com">
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects -->
+        <div class="editor-section">
+            <div class="section-header">
+                <h2>💻 Projects</h2>
+                <button class="add-btn" onclick="addProject()">+ Add Project</button>
+            </div>
+            <div class="projects-list" id="projectsList">
+                <div class="project-entry">
+                    <div class="form-group">
+                        <label>Project Name *</label>
+                        <input type="text" class="projectName" placeholder="E-commerce Platform">
+                    </div>
+                    <div class="form-group">
+                        <label>Technologies Used</label>
+                        <input type="text" class="technologies" placeholder="React, Node.js, MongoDB, AWS">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="description" placeholder="Describe your project, your role, and key achievements..."></textarea>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Live Demo URL</label>
+                            <input type="url" class="liveDemo" placeholder="https://demo.example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>GitHub Repository</label>
+                            <input type="url" class="repoUrl" placeholder="https://github.com/user/repo">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills -->
+        <div class="editor-section">
+            <div class="section-header">
+                <h2>⚡ Skills</h2>
+                <span class="feature-badge">AI Suggestions Available</span>
+            </div>
+            <div class="form-group">
+                <label>Technical Skills (comma-separated)</label>
+                <textarea id="skills" placeholder="JavaScript, Python, React, Node.js, Docker, AWS, MongoDB, Git..."></textarea>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="btn btn-primary" onclick="generatePortfolio()">
+                🚀 Generate Portfolio
+            </button>
+            <button class="btn btn-secondary" onclick="previewPortfolio()">
+                👁️ Live Preview
+            </button>
+            <button class="btn btn-secondary" onclick="savePortfolio()">
+                💾 Save Draft
+            </button>
+            <button class="btn btn-secondary" onclick="exportCode()">
+                📦 Export Code
+            </button>
+        </div>
+    </div>
+
+    <canvas id="robotCanvas"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="assets/js/robot-interviewer.js"></script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
+    <script src="assets/js/firebase-config.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <!-- Purple Particles Generation -->
+    <script>
+        const particlesContainer = document.getElementById('particlesContainer');
+        for (let i = 0; i < 120; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            const size = Math.random() * 4 + 2;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.bottom = '-10px';
+            
+            const duration = Math.random() * 13 + 12;
+            const delay = Math.random() * 10;
+            particle.style.animationDuration = duration + 's';
+            particle.style.animationDelay = delay + 's';
+            
+            const drift = (Math.random() - 0.5) * 150;
+            particle.style.setProperty('--drift', drift + 'px');
+            
+            particlesContainer.appendChild(particle);
+        }
+    </script>
+
+    <script>
+        let selectedTemplate = 'modern';
+        let portfolioData = {};
+
+        function selectTemplate(template) {
+            selectedTemplate = template;
+            document.querySelectorAll('.template-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            document.querySelector(`[data-template="${template}"]`).classList.add('active');
+        }
+
+        function addProject() {
+            const projectsList = document.getElementById('projectsList');
+            const newProject = document.querySelector('.project-entry').cloneNode(true);
+            newProject.querySelectorAll('input, textarea').forEach(input => input.value = '');
+            
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-btn';
+            removeBtn.textContent = '× Remove';
+            removeBtn.onclick = function() {
+                this.parentElement.remove();
+            };
+            newProject.appendChild(removeBtn);
+            
+            projectsList.appendChild(newProject);
+        }
+
+        function collectFormData() {
+            const projects = [];
+            document.querySelectorAll('.project-entry').forEach(entry => {
+                projects.push({
+                    name: entry.querySelector('.projectName').value,
+                    technologies: entry.querySelector('.technologies').value,
+                    description: entry.querySelector('.description').value,
+                    liveDemo: entry.querySelector('.liveDemo').value,
+                    repoUrl: entry.querySelector('.repoUrl').value
+                });
+            });
+
+            return {
+                fullName: document.getElementById('fullName').value,
+                profTitle: document.getElementById('profTitle').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                location: document.getElementById('location').value,
+                website: document.getElementById('website').value,
+                summary: document.getElementById('summary').value,
+                github: document.getElementById('github').value,
+                linkedin: document.getElementById('linkedin').value,
+                twitter: document.getElementById('twitter').value,
+                portfolioLink: document.getElementById('portfolioLink').value,
+                skills: document.getElementById('skills').value,
+                projects: projects,
+                template: selectedTemplate
+            };
+        }
+
+        function generatePortfolio() {
+            portfolioData = collectFormData();
+            
+            if (!portfolioData.fullName || !portfolioData.profTitle || !portfolioData.email) {
+                alert('❌ Please fill in all required fields (Name, Title, Email)');
+                return;
+            }
+
+            alert('✅ Portfolio generated successfully! Opening preview...');
+            previewPortfolio();
+        }
+
+        function previewPortfolio() {
+            portfolioData = collectFormData();
+            
+            const previewWindow = window.open('', '_blank');
+            const html = generatePortfolioHTML(portfolioData);
+            previewWindow.document.write(html);
+            previewWindow.document.close();
+        }
+
+        function savePortfolio() {
+            portfolioData = collectFormData();
+            localStorage.setItem('portfolio_draft', JSON.stringify(portfolioData));
+            alert('✅ Portfolio draft saved successfully!');
+        }
+
+        function exportCode() {
+            portfolioData = collectFormData();
+            const html = generatePortfolioHTML(portfolioData);
+            
+            const blob = new Blob([html], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'portfolio.html';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            alert('✅ Portfolio HTML exported successfully!');
+        }
+
+        function connectGitHub() {
+            alert('🔄 GitHub integration coming soon! You can manually add your repositories in the Projects section.');
+        }
+
+        function generatePortfolioHTML(data) {
+            return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${data.fullName} - Portfolio</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header {
+            background: white;
+            padding: 60px 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 { font-size: 3rem; color: #667eea; margin-bottom: 10px; }
+        .title { font-size: 1.5rem; color: #764ba2; margin-bottom: 20px; }
+        .contact { font-size: 1rem; color: #666; }
+        .social-links { margin-top: 20px; display: flex; gap: 15px; justify-content: center; }
+        .social-links a {
+            color: #667eea;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+        .social-links a:hover { background: #667eea; color: white; }
+        section {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #667eea;
+            border-bottom: 3px solid #764ba2;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+        .project {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        .project h3 { color: #764ba2; margin-bottom: 10px; }
+        .tech-tags { display: flex; gap: 10px; flex-wrap: wrap; margin: 15px 0; }
+        .tech-tag {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        .project-links { display: flex; gap: 15px; margin-top: 15px; }
+        .project-links a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .skill {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+        }
+        footer {
+            text-align: center;
+            color: white;
+            padding: 30px;
+            margin-top: 30px;
+        }
+    <\/style>
+<\/head>
+<body>
+    <div class="container">
+        <header>
+            <h1>${data.fullName}</h1>
+            <div class="title">${data.profTitle}</div>
+            <div class="contact">
+                ${data.email} ${data.phone ? '| ' + data.phone : ''} ${data.location ? '| ' + data.location : ''}
+            </div>
+            <div class="social-links">
+                ${data.github ? `<a href="${data.github}" target="_blank">GitHub</a>` : ''}
+                ${data.linkedin ? `<a href="${data.linkedin}" target="_blank">LinkedIn</a>` : ''}
+                ${data.twitter ? `<a href="${data.twitter}" target="_blank">Twitter</a>` : ''}
+                ${data.website ? `<a href="${data.website}" target="_blank">Website</a>` : ''}
+            </div>
+        </header>
+
+        ${data.summary ? `
+        <section>
+            <h2>About Me</h2>
+            <p>${data.summary}</p>
+        </section>
+        ` : ''}
+
+        ${data.projects && data.projects.length > 0 ? `
+        <section>
+            <h2>Projects</h2>
+            ${data.projects.map(project => `
+                <div class="project">
+                    <h3>${project.name}</h3>
+                    <div class="tech-tags">
+                        ${project.technologies.split(',').map(tech => `<span class="tech-tag">${tech.trim()}</span>`).join('')}
+                    </div>
+                    <p>${project.description}</p>
+                    <div class="project-links">
+                        ${project.liveDemo ? `<a href="${project.liveDemo}" target="_blank">🔗 Live Demo</a>` : ''}
+                        ${project.repoUrl ? `<a href="${project.repoUrl}" target="_blank">📦 Source Code</a>` : ''}
+                    </div>
+                </div>
+            `).join('')}
+        </section>
+        ` : ''}
+
+        ${data.skills ? `
+        <section>
+            <h2>Skills</h2>
+            <div class="skills-grid">
+                ${data.skills.split(',').map(skill => `<div class="skill">${skill.trim()}</div>`).join('')}
+            </div>
+        </section>
+        ` : ''}
+
+        <footer>
+            <p>© ${new Date().getFullYear()} ${data.fullName}. Created with SmartMock Portfolio Builder.</p>
+        </footer>
+    </div>
+<\/body>
+<\/html>`;
+        }
+
+        // Load saved draft
+        window.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('portfolio_draft');
+            if (saved) {
+                const data = JSON.parse(saved);
+                document.getElementById('fullName').value = data.fullName || '';
+                document.getElementById('profTitle').value = data.profTitle || '';
+                document.getElementById('email').value = data.email || '';
+                document.getElementById('phone').value = data.phone || '';
+                document.getElementById('location').value = data.location || '';
+                document.getElementById('website').value = data.website || '';
+                document.getElementById('summary').value = data.summary || '';
+                document.getElementById('github').value = data.github || '';
+                document.getElementById('linkedin').value = data.linkedin || '';
+                document.getElementById('twitter').value = data.twitter || '';
+                document.getElementById('portfolioLink').value = data.portfolioLink || '';
+                document.getElementById('skills').value = data.skills || '';
+                
+                if (data.template) {
+                    selectTemplate(data.template);
+                }
+            }
+        });
+
+        // LinkedIn Integration for Portfolio
+        let portfolioLinkedInConnected = false;
+        let portfolioLinkedInData = null;
+
+        async function connectPortfolioLinkedIn() {
+            console.log('🔗 Connecting to LinkedIn for Portfolio...');
+            
+            const statusDiv = document.getElementById('portfolioLinkedinStatus');
+            const statusText = document.getElementById('portfolioLinkedinStatusText');
+            statusDiv.style.display = 'block';
+            statusDiv.style.borderLeftColor = 'rgba(255,193,7,0.8)';
+            statusText.innerHTML = '⏳ Connecting to LinkedIn...';
+            
+            try {
+                // Call backend to get LinkedIn OAuth URL (return to this page after OAuth)
+                const returnUrl = window.location.origin + window.location.pathname;
+                const response = await fetch(`http://localhost:3000/auth/linkedin?returnUrl=${encodeURIComponent(returnUrl)}`, {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to initiate LinkedIn OAuth');
+                }
+                
+                const { authUrl } = await response.json();
+                
+                // Update status
+                statusText.innerHTML = '🔄 Redirecting to LinkedIn...';
+                
+                // Redirect to LinkedIn OAuth page
+                window.location.href = authUrl;
+                
+            } catch (error) {
+                console.error('❌ LinkedIn connection error:', error);
+                statusDiv.style.borderLeftColor = 'rgba(244,67,54,0.8)';
+                statusText.innerHTML = '❌ <strong>Connection failed!</strong> Make sure backend server is running on port 3000.';
+                
+                if (typeof showNotification === 'function') {
+                    showNotification('❌ Failed to connect to LinkedIn. Check console for details.', 'error');
+                }
+            }
+        }
+        
+        // Check if returning from LinkedIn OAuth
+        window.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('linkedin') === 'connected') {
+                console.log('✅ Returned from LinkedIn OAuth');
+                
+                const statusDiv = document.getElementById('portfolioLinkedinStatus');
+                const statusText = document.getElementById('portfolioLinkedinStatusText');
+                
+                try {
+                    // Check auth status with backend
+                    const response = await fetch('http://localhost:3000/api/auth/status', {
+                        credentials: 'include'
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.authenticated) {
+                        portfolioLinkedInConnected = true;
+                        statusDiv.style.display = 'block';
+                        statusDiv.style.borderLeftColor = 'rgba(76,175,80,0.8)';
+                        statusText.innerHTML = '✅ <strong>Connected to LinkedIn!</strong> Ready to import your portfolio data.';
+                        
+                        // Enable import button
+                        const importBtn = document.getElementById('importPortfolioLinkedInBtn');
+                        importBtn.style.opacity = '1';
+                        importBtn.disabled = false;
+                        importBtn.style.cursor = 'pointer';
+                        
+                        if (typeof showNotification === 'function') {
+                            showNotification('✅ LinkedIn connected! Click "AI Import Portfolio" to auto-fill.', 'success');
+                        }
+                        
+                        // Clean URL
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                    }
+                } catch (error) {
+                    console.error('❌ Auth status check failed:', error);
+                }
+            }
+        });
+
+        async function importPortfolioFromLinkedIn() {
+            if (!portfolioLinkedInConnected) {
+                alert('⚠️ Please connect to LinkedIn first!');
+                return;
+            }
+            
+            console.log('🤖 AI importing portfolio data from LinkedIn...');
+            
+            if (typeof showNotification === 'function') {
+                showNotification('🤖 AI is analyzing your LinkedIn profile and projects...', 'info');
+            }
+            
+            try {
+                // Fetch enhanced LinkedIn profile from backend
+                const response = await fetch('http://localhost:3000/api/linkedin/profile/enhanced', {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch LinkedIn profile');
+                }
+                
+                const result = await response.json();
+                
+                if (!result.success) {
+                    throw new Error(result.error || 'Failed to fetch profile');
+                }
+                
+                const portfolioLinkedInData = result.data;
+                console.log('📊 LinkedIn data received:', portfolioLinkedInData);
+                
+                // Fill personal information
+                if (portfolioLinkedInData.fullName) document.getElementById('fullName').value = portfolioLinkedInData.fullName;
+                if (portfolioLinkedInData.headline) document.getElementById('profTitle').value = portfolioLinkedInData.headline;
+                if (portfolioLinkedInData.email) document.getElementById('email').value = portfolioLinkedInData.email;
+                if (portfolioLinkedInData.phone) document.getElementById('phone').value = portfolioLinkedInData.phone;
+                if (portfolioLinkedInData.location) document.getElementById('location').value = portfolioLinkedInData.location;
+                if (portfolioLinkedInData.website) document.getElementById('website').value = portfolioLinkedInData.website;
+                if (portfolioLinkedInData.summary) document.getElementById('summary').value = portfolioLinkedInData.summary;
+                
+                // Fill social links
+                if (portfolioLinkedInData.github) document.getElementById('github').value = portfolioLinkedInData.github;
+                if (portfolioLinkedInData.linkedin) document.getElementById('linkedin').value = portfolioLinkedInData.linkedin;
+                if (portfolioLinkedInData.twitter) document.getElementById('twitter').value = portfolioLinkedInData.twitter;
+                if (portfolioLinkedInData.website) document.getElementById('portfolioLink').value = portfolioLinkedInData.website;
+                
+                // Fill skills
+                if (portfolioLinkedInData.skills && portfolioLinkedInData.skills.length > 0) {
+                    document.getElementById('skills').value = portfolioLinkedInData.skills.join(', ');
+                }
+                
+                // Clear existing projects
+                projectsData = [];
+                
+                // Add projects from LinkedIn
+                if (portfolioLinkedInData.projects && portfolioLinkedInData.projects.length > 0) {
+                    portfolioLinkedInData.projects.forEach(project => {
+                        projectsData.push({
+                            id: Date.now() + Math.random(),
+                            name: project.name,
+                            description: project.description,
+                            tech: project.tech,
+                            liveDemo: project.liveDemo || '',
+                            repoUrl: project.repoUrl || ''
+                        });
+                    });
+                    renderProjects();
+                }
+                
+                // Check what was actually imported
+                const hasRealData = portfolioLinkedInData.fullName || portfolioLinkedInData.email;
+                const hasProjects = portfolioLinkedInData.projects && portfolioLinkedInData.projects.length > 0;
+                const hasSkills = portfolioLinkedInData.skills && portfolioLinkedInData.skills.length > 0;
+                
+                // Success notification with realistic context
+                if (typeof showNotification === 'function') {
+                    if (hasProjects || hasSkills) {
+                        showNotification('✅ Portfolio data imported from LinkedIn! Review and customize as needed.', 'success');
+                    } else {
+                        showNotification('ℹ️ Basic info imported. LinkedIn API limits prevent importing projects/skills. Please add those manually.', 'info');
+                    }
+                } else {
+                    if (hasProjects || hasSkills) {
+                        alert('✅ Portfolio data imported from LinkedIn!\n\nYour profile has been imported. Review and edit as needed.');
+                    } else {
+                        alert('ℹ️ Basic Info Imported\n\nLinkedIn API only provides name and email due to privacy restrictions.\n\nPlease manually add:\n• Projects\n• Skills\n• Social Links\n• Professional Summary\n\nThis is a LinkedIn API limitation, not a bug!');
+                    }
+                }
+                
+                // Update status
+                const statusText = document.getElementById('portfolioLinkedinStatusText');
+                if (hasProjects || hasSkills) {
+                    statusText.innerHTML = '✅ <strong>Imported successfully!</strong> Review and customize your portfolio.';
+                } else {
+                    statusText.innerHTML = 'ℹ️ <strong>Basic info imported.</strong> LinkedIn limits what data can be accessed. Please fill other sections manually.';
+                }
+                
+                console.log('✅ LinkedIn data imported:', { hasRealData, hasProjects, hasSkills });
+                
+            } catch (error) {
+                console.error('❌ LinkedIn import error:', error);
+                
+                if (typeof showNotification === 'function') {
+                    showNotification('❌ Failed to import LinkedIn data. Please try again.', 'error');
+                } else {
+                    alert('❌ Failed to import LinkedIn data.\n\nError: ' + error.message);
+                }
+            }
+        }
+    </script>
+    
+    <!-- Purple Particles Background with Robot -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="assets/js/robot-interviewer.js"></script>
+    <script src="assets/js/purple-particles-bg.js"></script>
+</body>
+</html>

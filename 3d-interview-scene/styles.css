@@ -1,0 +1,338 @@
+/* 
+ * SMARTMOCK 3D Scene Styles
+ * Usage: Put avatar GLB at assets/avatar.glb (optional). Open index.html in a web server.
+ */
+
+:root {
+  --neon-cyan: #00E4FF;
+  --neon-violet: #C500FF;
+  --bg-dark: #0A0A0A;
+  --glass-fill: rgba(10, 10, 10, 0.3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@400;600&display=swap');
+
+body {
+  font-family: 'Rajdhani', sans-serif;
+  background: linear-gradient(135deg, #0A0A0A 0%, #1a0033 50%, #000a1a 100%);
+  color: #ffffff;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+/* Canvas Container */
+#canvas-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Performance Toggle */
+.controls {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+}
+
+.toggle-btn {
+  width: 50px;
+  height: 50px;
+  background: rgba(0, 228, 255, 0.1);
+  border: 2px solid var(--neon-cyan);
+  border-radius: 50%;
+  color: var(--neon-cyan);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.toggle-btn:hover {
+  background: rgba(0, 228, 255, 0.2);
+  box-shadow: 0 0 20px rgba(0, 228, 255, 0.5);
+  transform: scale(1.1);
+}
+
+.toggle-btn.active {
+  border-color: var(--neon-violet);
+  color: var(--neon-violet);
+  box-shadow: 0 0 20px rgba(197, 0, 255, 0.5);
+}
+
+/* Preloader */
+.preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-dark);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.preloader.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.preloader-ring {
+  width: 120px;
+  height: 120px;
+  border: 4px solid transparent;
+  border-top-color: var(--neon-cyan);
+  border-right-color: var(--neon-violet);
+  border-radius: 50%;
+  animation: spin 1.5s linear infinite;
+  box-shadow: 
+    0 0 30px rgba(0, 228, 255, 0.5),
+    inset 0 0 30px rgba(197, 0, 255, 0.3);
+  position: relative;
+}
+
+.preloader-ring::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  border: 4px solid transparent;
+  border-bottom-color: var(--neon-cyan);
+  border-left-color: var(--neon-violet);
+  border-radius: 50%;
+  animation: spin 2s linear infinite reverse;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.preloader-text {
+  margin-top: 2rem;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 10px rgba(0, 228, 255, 0.8);
+  animation: pulse-text 2s ease-in-out infinite;
+}
+
+@keyframes pulse-text {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Logo */
+.logo-container {
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  text-align: center;
+  pointer-events: none;
+}
+
+.logo-text {
+  font-family: 'Orbitron', monospace;
+  font-size: 4rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-violet) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 20px rgba(0, 228, 255, 0.6));
+  animation: logo-glow 3s ease-in-out infinite;
+  margin: 0;
+}
+
+@keyframes logo-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 20px rgba(0, 228, 255, 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 40px rgba(197, 0, 255, 0.8));
+  }
+}
+
+.logo-underline {
+  width: 200px;
+  height: 3px;
+  margin: 0.5rem auto 0;
+  background: linear-gradient(90deg, transparent, var(--neon-cyan), var(--neon-violet), transparent);
+  box-shadow: 0 0 10px rgba(0, 228, 255, 0.8);
+  animation: underline-pulse 2s ease-in-out infinite;
+}
+
+@keyframes underline-pulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scaleX(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleX(1.1);
+  }
+}
+
+/* Info Overlay */
+.info-overlay {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  padding: 0.8rem 1.5rem;
+  background: rgba(0, 228, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 228, 255, 0.3);
+  border-radius: 30px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.05em;
+  pointer-events: none;
+}
+
+/* Pricing Panel */
+.pricing-panel {
+    backdrop-filter: blur(10px) saturate(180%);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
+    background-color: rgba(17, 25, 40, 0.75);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .logo-text {
+    font-size: 2.5rem;
+    letter-spacing: 0.15em;
+  }
+  
+  .logo-underline {
+    width: 150px;
+  }
+  
+  .info-overlay {
+    font-size: 0.75rem;
+    padding: 0.6rem 1rem;
+  }
+  
+  .controls {
+    top: 15px;
+    right: 15px;
+  }
+  
+  .toggle-btn {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-text {
+    font-size: 2rem;
+  }
+  
+  .logo-underline {
+    width: 120px;
+  }
+  
+  .info-overlay {
+    bottom: 20px;
+    font-size: 0.7rem;
+  }
+}
+
+/* Accessibility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Loading State */
+body.loading {
+  cursor: wait;
+}
+
+body.loaded {
+  cursor: default;
+}
+
+/* Performance Mode Indicator */
+.performance-mode {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 100;
+  padding: 0.5rem 1rem;
+  background: rgba(197, 0, 255, 0.1);
+  border: 1px solid var(--neon-violet);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  color: var(--neon-violet);
+  letter-spacing: 0.05em;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.performance-mode.visible {
+  opacity: 1;
+}
+
+/* Fallback for no WebGL */
+.no-webgl {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+  padding: 2rem;
+  background: rgba(197, 0, 255, 0.2);
+  border: 2px solid var(--neon-violet);
+  border-radius: 20px;
+  text-align: center;
+  max-width: 500px;
+}
+
+.no-webgl h2 {
+  color: var(--neon-violet);
+  margin-bottom: 1rem;
+  font-family: 'Orbitron', monospace;
+}
+
+.no-webgl p {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+}

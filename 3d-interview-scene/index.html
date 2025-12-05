@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SMARTMOCK - Pricing</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  
+  <!-- Performance Toggle -->
+  <div class="controls">
+    <button id="toggleEffects" class="toggle-btn" title="Toggle Effects">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 6v6l4 2"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Preloader -->
+  <div id="preloader" class="preloader">
+    <div class="preloader-ring"></div>
+    <p class="preloader-text">INITIALIZING PRICING MATRIX...</p>
+  </div>
+
+  <!-- Logo (DOM Overlay) -->
+  <div class="logo-container">
+    <h1 class="logo-text">SMARTMOCK</h1>
+    <div class="logo-underline"></div>
+  </div>
+
+  <!-- Three.js Canvas Container -->
+  <div id="canvas-container"></div>
+
+  <!-- UI Info Overlay (for accessibility) -->
+  <div class="info-overlay">
+    <p>Move mouse to explore • Click a plan to learn more</p>
+  </div>
+
+  <!-- Three.js r160 from CDN -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+  
+  <script type="module" src="app.js"></script>
+
+</body>
+</html>

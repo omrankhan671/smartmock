@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Services - SmartMock</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <style>
+        /* Purple Particles + Robot Theme */
+        body {
+            background: #000000 !important;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background: #a855f7;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+            opacity: 0;
+            animation: floatUpward linear infinite;
+        }
+        
+        @keyframes floatUpward {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% {
+                transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+                opacity: 0;
+            }
+        }
+        
+        #robotCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .career-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 100px auto 50px;
+            padding: 20px;
+        }
+        
+        .site-header {
+            background: rgba(10, 10, 10, 0.8) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+            z-index: 2000 !important;
+        }
+        
+        .logo-accent {
+            color: #a855f7 !important;
+            text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #a855f7 0%, #00f7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .page-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: #a855f7;
+            box-shadow: 0 15px 40px rgba(168, 85, 247, 0.4);
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #a855f7, #00f7ff);
+        }
+
+        .service-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+
+        .service-card h2 {
+            color: #00f7ff;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .service-card p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .service-btn {
+            background: linear-gradient(135deg, #a855f7 0%, #00f7ff 100%);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .service-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(168, 85, 247, 0.5);
+        }
+
+        .job-matches {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .job-matches h2 {
+            color: #00f7ff;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .job-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .job-card:hover {
+            border-color: rgba(168, 85, 247, 0.5);
+            transform: translateX(10px);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .job-title {
+            color: white;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .company-name {
+            color: #a855f7;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .job-meta {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .meta-item {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .match-score {
+            background: linear-gradient(135deg, #a855f7, #00f7ff);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .job-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .job-tag {
+            background: rgba(168, 85, 247, 0.2);
+            color: #00f7ff;
+            padding: 6px 15px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .job-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .job-actions button {
+            flex: 1;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .apply-btn {
+            background: linear-gradient(135deg, #a855f7, #00f7ff);
+            color: white;
+        }
+
+        .apply-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(168, 85, 247, 0.5);
+        }
+
+        .save-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .save-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .salary-insights {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .salary-insights h2 {
+            color: #00f7ff;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .salary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .salary-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .salary-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .salary-amount {
+            color: #00f7ff;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .salary-trend {
+            color: #00ff88;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .career-path {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 40px;
+        }
+
+        .career-path h2 {
+            color: #00f7ff;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .path-timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .path-timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #a855f7, #00f7ff);
+        }
+
+        .path-step {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .path-step::before {
+            content: '';
+            position: absolute;
+            left: -32px;
+            top: 5px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a855f7, #00f7ff);
+            border: 3px solid #000;
+        }
+
+        .path-step.current::before {
+            width: 24px;
+            height: 24px;
+            left: -36px;
+            top: 0;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(168, 85, 247, 0); }
+        }
+
+        .path-title {
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .path-duration {
+            color: #a855f7;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .path-description {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .path-skills {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .path-skill {
+            background: rgba(0, 247, 255, 0.1);
+            color: #00f7ff;
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(0, 247, 255, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .career-container {
+                margin: 80px auto 30px;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .salary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .job-header {
+                flex-direction: column;
+            }
+
+            .match-score {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles-container" id="particlesContainer"></div>
+
+    <div class="career-container">
+        <div class="page-header">
+            <h1>💼 Career Services</h1>
+            <p>Your AI-powered career companion for landing your dream job</p>
+        </div>
+
+        <!-- Main Services -->
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🎯</div>
+                <h2>Job Matching</h2>
+                <p>Our AI analyzes your skills, experience, and preferences to match you with the perfect job opportunities. Get personalized recommendations based on your interview performance and career goals.</p>
+                <button class="service-btn" onclick="scrollToSection('job-matches')">View Matches</button>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">💰</div>
+                <h2>Salary Insights</h2>
+                <p>Make informed decisions with real-time salary data for your role, experience level, and location. See how your skills translate to earning potential in the market.</p>
+                <button class="service-btn" onclick="scrollToSection('salary-insights')">Check Salary</button>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🚀</div>
+                <h2>Career Roadmap</h2>
+                <p>Get a personalized career path with milestones, skill requirements, and timeline projections. Plan your growth from junior to senior and beyond.</p>
+                <button class="service-btn" onclick="scrollToSection('career-path')">View Roadmap</button>
+            </div>
+        </div>
+
+        <!-- Job Matches -->
+        <div class="job-matches" id="job-matches">
+            <h2>🎯 Recommended Jobs for You</h2>
+            
+            <div class="job-card">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Senior Full Stack Engineer</div>
+                        <div class="company-name">🏢 TechCorp Inc.</div>
+                        <div class="job-meta">
+                            <span class="meta-item">📍 San Francisco, CA</span>
+                            <span class="meta-item">💼 Full-time</span>
+                            <span class="meta-item">💰 $150K - $200K</span>
+                        </div>
+                    </div>
+                    <div class="match-score">95% Match</div>
+                </div>
+                <div class="job-tags">
+                    <span class="job-tag">React</span>
+                    <span class="job-tag">Node.js</span>
+                    <span class="job-tag">AWS</span>
+                    <span class="job-tag">MongoDB</span>
+                    <span class="job-tag">Docker</span>
+                </div>
+                <p style="color: rgba(255,255,255,0.7)">
+                    Leading team of 5-7 engineers building scalable microservices. Strong focus on system design and mentoring junior developers.
+                </p>
+                <div class="job-actions">
+                    <button class="apply-btn" onclick="applyJob('TechCorp')">Apply Now</button>
+                    <button class="save-btn" onclick="saveJob('TechCorp')">Save for Later</button>
+                </div>
+            </div>
+
+            <div class="job-card">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Software Engineer II</div>
+                        <div class="company-name">🚀 StartupX</div>
+                        <div class="job-meta">
+                            <span class="meta-item">📍 Remote</span>
+                            <span class="meta-item">💼 Full-time</span>
+                            <span class="meta-item">💰 $130K - $160K</span>
+                        </div>
+                    </div>
+                    <div class="match-score">92% Match</div>
+                </div>
+                <div class="job-tags">
+                    <span class="job-tag">Python</span>
+                    <span class="job-tag">FastAPI</span>
+                    <span class="job-tag">PostgreSQL</span>
+                    <span class="job-tag">Kubernetes</span>
+                </div>
+                <p style="color: rgba(255,255,255,0.7)">
+                    Build cutting-edge AI-powered features. Work with modern tech stack in a fast-paced startup environment.
+                </p>
+                <div class="job-actions">
+                    <button class="apply-btn" onclick="applyJob('StartupX')">Apply Now</button>
+                    <button class="save-btn" onclick="saveJob('StartupX')">Save for Later</button>
+                </div>
+            </div>
+
+            <div class="job-card">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Backend Developer</div>
+                        <div class="company-name">🏦 FinanceHub</div>
+                        <div class="job-meta">
+                            <span class="meta-item">📍 New York, NY</span>
+                            <span class="meta-item">💼 Full-time</span>
+                            <span class="meta-item">💰 $140K - $180K</span>
+                        </div>
+                    </div>
+                    <div class="match-score">88% Match</div>
+                </div>
+                <div class="job-tags">
+                    <span class="job-tag">Java</span>
+                    <span class="job-tag">Spring Boot</span>
+                    <span class="job-tag">Microservices</span>
+                    <span class="job-tag">Redis</span>
+                </div>
+                <p style="color: rgba(255,255,255,0.7)">
+                    Design and implement high-performance trading systems. Work with financial data at scale.
+                </p>
+                <div class="job-actions">
+                    <button class="apply-btn" onclick="applyJob('FinanceHub')">Apply Now</button>
+                    <button class="save-btn" onclick="saveJob('FinanceHub')">Save for Later</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Openings (Internshala) -->
+        <div class="job-matches" id="live-openings">
+            <h2>🌐 Live Openings on Internshala</h2>
+            <div id="live-jobs-controls" style="margin-bottom:16px; display:flex; gap:10px; flex-wrap:wrap;">
+                <input id="job-keyword" placeholder="Keyword e.g. software-engineer" style="padding:10px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); color:white; min-width:260px;" />
+                <button class="service-btn" id="btn-load-jobs" style="width:auto;">Search Openings</button>
+                <span id="jobs-status" style="color:rgba(255,255,255,0.7);"></span>
+            </div>
+            <div id="live-jobs-list"></div>
+        </div>
+
+        <!-- Salary Insights -->
+        <div class="salary-insights" id="salary-insights">
+            <h2>💰 Salary Insights</h2>
+            <div class="salary-grid">
+                <div class="salary-card">
+                    <div class="salary-label">Average Salary</div>
+                    <div class="salary-amount">$155K</div>
+                    <div class="salary-trend">↑ 12% vs last year</div>
+                </div>
+                <div class="salary-card">
+                    <div class="salary-label">Your Experience Level</div>
+                    <div class="salary-amount">$145K</div>
+                    <div class="salary-trend">Mid-Senior Level</div>
+                </div>
+                <div class="salary-card">
+                    <div class="salary-label">Top 10%</div>
+                    <div class="salary-amount">$220K+</div>
+                    <div class="salary-trend">With equity & bonuses</div>
+                </div>
+                <div class="salary-card">
+                    <div class="salary-label">Remote Premium</div>
+                    <div class="salary-amount">+15%</div>
+                    <div class="salary-trend">vs on-site roles</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Career Path -->
+        <div class="career-path" id="career-path">
+            <h2>🚀 Your Career Roadmap</h2>
+            <div class="path-timeline">
+                <div class="path-step current">
+                    <div class="path-title">Mid-Level Engineer → Senior Engineer</div>
+                    <div class="path-duration">⏱️ Current Stage (6-12 months)</div>
+                    <div class="path-description">
+                        Focus on system design, mentoring, and leading small projects. Build expertise in distributed systems and cloud architecture.
+                    </div>
+                    <div class="path-skills">
+                        <span class="path-skill">System Design</span>
+                        <span class="path-skill">Leadership</span>
+                        <span class="path-skill">Cloud Architecture</span>
+                        <span class="path-skill">Mentoring</span>
+                    </div>
+                </div>
+
+                <div class="path-step">
+                    <div class="path-title">Senior Engineer → Staff Engineer</div>
+                    <div class="path-duration">⏱️ Next 2-3 years</div>
+                    <div class="path-description">
+                        Drive technical direction for multiple teams. Design large-scale systems and establish best practices across the organization.
+                    </div>
+                    <div class="path-skills">
+                        <span class="path-skill">Technical Strategy</span>
+                        <span class="path-skill">Cross-team Collaboration</span>
+                        <span class="path-skill">Architecture Design</span>
+                        <span class="path-skill">Technical Writing</span>
+                    </div>
+                </div>
+
+                <div class="path-step">
+                    <div class="path-title">Staff Engineer → Principal Engineer</div>
+                    <div class="path-duration">⏱️ 4-6 years</div>
+                    <div class="path-description">
+                        Shape company-wide technical vision. Influence industry standards and represent the company in technical communities.
+                    </div>
+                    <div class="path-skills">
+                        <span class="path-skill">Strategic Planning</span>
+                        <span class="path-skill">Thought Leadership</span>
+                        <span class="path-skill">Industry Influence</span>
+                        <span class="path-skill">Innovation</span>
+                    </div>
+                </div>
+
+                <div class="path-step">
+                    <div class="path-title">Alternative Path: Engineering Manager</div>
+                    <div class="path-duration">⏱️ Available Now</div>
+                    <div class="path-description">
+                        Transition to people management. Build and lead high-performing teams while maintaining technical excellence.
+                    </div>
+                    <div class="path-skills">
+                        <span class="path-skill">Team Building</span>
+                        <span class="path-skill">Performance Management</span>
+                        <span class="path-skill">Strategic Planning</span>
+                        <span class="path-skill">Communication</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="robotCanvas"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="assets/js/robot-interviewer.js"></script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="assets/js/firebase-config.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <!-- Purple Particles Generation -->
+    <script>
+        const particlesContainer = document.getElementById('particlesContainer');
+        for (let i = 0; i < 120; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            const size = Math.random() * 4 + 2;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.bottom = '-10px';
+            
+            const duration = Math.random() * 13 + 12;
+            const delay = Math.random() * 10;
+            particle.style.animationDuration = duration + 's';
+            particle.style.animationDelay = delay + 's';
+            
+            const drift = (Math.random() - 0.5) * 150;
+            particle.style.setProperty('--drift', drift + 'px');
+            
+            particlesContainer.appendChild(particle);
+        }
+    </script>
+
+    <script>
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        function applyJob(company) {
+            // Map company to real Internshala job searches
+            const jobSearches = {
+                'TechCorp': 'https://internshala.com/jobs/senior-software-engineer-jobs/',
+                'StartupX': 'https://internshala.com/jobs/software-engineer-jobs/',
+                'FinanceHub': 'https://internshala.com/jobs/backend-developer-jobs/'
+            };
+            
+            const jobUrl = jobSearches[company] || 'https://internshala.com/jobs/';
+            
+            // Show notification
+            if (typeof showNotification === 'function') {
+                showNotification(`🎉 Redirecting to Internshala jobs for ${company}...`, 'success');
+            } else {
+                alert(`🎉 Great choice! Redirecting to Internshala for ${company} jobs...\n\n✨ Pro tip: Your SmartMock interview practice will help you ace this interview!`);
+            }
+            
+            // Redirect after a short delay
+            setTimeout(() => {
+                window.open(jobUrl, '_blank');
+            }, 1000);
+        }
+
+        function saveJob(company) {
+            if (typeof showNotification === 'function') {
+                showNotification(`💾 Job saved! Access from your dashboard.`, 'success');
+            } else {
+                alert(`💾 Job at ${company} saved to your favorites!\n\nYou can review it anytime from your dashboard.`);
+            }
+            
+            // Save to localStorage
+            const savedJobs = JSON.parse(localStorage.getItem('savedJobs') || '[]');
+            if (!savedJobs.includes(company)) {
+                savedJobs.push(company);
+                localStorage.setItem('savedJobs', JSON.stringify(savedJobs));
+            }
+        }
+    </script>
+    <script>
+        // Load real-time jobs from our backend Internshala proxy
+        async function fetchInternshalaJobs(category) {
+            const statusEl = document.getElementById('jobs-status');
+            statusEl.textContent = 'Fetching live openings…';
+            try {
+                const url = `http://localhost:3000/api/jobs/internshala?category=${encodeURIComponent(category || '')}`;
+                const res = await fetch(url, { credentials: 'include' });
+                if (!res.ok) throw new Error('Network error');
+                const data = await res.json();
+                statusEl.textContent = data.success ? `Showing ${data.count} openings` : 'No results';
+                return data.jobs || [];
+            } catch (e) {
+                console.error('Jobs fetch failed', e);
+                statusEl.textContent = 'Unable to load live openings right now';
+                return [];
+            }
+        }
+
+        function renderJobs(list, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            if (!list.length) {
+                container.innerHTML = '<p style="color:rgba(255,255,255,0.7)">No openings found. Try another keyword like "software-engineer", "backend-developer", or leave blank.</p>';
+                return;
+            }
+            list.slice(0, 12).forEach(job => {
+                const card = document.createElement('div');
+                card.className = 'job-card';
+                card.innerHTML = `
+                    <div class="job-header">
+                        <div>
+                            <div class="job-title">${job.title || 'Job Opening'}</div>
+                            <div class="company-name">🏢 ${job.company || 'Company'}</div>
+                            <div class="job-meta">
+                                <span class="meta-item">📍 ${job.location || '—'}</span>
+                                <span class="meta-item">💰 ${job.salary || '—'}</span>
+                                <span class="meta-item">🔗 ${job.source || 'Internshala'}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="job-actions">
+                        <button class="apply-btn">View on Internshala</button>
+                    </div>`;
+                const btn = card.querySelector('.apply-btn');
+                btn.addEventListener('click', () => window.open(job.applyLink, '_blank'));
+                container.appendChild(card);
+            });
+        }
+
+        // Hook up search UI
+        (function initLiveJobs(){
+            const input = document.getElementById('job-keyword');
+            const button = document.getElementById('btn-load-jobs');
+            const defaultCategory = 'software-engineer';
+            input.value = defaultCategory;
+            const load = async () => {
+                const term = (input.value || '').trim();
+                const cat = term ? term.replace(/\s+/g,'-').toLowerCase() : '';
+                const jobs = await fetchInternshalaJobs(cat);
+                renderJobs(jobs, 'live-jobs-list');
+            };
+            button.addEventListener('click', load);
+            // Auto-load on first visit
+            load();
+        })();
+    </script>
+    <script src="assets/js/auto-purple-bg.js"></script>
+</body>
+</html>

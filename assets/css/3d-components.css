@@ -1,0 +1,217 @@
+/* SmartMock Core Layout Components */
+body {
+  background-color: var(--bg-deep);
+  color: var(--text-bright);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Main Grid Layout */
+.smart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+  perspective: 1000px;
+}
+
+/* Dashboard Components */
+.dashboard-sphere {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  transform-style: preserve-3d;
+}
+
+.stats-orbit {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.stat-item {
+  position: absolute;
+  padding: 1rem;
+  background: var(--bg-glass);
+  border-radius: 12px;
+  transform-origin: center center;
+  animation: orbitStat 20s linear infinite;
+}
+
+@keyframes orbitStat {
+  from { transform: rotateY(0deg) translateZ(150px); }
+  to { transform: rotateY(360deg) translateZ(150px); }
+}
+
+/* Interview Room */
+.interview-room {
+  position: relative;
+  min-height: 400px;
+  background: var(--bg-glass);
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.avatar-container {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 200px;
+}
+
+.emotion-hud-container {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  display: grid;
+  gap: 1rem;
+}
+
+/* Course Grid */
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  perspective: 2000px;
+}
+
+.course-card {
+  position: relative;
+  height: 200px;
+  background: var(--bg-glass);
+  border-radius: 16px;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.course-card:hover {
+  transform: translateZ(50px) rotateX(10deg);
+}
+
+/* Performance Analytics */
+.analytics-panel {
+  padding: 2rem;
+  background: var(--bg-glass);
+  border-radius: 24px;
+}
+
+.chart-container {
+  position: relative;
+  height: 300px;
+  transform-style: preserve-3d;
+}
+
+.chart-hologram {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at center,
+      rgba(108,99,255,0.1) 0%,
+      transparent 70%
+    );
+  animation: pulseHologram 4s ease-in-out infinite;
+}
+
+@keyframes pulseHologram {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
+}
+
+/* Certificate Wall */
+.certificate-wall {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  perspective: 1000px;
+}
+
+.certificate-frame {
+  position: relative;
+  padding: 1rem;
+  background: var(--bg-glass);
+  border-radius: 16px;
+  transform-style: preserve-3d;
+  transition: transform 0.4s ease;
+}
+
+.certificate-frame:hover {
+  transform: translateZ(30px) rotateY(10deg);
+}
+
+/* Leaderboard Tower */
+.leaderboard-tower {
+  position: relative;
+  height: 600px;
+  perspective: 1000px;
+}
+
+.leaderboard-level {
+  position: absolute;
+  width: 100%;
+  padding: 1rem;
+  background: var(--bg-glass);
+  border-radius: 12px;
+  transform-style: preserve-3d;
+  transition: transform 0.4s ease;
+}
+
+.leaderboard-level:hover {
+  transform: translateZ(20px) scale(1.05);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .smart-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .stats-orbit {
+    scale: 0.7;
+  }
+  
+  .avatar-container {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+/* Loading States */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-deep);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+}
+
+.loading-sphere {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: var(--gradient-neon);
+  animation: loadingPulse 2s ease-in-out infinite;
+}
+
+@keyframes loadingPulse {
+  0%, 100% { transform: scale(0.8); opacity: 0.5; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+
+/* Interaction States */
+.interactive {
+  cursor: pointer;
+  transition: filter 0.3s ease;
+}
+
+.interactive:hover {
+  filter: brightness(1.2);
+}
+
+.interactive:active {
+  filter: brightness(0.9);
+  transform: scale(0.98);
+}

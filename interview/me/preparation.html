@@ -1,0 +1,676 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mechanical Engineering - Interview Preparation</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <style>
+        .video-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .video-item {
+            background: #f9f9f9;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .video-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .video-item iframe {
+            width: 100%;
+            height: 200px;
+            display: block;
+        }
+        .video-item p {
+            padding: 15px;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+        .prep-header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .prep-header h1 {
+            margin: 0 0 10px 0;
+        }
+        .prep-header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+    </style>
+    <style>
+      /* Dark Black Theme with Purple Particles */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  
+    <style>
+      /* Dark Black Theme with Purple Particles & Parallax */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at var(--gradient-x, 50%) var(--gradient-y, 50%), 
+          rgba(168, 85, 247, 0.05) 0%, 
+          transparent 70%
+        );
+        pointer-events: none;
+        z-index: 0;
+        will-change: transform;
+        transition: background 0.3s ease;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        z-index: 2000 !important;
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  </head>
+<body>
+
+    <!-- Floating Particles -->
+    <div class="particles-container" id="particlesContainer"></div>
+    <!-- Fullscreen Background Robot with Parallax Depth -->
+    <style>
+      #bg-robot-container { 
+        position: fixed; 
+        inset: 0; 
+        z-index: -1; 
+        pointer-events: none;
+        will-change: transform;
+        transform-style: preserve-3d;
+        perspective: 2000px;
+      }
+      #bg-robot-container canvas { 
+        width: 100%; 
+        height: 100%; 
+        display: block; 
+      }
+      
+      /* Full-screen 3D rotation animation */
+      @keyframes rotate3D {
+        0% { transform: perspective(2000px) rotateX(0deg) rotateY(0deg); }
+        25% { transform: perspective(2000px) rotateX(3deg) rotateY(90deg); }
+        50% { transform: perspective(2000px) rotateX(0deg) rotateY(180deg); }
+        75% { transform: perspective(2000px) rotateX(-3deg) rotateY(270deg); }
+        100% { transform: perspective(2000px) rotateX(0deg) rotateY(360deg); }
+      }
+      
+      #bg-robot-container {
+        animation: none !important;
+      }
+    </style>
+    <div id="bg-robot-container">
+      <canvas id="bg-robot-canvas"></canvas>
+    </div>
+    <header class="site-header">
+      <div class="site-header-inner container">
+        <nav class="menu menu-left">
+          <div class="menu-button">☰ Menu</div>
+          <ul class="dropdown">
+            <li><a href="../../home.html">Home</a></li>
+            <li><a href="../../dashboard.html">Dashboard</a></li>
+            <li class="has-submenu"><a href="../../interview.html">Interview</a>
+              <ul class="submenu">
+                <li class="has-submenu"><a href="../cs/courses.html">Computer Science</a>
+                  <ul class="submenu">
+                    <li><a href="../cs/courses.html">Courses</a></li>
+                    <li><a href="../cs/interview.html">Interview</a></li>
+                    <li><a href="../cs/preparation.html">Interview Preparation</a></li>
+                    <li><a href="../cs/report.html">Report</a></li>
+                    <li><a href="../cs/ai-interview.html">AI Interview</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="../ee/courses.html">Electrical</a>
+                  <ul class="submenu">
+                    <li><a href="../ee/courses.html">Courses</a></li>
+                    <li><a href="../ee/interview.html">Interview</a></li>
+                    <li><a href="../ee/preparation.html">Interview Preparation</a></li>
+                    <li><a href="../ee/report.html">Report</a></li>
+                    <li><a href="../ee/ai-interview.html">AI Interview</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="../me/courses.html">Mechanical</a>
+                  <ul class="submenu">
+                    <li><a href="../me/courses.html">Courses</a></li>
+                    <li><a href="../me/interview.html">Interview</a></li>
+                    <li><a href="../me/preparation.html">Interview Preparation</a></li>
+                    <li><a href="../me/report.html">Report</a></li>
+                    <li><a href="../me/ai-interview.html">AI Interview</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="../ce/courses.html">Civil</a>
+                  <ul class="submenu">
+                    <li><a href="../ce/courses.html">Courses</a></li>
+                    <li><a href="../ce/interview.html">Interview</a></li>
+                    <li><a href="../ce/preparation.html">Interview Preparation</a></li>
+                    <li><a href="../ce/report.html">Report</a></li>
+                    <li><a href="../ce/ai-interview.html">AI Interview</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="../ec/courses.html">Electronic Communication</a>
+                  <ul class="submenu">
+                    <li><a href="../ec/courses.html">Courses</a></li>
+                    <li><a href="../ec/interview.html">Interview</a></li>
+                    <li><a href="../ec/preparation.html">Interview Preparation</a></li>
+                    <li><a href="../ec/report.html">Report</a></li>
+                    <li><a href="../ec/ai-interview.html">AI Interview</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li><a href="../../about.html">About</a></li>
+            <li><a href="../../report.html">Report</a></li>
+            <li><a href="../../community.html">Community</a></li>
+            <li><a href="../../contact.html">Contact Us</a></li>
+          </ul>
+        </nav>
+        <div class="brand"><a href="../../home.html"><span class="logo">Smart</span><span class="logo-accent">Mock</span></a></div>
+        <div class="menu" style="margin-left:auto;">
+          <a class="btn" href="../../profile.html">Profile</a>
+          <a class="btn" href="#" onclick="signOut(); return false;">Sign out</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="prep-header">
+        <h1>Mechanical Engineering Interview Preparation</h1>
+        <p>Master the fundamentals with these comprehensive video tutorials</p>
+    </div>
+
+    <main class="container">
+        <div class="video-container">
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/7qUVqV8xpLE" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p>Introduction to Thermodynamics</p>
+          </div>
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/pePHhMbC7D8" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p>First Law of Thermodynamics</p>
+          </div>
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/ZWib5hLLnJM" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p>Second Law of Thermodynamics</p>
+          </div>
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/xqLoM5HS6KI" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p>Carnot Cycle and Efficiency</p>
+          </div>
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/CWulQ1ZSE3c" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p>Fluid Mechanics Basics</p>
+          </div>
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/nZMtEseUN_U" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p>Bernoulli Equation</p>
+          </div>
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/M0mx8S05v60" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p>Reynolds Number and Flow</p>
+          </div>
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/fKDbAJRto5I" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p>Boundary Layer Theory</p>
+          </div>
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/bwHgjHJ2uKw" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p>Heat Transfer Fundamentals</p>
+          </div>
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/xUDElAEvQ9Q" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p>Conduction Heat Transfer</p>
+          </div>
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/UchitHGF4n8" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p>Convection Heat Transfer</p>
+          </div>
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/quABfe4Ev3s" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p>Manufacturing Processes</p>
+          </div>
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/oBc_BHxw78s" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p>Material Properties</p>
+          </div>
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/mc8Dwvr58jI" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p>Stress and Strain</p>
+          </div>
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/7qUVqV8xpLE" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p>Machine Design Basics</p>
+          </div>
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/pePHhMbC7D8" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p>Vibrations and Dynamics</p>
+          </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">© <span id="year"></span> SmartMock.</footer>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="../../assets/js/firebase-config.js"></script>
+    <script src="../../assets/js/main.js"></script>
+
+    <!-- Particle Generation Script -->
+    <script>
+      // Create 120 floating purple particles
+      if (document.getElementById('particlesContainer')) {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 120;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          // Random size (2-6px)
+          const size = 2 + Math.random() * 4;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          // Random horizontal position
+          const leftPos = Math.random() * 100;
+          particle.style.left = `${leftPos}%`;
+          
+          // Random animation duration (12-25 seconds)
+          const duration = 12 + Math.random() * 13;
+          particle.style.animationDuration = `${duration}s`;
+          
+          // Random delay
+          const delay = Math.random() * 10;
+          particle.style.animationDelay = `${delay}s`;
+          
+          // Random horizontal drift
+          const drift = (Math.random() - 0.5) * 150;
+          particle.style.setProperty('--drift', `${drift}px`);
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+  
+    <!-- Particle Generation Script -->
+    <script>
+      // Create 120 floating purple particles
+      if (document.getElementById('particlesContainer')) {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 120;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          const size = 2 + Math.random() * 4;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          const leftPos = Math.random() * 100;
+          particle.style.left = `${leftPos}%`;
+          
+          const duration = 12 + Math.random() * 13;
+          particle.style.animationDuration = `${duration}s`;
+          
+          const delay = Math.random() * 10;
+          particle.style.animationDelay = `${delay}s`;
+          
+          const drift = (Math.random() - 0.5) * 150;
+          particle.style.setProperty('--drift', `${drift}px`);
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+    
+    <!-- Three.js + Robot Interviewer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="assets/js/robot-interviewer.js"></script>
+    <script>
+      // Initialize Background Robot
+      (function initBgRobot(){
+        if (typeof THREE === 'undefined' || typeof window.RobotInterviewer === 'undefined') {
+          return setTimeout(initBgRobot, 100);
+        }
+        try {
+          window.bgRobot = new window.RobotInterviewer('bg-robot-container', THREE, {
+            canvasId: 'bg-robot-canvas',
+            trackCursor: true
+          });
+          window.bgRobot.setState('neutral');
+          console.log('✅ Background robot initialized');
+        } catch (e) {
+          console.error('❌ Failed to init background robot:', e);
+        }
+      })();
+      
+      // Advanced Parallax and Depth Effect
+      let targetX = 0, targetY = 0;
+      let currentX = 0, currentY = 0;
+      
+      document.addEventListener('mousemove', (e) => {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        targetX = (x - 0.5);
+        targetY = (y - 0.5);
+      });
+      
+      function animateParallax() {
+        currentX += (targetX - currentX) * 0.1;
+        currentY += (targetY - currentY) * 0.1;
+        
+        const container = document.getElementById('bg-robot-container');
+        if (container) {
+          const moveX1 = currentX * 80;
+          const moveY1 = currentY * 80;
+          const rotateY1 = currentX * 20;
+          const rotateX1 = -currentY * 20;
+          const scale1 = 1 + (Math.abs(currentX) + Math.abs(currentY)) * 0.05;
+          
+          container.style.transform = `
+            perspective(2000px) 
+            translateX(${moveX1}px) 
+            translateY(${moveY1}px) 
+            translateZ(-100px)
+            rotateX(${rotateX1}deg) 
+            rotateY(${rotateY1}deg)
+            scale(${scale1})
+          `;
+        }
+        
+        const particles = document.getElementById('particlesContainer');
+        if (particles) {
+          const moveX2 = currentX * 40;
+          const moveY2 = currentY * 40;
+          particles.style.transform = `
+            translateX(${moveX2}px) 
+            translateY(${moveY2}px)
+            translateZ(50px)
+          `;
+        }
+        
+        const bodyBefore = document.body;
+        if (bodyBefore) {
+          const gradientX = 50 + currentX * 10;
+          const gradientY = 50 + currentY * 10;
+          bodyBefore.style.setProperty('--gradient-x', `${gradientX}%`);
+          bodyBefore.style.setProperty('--gradient-y', `${gradientY}%`);
+        }
+        
+        const main = document.querySelector('main');
+        if (main) {
+          const moveX4 = -currentX * 15;
+          const moveY4 = -currentY * 15;
+          main.style.transform = `
+            translateX(${moveX4}px) 
+            translateY(${moveY4}px)
+            translateZ(100px)
+          `;
+        }
+        
+        requestAnimationFrame(animateParallax);
+      }
+      
+      animateParallax();
+    </script>
+  </body>
+</html>

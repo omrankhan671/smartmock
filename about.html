@@ -1,0 +1,609 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SmartMock – About</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <style>
+      .contributors-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 30px;
+      }
+      .contributor-card {
+        background: linear-gradient(145deg, #1e1e2e 0%, #252538 100%);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 30px;
+        text-align: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+      .contributor-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 30px rgba(102, 126, 234, 0.3);
+        border-color: rgba(102, 126, 234, 0.5);
+      }
+      .contributor-image {
+        width: 150px;
+        height: 150px;
+        margin: 0 auto 20px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 4px solid var(--primary);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+      }
+      .contributor-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .contributor-card h3 {
+        margin: 0 0 8px 0;
+        color: var(--text);
+        font-size: 1.3em;
+      }
+      .contributor-card .role {
+        color: var(--primary);
+        font-weight: 600;
+        margin: 0 0 15px 0;
+        font-size: 0.9em;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .contributor-card .contribution {
+        color: var(--muted);
+        line-height: 1.6;
+        font-size: 0.95em;
+      }
+    </style>
+      <style>
+      /* Dark Black Theme with Purple Particles */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  
+    <style>
+      /* Dark Black Theme with Purple Particles & Parallax */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at var(--gradient-x, 50%) var(--gradient-y, 50%), 
+          rgba(168, 85, 247, 0.05) 0%, 
+          transparent 70%
+        );
+        pointer-events: none;
+        z-index: 0;
+        will-change: transform;
+        transition: background 0.3s ease;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        z-index: 2000 !important;
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Background Robot & Particles Layer -->
+    <div class="particles-container" id="particlesContainer"></div>
+    <style>
+      #bg-robot-container { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+      #bg-robot-container canvas { width: 100%; height: 100%; display: block; }
+      .particles-container { z-index: 0; }
+    </style>
+    <div id="bg-robot-container"><canvas id="bg-robot-canvas"></canvas></div>
+    <header class="site-header">
+      <div class="site-header-inner container">
+        <nav class="menu menu-left">
+          <div class="menu-button">☰ Menu</div>
+          <ul class="dropdown">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="leaderboard.html">🏆 Leaderboard</a></li>
+            <li class="has-submenu"><a href="interview.html">Interview</a>
+              <ul class="submenu">
+                <li><a href="interview.html">AI Interview</a></li>
+                <li class="has-submenu"><a href="interview/cs/courses.html">Computer Science</a>
+                  <ul class="submenu">
+                    <li><a href="interview/cs/courses.html">Courses</a></li>
+                    <li><a href="interview/cs/interview.html">Interview</a></li>
+                    <li><a href="interview/cs/preparation.html">Interview Preparation</a></li>
+                    <li><a href="interview/cs/report.html">Report</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="interview/ee/courses.html">Electrical</a>
+                  <ul class="submenu">
+                    <li><a href="interview/ee/courses.html">Courses</a></li>
+                    <li><a href="interview/ee/interview.html">Interview</a></li>
+                    <li><a href="interview/ee/preparation.html">Interview Preparation</a></li>
+                    <li><a href="interview/ee/report.html">Report</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="interview/me/courses.html">Mechanical</a>
+                  <ul class="submenu">
+                    <li><a href="interview/me/courses.html">Courses</a></li>
+                    <li><a href="interview/me/interview.html">Interview</a></li>
+                    <li><a href="interview/me/preparation.html">Interview Preparation</a></li>
+                    <li><a href="interview/me/report.html">Report</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="interview/ce/courses.html">Civil</a>
+                  <ul class="submenu">
+                    <li><a href="interview/ce/courses.html">Courses</a></li>
+                    <li><a href="interview/ce/interview.html">Interview</a></li>
+                    <li><a href="interview/ce/preparation.html">Interview Preparation</a></li>
+                    <li><a href="interview/ce/report.html">Report</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="interview/ec/courses.html">Electronic Communication</a>
+                  <ul class="submenu">
+                    <li><a href="interview/ec/courses.html">Courses</a></li>
+                    <li><a href="interview/ec/interview.html">Interview</a></li>
+                    <li><a href="interview/ec/preparation.html">Interview Preparation</a></li>
+                    <li><a href="interview/ec/report.html">Report</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="report.html">Report</a></li>
+            <li><a href="community.html">Community</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="verify-certificate.html">Verify Certificate</a></li>
+            <li><a href="recruiter/dashboard.html">Recruiter</a></li>
+          </ul>
+        </nav>
+        <div class="brand"><a href="home.html"><span class="logo">Smart</span><span class="logo-accent">Mock</span></a></div>
+        <div class="menu" style="margin-left:auto;">
+          <a class="btn" href="profile.html">Profile</a>
+          <a class="btn" href="#" onclick="signOut(); return false;">Sign out</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section>
+        <h2>About SmartMock</h2>
+        <div class="section-card">
+          <p>SmartMock is a professional platform for mock interviews and structured learning across engineering disciplines. We focus on realistic practice, actionable feedback, and a modern learning experience.</p>
+        </div>
+      </section>
+      
+      <section>
+        <h2>Our Contributors</h2>
+        <div class="contributors-grid">
+          <div class="contributor-card">
+            <div class="contributor-image">
+              <img src="assets/images/contributor1.jpg" alt="Contributor 1" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Crect fill=%27%23667eea%27 width=%27200%27 height=%27200%27/%3E%3Ctext x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27 font-size=%2748%27 fill=%27white%27 font-family=%27Arial%27%3EC1%3C/text%3E%3C/svg%3E'" />
+            </div>
+            <h3>Contributor Name 1</h3>
+            <p class="role">Lead Developer</p>
+            <p class="contribution">Built the core interview system with AI integration, emotion detection, and comprehensive reporting features.</p>
+          </div>
+          
+          <div class="contributor-card">
+            <div class="contributor-image">
+              <img src="assets/images/contributor2.jpg" alt="Contributor 2" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Crect fill=%27%23764ba2%27 width=%27200%27 height=%27200%27/%3E%3Ctext x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27 font-size=%2748%27 fill=%27white%27 font-family=%27Arial%27%3EC2%3C/text%3E%3C/svg%3E'" />
+            </div>
+            <h3>Contributor Name 2</h3>
+            <p class="role">UI/UX Designer</p>
+            <p class="contribution">Designed the modern dark theme interface, user experience flows, and interactive components.</p>
+          </div>
+          
+          <div class="contributor-card">
+            <div class="contributor-image">
+              <img src="assets/images/contributor3.jpg" alt="Contributor 3" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Crect fill=%27%2351cf66%27 width=%27200%27 height=%27200%27/%3E%3Ctext x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27 font-size=%2748%27 fill=%27white%27 font-family=%27Arial%27%3EC3%3C/text%3E%3C/svg%3E'" />
+            </div>
+            <h3>Contributor Name 3</h3>
+            <p class="role">Backend Engineer</p>
+            <p class="contribution">Implemented Firebase integration, authentication system, and real-time database architecture.</p>
+          </div>
+          
+          <div class="contributor-card">
+            <div class="contributor-image">
+              <img src="assets/images/contributor4.jpg" alt="Contributor 4" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Crect fill=%27%23ff6b6b%27 width=%27200%27 height=%27200%27/%3E%3Ctext x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27 font-size=%2748%27 fill=%27white%27 font-family=%27Arial%27%3EC4%3C/text%3E%3C/svg%3E'" />
+            </div>
+            <h3>Contributor Name 4</h3>
+            <p class="role">Content Curator</p>
+            <p class="contribution">Created comprehensive question banks, video tutorials, and learning paths for all engineering departments.</p>
+          </div>
+          
+          <div class="contributor-card">
+            <div class="contributor-image">
+              <img src="assets/images/contributor5.jpg" alt="Contributor 5" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Crect fill=%27%23ffd93d%27 width=%27200%27 height=%27200%27/%3E%3Ctext x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27 font-size=%2748%27 fill=%27white%27 font-family=%27Arial%27%3EC5%3C/text%3E%3C/svg%3E'" />
+            </div>
+            <h3>Contributor Name 5</h3>
+            <p class="role">QA Engineer</p>
+            <p class="contribution">Ensured platform reliability through rigorous testing, bug fixes, and performance optimization.</p>
+          </div>
+          
+          <div class="contributor-card">
+            <div class="contributor-image">
+              <img src="assets/images/contributor6.jpg" alt="Contributor 6" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Crect fill=%27%236bcf90%27 width=%27200%27 height=%27200%27/%3E%3Ctext x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27 font-size=%2748%27 fill=%27white%27 font-family=%27Arial%27%3EC6%3C/text%3E%3C/svg%3E'" />
+            </div>
+            <h3>Contributor Name 6</h3>
+            <p class="role">Documentation Lead</p>
+            <p class="contribution">Developed comprehensive guides, tutorials, and documentation for users and developers.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+    
+    <footer class="site-footer">© <span id="year"></span> SmartMock.</footer>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="assets/js/firebase-config.js"></script>
+  <script src="assets/js/main.js"></script>
+  <!-- Three.js + Robot Interviewer -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="assets/js/robot-interviewer.js"></script>
+  <script>
+    (function initBgRobot(){
+      if (typeof THREE === 'undefined' || typeof window.RobotInterviewer === 'undefined') {
+        return setTimeout(initBgRobot, 100);
+      }
+      try {
+        window.bgRobot = new window.RobotInterviewer('bg-robot-container', THREE, {
+          canvasId: 'bg-robot-canvas',
+          trackCursor: true
+        });
+        window.bgRobot.setState('neutral');
+        console.log('✅ Background robot initialized on about.html');
+      } catch(e){ console.error('❌ Robot init failed (about.html):', e); }
+    })();
+  </script>
+  
+    <!-- Particle Generation Script -->
+    <script>
+      // Create 120 floating purple particles
+      if (document.getElementById('particlesContainer')) {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 120;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          // Random size (2-6px)
+          const size = 2 + Math.random() * 4;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          // Random horizontal position
+          const leftPos = Math.random() * 100;
+          particle.style.left = `${leftPos}%`;
+          
+          // Random animation duration (12-25 seconds)
+          const duration = 12 + Math.random() * 13;
+          particle.style.animationDuration = `${duration}s`;
+          
+          // Random delay
+          const delay = Math.random() * 10;
+          particle.style.animationDelay = `${delay}s`;
+          
+          // Random horizontal drift
+          const drift = (Math.random() - 0.5) * 150;
+          particle.style.setProperty('--drift', `${drift}px`);
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+  
+    <!-- Particle Generation Script -->
+    <script>
+      // Create 120 floating purple particles
+      if (document.getElementById('particlesContainer')) {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 120;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          const size = 2 + Math.random() * 4;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          const leftPos = Math.random() * 100;
+          particle.style.left = `${leftPos}%`;
+          
+          const duration = 12 + Math.random() * 13;
+          particle.style.animationDuration = `${duration}s`;
+          
+          const delay = Math.random() * 10;
+          particle.style.animationDelay = `${delay}s`;
+          
+          const drift = (Math.random() - 0.5) * 150;
+          particle.style.setProperty('--drift', `${drift}px`);
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+    
+    <!-- Three.js + Robot Interviewer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="assets/js/robot-interviewer.js"></script>
+    <script>
+      // Initialize Background Robot
+      (function initBgRobot(){
+        if (typeof THREE === 'undefined' || typeof window.RobotInterviewer === 'undefined') {
+          return setTimeout(initBgRobot, 100);
+        }
+        try {
+          window.bgRobot = new window.RobotInterviewer('bg-robot-container', THREE, {
+            canvasId: 'bg-robot-canvas',
+            trackCursor: true
+          });
+          window.bgRobot.setState('neutral');
+          console.log('✅ Background robot initialized');
+        } catch (e) {
+          console.error('❌ Failed to init background robot:', e);
+        }
+      })();
+      
+      // Advanced Parallax and Depth Effect
+      let targetX = 0, targetY = 0;
+      let currentX = 0, currentY = 0;
+      
+      document.addEventListener('mousemove', (e) => {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        targetX = (x - 0.5);
+        targetY = (y - 0.5);
+      });
+      
+      function animateParallax() {
+        currentX += (targetX - currentX) * 0.1;
+        currentY += (targetY - currentY) * 0.1;
+        
+        const container = document.getElementById('bg-robot-container');
+        if (container) {
+          const moveX1 = currentX * 80;
+          const moveY1 = currentY * 80;
+          const rotateY1 = currentX * 20;
+          const rotateX1 = -currentY * 20;
+          const scale1 = 1 + (Math.abs(currentX) + Math.abs(currentY)) * 0.05;
+          
+          container.style.transform = `
+            perspective(2000px) 
+            translateX(${moveX1}px) 
+            translateY(${moveY1}px) 
+            translateZ(-100px)
+            rotateX(${rotateX1}deg) 
+            rotateY(${rotateY1}deg)
+            scale(${scale1})
+          `;
+        }
+        
+        const particles = document.getElementById('particlesContainer');
+        if (particles) {
+          const moveX2 = currentX * 40;
+          const moveY2 = currentY * 40;
+          particles.style.transform = `
+            translateX(${moveX2}px) 
+            translateY(${moveY2}px)
+            translateZ(50px)
+          `;
+        }
+        
+        const bodyBefore = document.body;
+        if (bodyBefore) {
+          const gradientX = 50 + currentX * 10;
+          const gradientY = 50 + currentY * 10;
+          bodyBefore.style.setProperty('--gradient-x', `${gradientX}%`);
+          bodyBefore.style.setProperty('--gradient-y', `${gradientY}%`);
+        }
+        
+        const main = document.querySelector('main');
+        if (main) {
+          const moveX4 = -currentX * 15;
+          const moveY4 = -currentY * 15;
+          main.style.transform = `
+            translateX(${moveX4}px) 
+            translateY(${moveY4}px)
+            translateZ(100px)
+          `;
+        }
+        
+        requestAnimationFrame(animateParallax);
+      }
+      
+      animateParallax();
+    </script>
+    <script src="assets/js/auto-purple-bg.js"></script>
+  </body>
+</html>

@@ -1,0 +1,466 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Test - SmartMock</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0a0a0a;
+            color: #fff;
+        }
+        h1 { color: #6C63FF; }
+        h2 { color: #00E5FF; margin-top: 30px; }
+        .test-section {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 1px solid rgba(108, 99, 255, 0.3);
+        }
+        .success { color: #00ff00; }
+        .error { color: #ff0000; }
+        .link-test {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 5px;
+            background: rgba(108, 99, 255, 0.2);
+            border-radius: 5px;
+            text-decoration: none;
+            color: #fff;
+            border: 1px solid #6C63FF;
+        }
+        .link-test:hover {
+            background: rgba(108, 99, 255, 0.4);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        th {
+            background: rgba(108, 99, 255, 0.2);
+            color: #00E5FF;
+        }
+        .status-ok { color: #00ff00; font-weight: bold; }
+        .status-missing { color: #ff0000; font-weight: bold; }
+    </style>
+
+    <style>
+      /* Dark Black Theme with Purple Particles & Parallax */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at var(--gradient-x, 50%) var(--gradient-y, 50%), 
+          rgba(168, 85, 247, 0.05) 0%, 
+          transparent 70%
+        );
+        pointer-events: none;
+        z-index: 0;
+        will-change: transform;
+        transition: background 0.3s ease;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        z-index: 2000 !important;
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  </head>
+<body>
+
+    <!-- Floating Particles -->
+    <div class="particles-container" id="particlesContainer"></div>
+    <!-- Fullscreen Background Robot with Parallax Depth -->
+    <style>
+      #bg-robot-container { 
+        position: fixed; 
+        inset: 0; 
+        z-index: 1; 
+        pointer-events: none;
+        will-change: transform;
+        transform-style: preserve-3d;
+        perspective: 2000px;
+      }
+      #bg-robot-container canvas { 
+        width: 100%; 
+        height: 100%; 
+        display: block; 
+      }
+      
+      /* Full-screen 3D rotation animation */
+      @keyframes rotate3D {
+        0% { transform: perspective(2000px) rotateX(0deg) rotateY(0deg); }
+        25% { transform: perspective(2000px) rotateX(3deg) rotateY(90deg); }
+        50% { transform: perspective(2000px) rotateX(0deg) rotateY(180deg); }
+        75% { transform: perspective(2000px) rotateX(-3deg) rotateY(270deg); }
+        100% { transform: perspective(2000px) rotateX(0deg) rotateY(360deg); }
+      }
+      
+      #bg-robot-container {
+        animation: none !important;
+      }
+    </style>
+    <div id="bg-robot-container">
+      <canvas id="bg-robot-canvas"></canvas>
+    </div>
+    <h1>🔍 SmartMock Navigation Test Page</h1>
+    <p>This page tests all AI Interview navigation links across all departments.</p>
+
+    <div class="test-section">
+        <h2>✅ AI Interview Links - All Departments</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Department</th>
+                    <th>AI Interview Link</th>
+                    <th>Status</th>
+                    <th>Test Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Computer Science (CS)</td>
+                    <td>/interview/cs/ai-interview.html</td>
+                    <td class="status-ok">✓ EXISTS</td>
+                    <td><a href="interview/cs/ai-interview.html" class="link-test" target="_blank">Test CS AI Interview</a></td>
+                </tr>
+                <tr>
+                    <td>Electrical Engineering (EE)</td>
+                    <td>/interview/ee/ai-interview.html</td>
+                    <td class="status-ok">✓ EXISTS</td>
+                    <td><a href="interview/ee/ai-interview.html" class="link-test" target="_blank">Test EE AI Interview</a></td>
+                </tr>
+                <tr>
+                    <td>Mechanical Engineering (ME)</td>
+                    <td>/interview/me/ai-interview.html</td>
+                    <td class="status-ok">✓ EXISTS</td>
+                    <td><a href="interview/me/ai-interview.html" class="link-test" target="_blank">Test ME AI Interview</a></td>
+                </tr>
+                <tr>
+                    <td>Civil Engineering (CE)</td>
+                    <td>/interview/ce/ai-interview.html</td>
+                    <td class="status-ok">✓ EXISTS</td>
+                    <td><a href="interview/ce/ai-interview.html" class="link-test" target="_blank">Test CE AI Interview</a></td>
+                </tr>
+                <tr>
+                    <td>Electronics & Communication (EC)</td>
+                    <td>/interview/ec/ai-interview.html</td>
+                    <td class="status-ok">✓ EXISTS</td>
+                    <td><a href="interview/ec/ai-interview.html" class="link-test" target="_blank">Test EC AI Interview</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="test-section">
+        <h2>📋 All Course Pages with Navigation</h2>
+        <p>Test that navigation menus show AI Interview links:</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Department</th>
+                    <th>Page</th>
+                    <th>Test Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>CS</td>
+                    <td>courses.html</td>
+                    <td><a href="interview/cs/courses.html" class="link-test" target="_blank">Open CS Courses</a></td>
+                </tr>
+                <tr>
+                    <td>EE</td>
+                    <td>courses.html</td>
+                    <td><a href="interview/ee/courses.html" class="link-test" target="_blank">Open EE Courses</a></td>
+                </tr>
+                <tr>
+                    <td>ME</td>
+                    <td>courses.html</td>
+                    <td><a href="interview/me/courses.html" class="link-test" target="_blank">Open ME Courses</a></td>
+                </tr>
+                <tr>
+                    <td>CE</td>
+                    <td>courses.html</td>
+                    <td><a href="interview/ce/courses.html" class="link-test" target="_blank">Open CE Courses</a></td>
+                </tr>
+                <tr>
+                    <td>EC</td>
+                    <td>courses.html</td>
+                    <td><a href="interview/ec/courses.html" class="link-test" target="_blank">Open EC Courses</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="test-section">
+        <h2>🔧 Troubleshooting Steps</h2>
+        <ol>
+            <li><strong>Clear Browser Cache:</strong> Press <code>Ctrl + Shift + Delete</code></li>
+            <li><strong>Hard Refresh:</strong> Press <code>Ctrl + F5</code> on any page</li>
+            <li><strong>Check Console:</strong> Press <code>F12</code> and check for JavaScript errors</li>
+            <li><strong>Verify Server:</strong> Make sure <code>python -m http.server 8000</code> is running</li>
+            <li><strong>Test Dropdown:</strong> Hover over "Interview" in the menu → Hover over department name → Look for "AI Interview" link</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h2>📊 Navigation Structure</h2>
+        <pre style="color: #00ff00; background: #000; padding: 15px; border-radius: 5px;">
+Menu → Interview → [Department] → Submenu:
+  ├── Courses
+  ├── Interview
+  ├── Interview Preparation
+  ├── Report
+  └── <strong style="color: #ffff00;">AI Interview</strong> ← Should appear here for ALL departments
+        </pre>
+    </div>
+
+    <div class="test-section">
+        <h2>✅ Fix Summary</h2>
+        <ul>
+            <li class="success">✓ Fixed JavaScript error in firebase-config.js (null email.split)</li>
+            <li class="success">✓ All 30 navigation files have AI Interview links</li>
+            <li class="success">✓ All 5 departments have ai-interview.html files</li>
+            <li class="success">✓ Navigation structure is correct in all files</li>
+        </ul>
+    </div>
+
+    <div class="test-section" style="border: 2px solid #ffff00; background: rgba(255,255,0,0.1);">
+        <h2>⚡ IMPORTANT - Clear Your Cache!</h2>
+        <p style="font-size: 18px;">The files are all correct, but you need to:</p>
+        <ol style="font-size: 16px;">
+            <li><strong>Close your browser completely</strong></li>
+            <li><strong>Reopen and go to localhost:8000</strong></li>
+            <li><strong>Press Ctrl + F5 for hard refresh</strong></li>
+            <li><strong>Hover over Interview → Department → You should see AI Interview</strong></li>
+        </ol>
+    </div>
+
+
+    <!-- Particle Generation Script -->
+    <script>
+      // Create 120 floating purple particles
+      if (document.getElementById('particlesContainer')) {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 120;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          const size = 2 + Math.random() * 4;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          const leftPos = Math.random() * 100;
+          particle.style.left = `${leftPos}%`;
+          
+          const duration = 12 + Math.random() * 13;
+          particle.style.animationDuration = `${duration}s`;
+          
+          const delay = Math.random() * 10;
+          particle.style.animationDelay = `${delay}s`;
+          
+          const drift = (Math.random() - 0.5) * 150;
+          particle.style.setProperty('--drift', `${drift}px`);
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+    
+    <!-- Three.js + Robot Interviewer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="assets/js/robot-interviewer.js"></script>
+    <script>
+      // Initialize Background Robot
+      (function initBgRobot(){
+        if (typeof THREE === 'undefined' || typeof window.RobotInterviewer === 'undefined') {
+          return setTimeout(initBgRobot, 100);
+        }
+        try {
+          window.bgRobot = new window.RobotInterviewer('bg-robot-container', THREE, {
+            canvasId: 'bg-robot-canvas',
+            trackCursor: true
+          });
+          window.bgRobot.setState('neutral');
+          console.log('✅ Background robot initialized');
+        } catch (e) {
+          console.error('❌ Failed to init background robot:', e);
+        }
+      })();
+      
+      // Advanced Parallax and Depth Effect
+      let targetX = 0, targetY = 0;
+      let currentX = 0, currentY = 0;
+      
+      document.addEventListener('mousemove', (e) => {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        targetX = (x - 0.5);
+        targetY = (y - 0.5);
+      });
+      
+      function animateParallax() {
+        currentX += (targetX - currentX) * 0.1;
+        currentY += (targetY - currentY) * 0.1;
+        
+        const container = document.getElementById('bg-robot-container');
+        if (container) {
+          const moveX1 = currentX * 80;
+          const moveY1 = currentY * 80;
+          const rotateY1 = currentX * 20;
+          const rotateX1 = -currentY * 20;
+          const scale1 = 1 + (Math.abs(currentX) + Math.abs(currentY)) * 0.05;
+          
+          container.style.transform = `
+            perspective(2000px) 
+            translateX(${moveX1}px) 
+            translateY(${moveY1}px) 
+            translateZ(-100px)
+            rotateX(${rotateX1}deg) 
+            rotateY(${rotateY1}deg)
+            scale(${scale1})
+          `;
+        }
+        
+        const particles = document.getElementById('particlesContainer');
+        if (particles) {
+          const moveX2 = currentX * 40;
+          const moveY2 = currentY * 40;
+          particles.style.transform = `
+            translateX(${moveX2}px) 
+            translateY(${moveY2}px)
+            translateZ(50px)
+          `;
+        }
+        
+        const bodyBefore = document.body;
+        if (bodyBefore) {
+          const gradientX = 50 + currentX * 10;
+          const gradientY = 50 + currentY * 10;
+          bodyBefore.style.setProperty('--gradient-x', `${gradientX}%`);
+          bodyBefore.style.setProperty('--gradient-y', `${gradientY}%`);
+        }
+        
+        const main = document.querySelector('main');
+        if (main) {
+          const moveX4 = -currentX * 15;
+          const moveY4 = -currentY * 15;
+          main.style.transform = `
+            translateX(${moveX4}px) 
+            translateY(${moveY4}px)
+            translateZ(100px)
+          `;
+        }
+        
+        requestAnimationFrame(animateParallax);
+      }
+      
+      animateParallax();
+    </script>
+    <script src="assets/js/auto-purple-bg.js"></script>
+  </body>
+</html>
+

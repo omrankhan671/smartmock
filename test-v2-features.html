@@ -1,0 +1,1087 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartMock v2.0 - Feature Testing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #6C63FF;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .feature-card h3 {
+            color: #6C63FF;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature-card .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: auto;
+        }
+
+        .status.loaded {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .test-btn {
+            background: linear-gradient(135deg, #6C63FF 0%, #5A52D5 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 15px;
+            width: 100%;
+            transition: transform 0.2s;
+        }
+
+        .test-btn:hover {
+            transform: scale(1.02);
+        }
+
+        .test-btn:active {
+            transform: scale(0.98);
+        }
+
+        .test-output {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #6C63FF;
+            font-size: 13px;
+            display: none;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .test-output.show {
+            display: block;
+        }
+
+        .test-output pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .console-log {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        .console-log .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 3px;
+        }
+
+        .console-log .success {
+            color: #4CAF50;
+        }
+
+        .console-log .error {
+            color: #f44336;
+        }
+
+        .console-log .info {
+            color: #2196F3;
+        }
+
+        .stats-bar {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item .value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #6C63FF;
+        }
+
+        .stat-item .label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+
+    <style>
+      /* Dark Black Theme with Purple Particles & Parallax */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at var(--gradient-x, 50%) var(--gradient-y, 50%), 
+          rgba(168, 85, 247, 0.05) 0%, 
+          transparent 70%
+        );
+        pointer-events: none;
+        z-index: 0;
+        will-change: transform;
+        transition: background 0.3s ease;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        z-index: 2000 !important;
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  </head>
+<body>
+
+    <!-- Floating Particles -->
+    <div class="particles-container" id="particlesContainer"></div>
+    <!-- Fullscreen Background Robot with Parallax Depth -->
+    <style>
+      #bg-robot-container { 
+        position: fixed; 
+        inset: 0; 
+        z-index: 1; 
+        pointer-events: none;
+        will-change: transform;
+        transform-style: preserve-3d;
+        perspective: 2000px;
+      }
+      #bg-robot-container canvas { 
+        width: 100%; 
+        height: 100%; 
+        display: block; 
+      }
+      
+      /* Full-screen 3D rotation animation */
+      @keyframes rotate3D {
+        0% { transform: perspective(2000px) rotateX(0deg) rotateY(0deg); }
+        25% { transform: perspective(2000px) rotateX(3deg) rotateY(90deg); }
+        50% { transform: perspective(2000px) rotateX(0deg) rotateY(180deg); }
+        75% { transform: perspective(2000px) rotateX(-3deg) rotateY(270deg); }
+        100% { transform: perspective(2000px) rotateX(0deg) rotateY(360deg); }
+      }
+      
+      #bg-robot-container {
+        animation: none !important;
+      }
+    </style>
+    <div id="bg-robot-container">
+      <canvas id="bg-robot-canvas"></canvas>
+    </div>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🚀 SmartMock v2.0 Feature Testing</h1>
+            <p>Test all 15 extraordinary features with interactive demos</p>
+        </div>
+
+        <!-- Statistics Bar -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="value" id="loaded-count">0</div>
+                <div class="label">Modules Loaded</div>
+            </div>
+            <div class="stat-item">
+                <div class="value" id="tests-run">0</div>
+                <div class="label">Tests Run</div>
+            </div>
+            <div class="stat-item">
+                <div class="value" id="tests-passed">0</div>
+                <div class="label">Tests Passed</div>
+            </div>
+            <div class="stat-item">
+                <div class="value" id="tests-failed">0</div>
+                <div class="label">Tests Failed</div>
+            </div>
+        </div>
+
+        <!-- Feature Grid -->
+        <div class="feature-grid">
+            <!-- Feature 1: Bias Analyzer -->
+            <div class="feature-card">
+                <h3>
+                    🧠 Bias & Confidence Analyzer
+                    <span class="status" id="status-bias">Pending</span>
+                </h3>
+                <p>Detects filler words, passive tone, vague answers, and emotional inconsistencies.</p>
+                <button class="test-btn" onclick="testBiasAnalyzer()">Test Analyzer</button>
+                <div class="test-output" id="output-bias"></div>
+            </div>
+
+            <!-- Feature 2: Adaptive Interview -->
+            <div class="feature-card">
+                <h3>
+                    🎯 Adaptive Interview Paths
+                    <span class="status" id="status-adaptive">Pending</span>
+                </h3>
+                <p>Dynamic difficulty scaling with department-specific question pools.</p>
+                <button class="test-btn" onclick="testAdaptiveInterview()">Test Interview</button>
+                <div class="test-output" id="output-adaptive"></div>
+            </div>
+
+            <!-- Feature 3: Gamification -->
+            <div class="feature-card">
+                <h3>
+                    🎮 Gamification System
+                    <span class="status" id="status-gamification">Pending</span>
+                </h3>
+                <p>XP calculation, badges, levels, and streak tracking.</p>
+                <button class="test-btn" onclick="testGamification()">Test Gamification</button>
+                <div class="test-output" id="output-gamification"></div>
+            </div>
+
+            <!-- Feature 4: Emotion Heatmap -->
+            <div class="feature-card">
+                <h3>
+                    📈 Emotion Heatmap
+                    <span class="status" id="status-heatmap">Pending</span>
+                </h3>
+                <p>Canvas-based emotion timeline with spike detection.</p>
+                <button class="test-btn" onclick="testEmotionHeatmap()">Generate Heatmap</button>
+                <div class="test-output" id="output-heatmap"></div>
+            </div>
+
+            <!-- Feature 5: Speech Clarity -->
+            <div class="feature-card">
+                <h3>
+                    🎤 Speech Clarity Index
+                    <span class="status" id="status-clarity">Pending</span>
+                </h3>
+                <p>5-metric speech analysis with radar chart visualization.</p>
+                <button class="test-btn" onclick="testSpeechClarity()">Test Clarity</button>
+                <div class="test-output" id="output-clarity"></div>
+            </div>
+
+            <!-- Feature 6: AI Tutor -->
+            <div class="feature-card">
+                <h3>
+                    🤖 AI Tutor Companions
+                    <span class="status" id="status-tutor">Pending</span>
+                </h3>
+                <p>5 department-specific tutors with hints and explanations.</p>
+                <button class="test-btn" onclick="testAITutor()">Test Tutor</button>
+                <div class="test-output" id="output-tutor"></div>
+            </div>
+
+            <!-- Feature 7: Integrity Monitor -->
+            <div class="feature-card">
+                <h3>
+                    🔒 Integrity Monitor
+                    <span class="status" id="status-integrity">Pending</span>
+                </h3>
+                <p>Tab detection, mic/camera monitoring, violation logging.</p>
+                <button class="test-btn" onclick="testIntegrityMonitor()">Test Monitor</button>
+                <div class="test-output" id="output-integrity"></div>
+            </div>
+
+            <!-- Feature 8: Accessibility -->
+            <div class="feature-card">
+                <h3>
+                    ♿ Accessibility Mode
+                    <span class="status" id="status-accessibility">Pending</span>
+                </h3>
+                <p>High-contrast, keyboard nav, screen reader support.</p>
+                <button class="test-btn" onclick="testAccessibility()">Test Accessibility</button>
+                <div class="test-output" id="output-accessibility"></div>
+            </div>
+
+            <!-- Feature 9: Multilingual -->
+            <div class="feature-card">
+                <h3>
+                    🌍 Multilingual Interface
+                    <span class="status" id="status-i18n">Pending</span>
+                </h3>
+                <p>6 languages with auto-detection and live switching.</p>
+                <button class="test-btn" onclick="testMultilingual()">Test i18n</button>
+                <div class="test-output" id="output-i18n"></div>
+            </div>
+
+            <!-- Feature 10: Offline Export -->
+            <div class="feature-card">
+                <h3>
+                    💾 Offline Export
+                    <span class="status" id="status-export">Pending</span>
+                </h3>
+                <p>Export dashboard as standalone HTML file.</p>
+                <button class="test-btn" onclick="testOfflineExport()">Test Export</button>
+                <div class="test-output" id="output-export"></div>
+            </div>
+
+            <!-- Feature 11: Plugin System -->
+            <div class="feature-card">
+                <h3>
+                    🔌 Plugin System
+                    <span class="status" id="status-plugin">Pending</span>
+                </h3>
+                <p>JSON-based department plugins with auto-generated pages.</p>
+                <button class="test-btn" onclick="testPluginSystem()">Test Plugins</button>
+                <div class="test-output" id="output-plugin"></div>
+            </div>
+
+            <!-- Feature 12: Templates -->
+            <div class="feature-card">
+                <h3>
+                    📝 Custom Templates
+                    <span class="status" id="status-template">Pending</span>
+                </h3>
+                <p>User-designed interview templates with Firebase storage.</p>
+                <button class="test-btn" onclick="testTemplates()">Test Templates</button>
+                <div class="test-output" id="output-template"></div>
+            </div>
+
+            <!-- Feature 13: Visualizations -->
+            <div class="feature-card">
+                <h3>
+                    📊 Advanced Visualizations
+                    <span class="status" id="status-viz">Pending</span>
+                </h3>
+                <p>7 visualization types: heatmaps, radar charts, progress bars.</p>
+                <button class="test-btn" onclick="testVisualizations()">Test Viz</button>
+                <div class="test-output" id="output-viz"></div>
+            </div>
+
+            <!-- Feature 14: Peer Review -->
+            <div class="feature-card">
+                <h3>
+                    📝 Peer Review Mode
+                    <span class="status" id="status-peer">Pending</span>
+                </h3>
+                <p>Invite peers for interview review with anonymous feedback.</p>
+                <button class="test-btn" onclick="testPeerReview()">Test Review</button>
+                <div class="test-output" id="output-peer"></div>
+            </div>
+
+            <!-- Feature 15: Zero-Knowledge -->
+            <div class="feature-card">
+                <h3>
+                    🔐 Zero-Knowledge Verification
+                    <span class="status" id="status-zk">Pending</span>
+                </h3>
+                <p>Hash-based certificate validation without data exposure.</p>
+                <button class="test-btn" onclick="testZKVerification()">Test Verification</button>
+                <div class="test-output" id="output-zk"></div>
+            </div>
+        </div>
+
+        <!-- Console Log -->
+        <div class="console-log" id="console-log">
+            <div class="log-entry info">🚀 SmartMock v2.0 Testing Console</div>
+            <div class="log-entry info">Loading modules...</div>
+        </div>
+    </div>
+
+    <!-- Load V2.0 Modules -->
+    <script src="../assets/js/advanced-features.js"></script>
+    <script src="../assets/js/adaptive-interview.js"></script>
+    <script src="../assets/js/visualizations.js"></script>
+    <script src="../assets/js/integrity-monitor.js"></script>
+    <script src="../assets/js/ai-tutor.js"></script>
+    <script src="../assets/js/i18n-accessibility.js"></script>
+    <script src="../assets/js/plugin-system.js"></script>
+    <script src="../assets/js/peer-review.js"></script>
+    <script src="../assets/js/zk-verification.js"></script>
+
+    <!-- Test Scripts -->
+    <script>
+        console.log('Script block in test-v2-features.html is executing.');
+        // Statistics
+        let stats = {
+            loaded: 0,
+            testsRun: 0,
+            testsPassed: 0,
+            testsFailed: 0
+        };
+
+        // Console logging
+        function logToConsole(message, type = 'info') {
+            const console_log = document.getElementById('console-log');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            console_log.appendChild(entry);
+            console_log.scrollTop = console_log.scrollHeight;
+        }
+
+        // Update status
+        function updateStatus(feature, status) {
+            const statusEl = document.getElementById(`status-${feature}`);
+            statusEl.textContent = status;
+            statusEl.className = `status ${status.toLowerCase()}`;
+        }
+
+        // Show output
+        function showOutput(feature, content) {
+            const outputEl = document.getElementById(`output-${feature}`);
+            outputEl.innerHTML = `<pre>${content}</pre>`;
+            outputEl.classList.add('show');
+        }
+
+        // Update stats
+        function updateStats() {
+            document.getElementById('loaded-count').textContent = stats.loaded;
+            document.getElementById('tests-run').textContent = stats.testsRun;
+            document.getElementById('tests-passed').textContent = stats.testsPassed;
+            document.getElementById('tests-failed').textContent = stats.testsFailed;
+        }
+
+        // Check if modules are loaded
+        window.addEventListener('load', () => {
+            console.log('Window load event fired in test-v2-features.html.');
+            const modules = [
+                { name: 'SmartMockAdvanced', feature: 'bias' },
+                { name: 'AdaptiveInterview', feature: 'adaptive' },
+                { name: 'SmartMockVisualizations', feature: 'viz' },
+                { name: 'IntegrityMonitor', feature: 'integrity' },
+                { name: 'AITutor', feature: 'tutor' },
+                { name: 'SmartMockI18n', feature: 'i18n' },
+                { name: 'SmartMockA11y', feature: 'accessibility' },
+                { name: 'PluginSystem', feature: 'plugin' },
+                { name: 'OfflineExport', feature: 'export' },
+                { name: 'TemplateSystem', feature: 'template' },
+                { name: 'PeerReview', feature: 'peer' },
+                { name: 'ZKVerification', feature: 'zk' }
+            ];
+
+            modules.forEach(module => {
+                if (typeof window[module.name] !== 'undefined') {
+                    updateStatus(module.feature, 'Loaded');
+                    stats.loaded++;
+                    logToConsole(`✅ ${module.name} loaded successfully`, 'success');
+                } else {
+                    updateStatus(module.feature, 'Error');
+                    logToConsole(`❌ ${module.name} failed to load`, 'error');
+                }
+            });
+
+            // Update gamification and heatmap status (part of SmartMockAdvanced)
+            if (typeof SmartMockAdvanced !== 'undefined') {
+                updateStatus('gamification', 'Loaded');
+                updateStatus('heatmap', 'Loaded');
+                updateStatus('clarity', 'Loaded');
+            }
+
+            updateStats();
+            logToConsole(`📊 ${stats.loaded}/12 modules loaded`, 'info');
+        });
+
+        // Test functions
+        function testBiasAnalyzer() {
+            stats.testsRun++;
+            try {
+                const transcript = "Um, so like, I think the answer is, uh, probably something like that, you know?";
+                const emotions = [{ emotion: 'nervous', confidence: 0.8 }, { emotion: 'confident', confidence: 0.4 }];
+                
+                const analysis = SmartMockAdvanced.BiasAnalyzer.performFullAnalysis(transcript, emotions);
+                
+                showOutput('bias', JSON.stringify(analysis, null, 2));
+                stats.testsPassed++;
+                logToConsole('✅ Bias Analyzer test passed', 'success');
+            } catch (error) {
+                stats.testsFailed++;
+                showOutput('bias', `Error: ${error.message}`);
+                logToConsole('❌ Bias Analyzer test failed', 'error');
+            }
+            updateStats();
+        }
+
+        function testAdaptiveInterview() {
+            stats.testsRun++;
+            try {
+                const interview = AdaptiveInterview.init('cs', 1);
+                const question = AdaptiveInterview.getNextQuestion(interview);
+                
+                showOutput('adaptive', JSON.stringify(question, null, 2));
+                stats.testsPassed++;
+                logToConsole('✅ Adaptive Interview test passed', 'success');
+            } catch (error) {
+                stats.testsFailed++;
+                showOutput('adaptive', `Error: ${error.message}`);
+                logToConsole('❌ Adaptive Interview test failed', 'error');
+            }
+            updateStats();
+        }
+
+        function testGamification() {
+            stats.testsRun++;
+            try {
+                const xp = SmartMockAdvanced.GamificationSystem.calculateXP(85, 'ai', 'cs');
+                const level = SmartMockAdvanced.GamificationSystem.calculateLevel(1250);
+                const badges = SmartMockAdvanced.GamificationSystem.checkBadges({
+                    interviewCount: 10,
+                    perfectScores: 2,
+                    averageScore: 88
+                });
+                
+                const result = { xp, level, badges };
+                showOutput('gamification', JSON.stringify(result, null, 2));
+                stats.testsPassed++;
+                logToConsole('✅ Gamification test passed', 'success');
+            } catch (error) {
+                stats.testsFailed++;
+                showOutput('gamification', `Error: ${error.message}`);
+                logToConsole('❌ Gamification test failed', 'error');
+            }
+            updateStats();
+        }
+
+        function testEmotionHeatmap() {
+            stats.testsRun++;
+            try {
+                const emotions = [
+                    { timestamp: 0, emotion: 'happy', percentage: 70 },
+                    { timestamp: 10, emotion: 'confident', percentage: 80 },
+                    { timestamp: 20, emotion: 'nervous', percentage: 60 },
+                    { timestamp: 30, emotion: 'neutral', percentage: 50 }
+                ];
+                
+                const heatmap = SmartMockVisualizations.createEmotionHeatmap(emotions, 40);
+                showOutput('heatmap', `Heatmap created!\nSpikes: ${heatmap.spikes.length}\nCanvas: ${heatmap.canvas.width}x${heatmap.canvas.height}`);
+                stats.testsPassed++;
+                logToConsole('✅ Emotion Heatmap test passed', 'success');
+            } catch (error) {
+                stats.testsFailed++;
+                showOutput('heatmap', `Error: ${error.message}`);
+                logToConsole('❌ Emotion Heatmap test failed', 'error');
+            }
+            updateStats();
+        }
+
+        function testSpeechClarity() {
+            stats.testsRun++;
+            try {
+                const speechData = {
+                    wpm: 150,
+                    fillerCount: 3,
+                    totalWords: 200,
+                    avgPauseLength: 1.2,
+                    volumeConsistency: 85,
+                    pronunciationAccuracy: 90
+                };
+                
+                const clarity = SmartMockAdvanced.SpeechClarityIndex.calculateClarityIndex(speechData);
+                showOutput('clarity', JSON.stringify(clarity, null, 2));
+                stats.testsPassed++;
+                logToConsole('✅ Speech Clarity test passed', 'success');
+            } catch (error) {
+                stats.testsFailed++;
+                showOutput('clarity', `Error: ${error.message}`);
+                logToConsole('❌ Speech Clarity test failed', 'error');
+            }
+            updateStats();
+        }
+
+        function testAITutor() {
+            stats.testsRun++;
+            try {
+                AITutor.init('cs');
+                const hint = AITutor.provideHint('What is a stack?', 'medium');
+                const resources = AITutor.suggestResources('Data Structures', 'cs');
+                
+                const result = { hint, resourceCount: resources.length };
+                showOutput('tutor', JSON.stringify(result, null, 2));
+                stats.testsPassed++;
+                logToConsole('✅ AI Tutor test passed', 'success');
+            } catch (error) {
+                stats.testsFailed++;
+                showOutput('tutor', `Error: ${error.message}`);
+                logToConsole('❌ AI Tutor test failed', 'error');
+            }
+            updateStats();
+        }
+
+        function testIntegrityMonitor() {
+            stats.testsRun++;
+            try {
+                IntegrityMonitor.init({ strict: false });
+                const report = IntegrityMonitor.getReport();
+                
+                showOutput('integrity', JSON.stringify(report, null, 2));
+                stats.testsPassed++;
+                logToConsole('✅ Integrity Monitor test passed', 'success');
+            } catch (error) {
+                stats.testsFailed++;
+                showOutput('integrity', `Error: ${error.message}`);
+                logToConsole('❌ Integrity Monitor test failed', 'error');
+            }
+            updateStats();
+        }
+
+        function testAccessibility() {
+            stats.testsRun++;
+            try {
+                SmartMockA11y.init();
+                SmartMockA11y.announce('Test announcement', 'polite');
+                
+                showOutput('accessibility', 'Accessibility features initialized\nScreen reader: Active\nKeyboard navigation: Enabled');
+                stats.testsPassed++;
+                logToConsole('✅ Accessibility test passed', 'success');
+            } catch (error) {
+                stats.testsFailed++;
+                showOutput('accessibility', `Error: ${error.message}`);
+                logToConsole('❌ Accessibility test failed', 'error');
+            }
+            updateStats();
+        }
+
+        function testMultilingual() {
+            stats.testsRun++;
+            try {
+                SmartMockI18n.init();
+                const translations = {
+                    english: SmartMockI18n.t('dashboard'),
+                    hindi: SmartMockI18n.getCurrentLanguage()
+                };
+                
+                SmartMockI18n.setLanguage('hi');
+                translations.hindiDashboard = SmartMockI18n.t('dashboard');
+                
+                showOutput('i18n', JSON.stringify(translations, null, 2));
+                stats.testsPassed++;
+                logToConsole('✅ Multilingual test passed', 'success');
+            } catch (error) {
+                stats.testsFailed++;
+                showOutput('i18n', `Error: ${error.message}`);
+                logToConsole('❌ Multilingual test failed', 'error');
+            }
+            updateStats();
+        }
+
+        function testOfflineExport() {
+            stats.testsRun++;
+            try {
+                const userData = {
+                    name: 'Test User',
+                    email: 'test@example.com',
+                    stats: { interviews: 10, avgScore: 85 }
+                };
+                
+                const html = OfflineExport.exportDashboard(userData);
+                showOutput('export', `HTML generated: ${html.length} characters\nReady for download`);
+                stats.testsPassed++;
+                logToConsole('✅ Offline Export test passed', 'success');
+            } catch (error) {
+                stats.testsFailed++;
+                showOutput('export', `Error: ${error.message}`);
+                logToConsole('❌ Offline Export test failed', 'error');
+            }
+            updateStats();
+        }
+
+        function testPluginSystem() {
+            stats.testsRun++;
+            try {
+                const plugin = {
+                    id: 'robotics',
+                    name: 'Robotics Engineering',
+                    description: 'Automation and control systems',
+                    courses: ['ROS Basics', 'Computer Vision']
+                };
+                
+                PluginSystem.registerPlugin(plugin);
+                const registered = PluginSystem.getAllPlugins();
+                
+                showOutput('plugin', JSON.stringify(registered, null, 2));
+                stats.testsPassed++;
+                logToConsole('✅ Plugin System test passed', 'success');
+            } catch (error) {
+                stats.testsFailed++;
+                showOutput('plugin', `Error: ${error.message}`);
+                logToConsole('❌ Plugin System test failed', 'error');
+            }
+            updateStats();
+        }
+
+        function testTemplates() {
+            stats.testsRun++;
+            try {
+                const template = TemplateSystem.createTemplate({
+                    name: 'Frontend Interview',
+                    duration: 30,
+                    questions: ['HTML', 'CSS', 'JavaScript']
+                });
+                
+                showOutput('template', JSON.stringify(template, null, 2));
+                stats.testsPassed++;
+                logToConsole('✅ Template System test passed', 'success');
+            } catch (error) {
+                stats.testsFailed++;
+                showOutput('template', `Error: ${error.message}`);
+                logToConsole('❌ Template System test failed', 'error');
+            }
+            updateStats();
+        }
+
+        function testVisualizations() {
+            stats.testsRun++;
+            try {
+                const xpDisplay = SmartMockVisualizations.createXPDisplay({
+                    level: 5,
+                    currentXP: 1250,
+                    nextLevelXP: 1600,
+                    title: 'Advanced'
+                });
+                
+                showOutput('viz', `XP Display created\nLevel: 5\nCurrent XP: 1250\nProgress: 78%`);
+                stats.testsPassed++;
+                logToConsole('✅ Visualizations test passed', 'success');
+            } catch (error) {
+                stats.testsFailed++;
+                showOutput('viz', `Error: ${error.message}`);
+                logToConsole('❌ Visualizations test failed', 'error');
+            }
+            updateStats();
+        }
+
+        function testPeerReview() {
+            stats.testsRun++;
+            try {
+                PeerReview.init();
+                const invitation = PeerReview.createInvitation(
+                    { interviewId: 'TEST123', userId: 'user1', department: 'CS', course: 'Algorithms', score: 85, duration: 1800, date: Date.now() },
+                    ['peer1@example.com', 'peer2@example.com']
+                );
+                
+                showOutput('peer', JSON.stringify(invitation, null, 2));
+                stats.testsPassed++;
+                logToConsole('✅ Peer Review test passed', 'success');
+            } catch (error) {
+                stats.testsFailed++;
+                showOutput('peer', `Error: ${error.message}`);
+                logToConsole('❌ Peer Review test failed', 'error');
+            }
+            updateStats();
+        }
+
+        async function testZKVerification() {
+            stats.testsRun++;
+            try {
+                ZKVerification.init();
+                const certData = {
+                    certificateId: 'CERT-2024-CS-12345',
+                    userId: 'user123',
+                    userName: 'Test User',
+                    course: 'Data Structures',
+                    department: 'CS',
+                    completionDate: Date.now(),
+                    score: 92
+                };
+                
+                const proof = await ZKVerification.createVerificationProof(certData);
+                showOutput('zk', JSON.stringify({
+                    certificateId: proof.certificateId,
+                    partialHash: proof.partialHash,
+                    merkleRoot: proof.merkleRoot.substr(0, 16) + '...'
+                }, null, 2));
+                stats.testsPassed++;
+                logToConsole('✅ Zero-Knowledge Verification test passed', 'success');
+            } catch (error) {
+                stats.testsFailed++;
+                showOutput('zk', `Error: ${error.message}`);
+                logToConsole('❌ Zero-Knowledge Verification test failed', 'error');
+            }
+            updateStats();
+        }
+    </script>
+
+    <!-- Particle Generation Script -->
+    <script>
+      // Create 120 floating purple particles
+      if (document.getElementById('particlesContainer')) {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 120;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          const size = 2 + Math.random() * 4;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          const leftPos = Math.random() * 100;
+          particle.style.left = `${leftPos}%`;
+          
+          const duration = 12 + Math.random() * 13;
+          particle.style.animationDuration = `${duration}s`;
+          
+          const delay = Math.random() * 10;
+          particle.style.animationDelay = `${delay}s`;
+          
+          const drift = (Math.random() - 0.5) * 150;
+          particle.style.setProperty('--drift', `${drift}px`);
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+    
+    <!-- Three.js + Robot Interviewer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="assets/js/robot-interviewer.js"></script>
+    <script>
+      // Initialize Background Robot
+      (function initBgRobot(){
+        if (typeof THREE === 'undefined' || typeof window.RobotInterviewer === 'undefined') {
+          return setTimeout(initBgRobot, 100);
+        }
+        try {
+          window.bgRobot = new window.RobotInterviewer('bg-robot-container', THREE, {
+            canvasId: 'bg-robot-canvas',
+            trackCursor: true
+          });
+          window.bgRobot.setState('neutral');
+          console.log('✅ Background robot initialized');
+        } catch (e) {
+          console.error('❌ Failed to init background robot:', e);
+        }
+      })();
+      
+      // Advanced Parallax and Depth Effect
+      let targetX = 0, targetY = 0;
+      let currentX = 0, currentY = 0;
+      
+      document.addEventListener('mousemove', (e) => {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        targetX = (x - 0.5);
+        targetY = (y - 0.5);
+      });
+      
+      function animateParallax() {
+        currentX += (targetX - currentX) * 0.1;
+        currentY += (targetY - currentY) * 0.1;
+        
+        const container = document.getElementById('bg-robot-container');
+        if (container) {
+          const moveX1 = currentX * 80;
+          const moveY1 = currentY * 80;
+          const rotateY1 = currentX * 20;
+          const rotateX1 = -currentY * 20;
+          const scale1 = 1 + (Math.abs(currentX) + Math.abs(currentY)) * 0.05;
+          
+          container.style.transform = `
+            perspective(2000px) 
+            translateX(${moveX1}px) 
+            translateY(${moveY1}px) 
+            translateZ(-100px)
+            rotateX(${rotateX1}deg) 
+            rotateY(${rotateY1}deg)
+            scale(${scale1})
+          `;
+        }
+        
+        const particles = document.getElementById('particlesContainer');
+        if (particles) {
+          const moveX2 = currentX * 40;
+          const moveY2 = currentY * 40;
+          particles.style.transform = `
+            translateX(${moveX2}px) 
+            translateY(${moveY2}px)
+            translateZ(50px)
+          `;
+        }
+        
+        const bodyBefore = document.body;
+        if (bodyBefore) {
+          const gradientX = 50 + currentX * 10;
+          const gradientY = 50 + currentY * 10;
+          bodyBefore.style.setProperty('--gradient-x', `${gradientX}%`);
+          bodyBefore.style.setProperty('--gradient-y', `${gradientY}%`);
+        }
+        
+        const main = document.querySelector('main');
+        if (main) {
+          const moveX4 = -currentX * 15;
+          const moveY4 = -currentY * 15;
+          main.style.transform = `
+            translateX(${moveX4}px) 
+            translateY(${moveY4}px)
+            translateZ(100px)
+          `;
+        }
+        
+        requestAnimationFrame(animateParallax);
+      }
+      
+      animateParallax();
+    </script>
+    <script src="assets/js/auto-purple-bg.js"></script>
+  </body>
+</html>
+

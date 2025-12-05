@@ -1,0 +1,669 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard Integration Demo</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <style>
+        body {
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .demo-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        .demo-section h2 {
+            color: #6C63FF;
+            margin-top: 0;
+        }
+        .btn {
+            background: linear-gradient(135deg, #6C63FF, #00E5FF);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 5px;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(108, 99, 255, 0.4);
+        }
+        .code-block {
+            background: #1a1a2e;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            color: #00E5FF;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+        .result {
+            background: rgba(0, 229, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border-left: 3px solid #00E5FF;
+        }
+        .success {
+            color: #22C55E;
+        }
+        .error {
+            color: #EF4444;
+        }
+    </style>
+    <style>
+      /* Dark Black Theme with Purple Particles */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  
+    <style>
+      /* Dark Black Theme with Purple Particles & Parallax */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at var(--gradient-x, 50%) var(--gradient-y, 50%), 
+          rgba(168, 85, 247, 0.05) 0%, 
+          transparent 70%
+        );
+        pointer-events: none;
+        z-index: 0;
+        will-change: transform;
+        transition: background 0.3s ease;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        z-index: 2000 !important;
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  </head>
+<body>
+
+    <!-- Floating Particles -->
+    <div class="particles-container" id="particlesContainer"></div>
+    <!-- Fullscreen Background Robot with Parallax Depth -->
+    <style>
+      #bg-robot-container { 
+        position: fixed; 
+        inset: 0; 
+        z-index: 1; 
+        pointer-events: none;
+        will-change: transform;
+        transform-style: preserve-3d;
+        perspective: 2000px;
+      }
+      #bg-robot-container canvas { 
+        width: 100%; 
+        height: 100%; 
+        display: block; 
+      }
+      
+      /* Full-screen 3D rotation animation */
+      @keyframes rotate3D {
+        0% { transform: perspective(2000px) rotateX(0deg) rotateY(0deg); }
+        25% { transform: perspective(2000px) rotateX(3deg) rotateY(90deg); }
+        50% { transform: perspective(2000px) rotateX(0deg) rotateY(180deg); }
+        75% { transform: perspective(2000px) rotateX(-3deg) rotateY(270deg); }
+        100% { transform: perspective(2000px) rotateX(0deg) rotateY(360deg); }
+      }
+      
+      #bg-robot-container {
+        animation: none !important;
+      }
+    </style>
+    <div id="bg-robot-container">
+      <canvas id="bg-robot-canvas"></canvas>
+    </div>
+    <h1>🏆 Leaderboard Integration Demo</h1>
+    <p>This page demonstrates how to integrate the leaderboard system with your AI interview pages.</p>
+
+    <div class="demo-section">
+        <h2>1. Test Leaderboard Save</h2>
+        <p>Simulate completing an interview and saving to leaderboard:</p>
+        <button class="btn" onclick="testLeaderboardSave()">🎯 Simulate Interview Completion</button>
+        <div id="save-result"></div>
+    </div>
+
+    <div class="demo-section">
+        <h2>2. View Your Stats</h2>
+        <button class="btn" onclick="loadUserStats()">📊 Load My Stats</button>
+        <div id="stats-result"></div>
+    </div>
+
+    <div class="demo-section">
+        <h2>3. View Top 10</h2>
+        <button class="btn" onclick="loadTop10()">🥇 Load Top 10</button>
+        <div id="top10-result"></div>
+    </div>
+
+    <div class="demo-section">
+        <h2>4. Test Notification</h2>
+        <button class="btn" onclick="testNotification()">🔔 Show Sample Notification</button>
+    </div>
+
+    <div class="demo-section">
+        <h2>5. Integration Code</h2>
+        <p>Copy this code to your AI interview completion handler:</p>
+        <div class="code-block">
+// After interview ends, calculate score
+const score = calculateFinalScore();
+const grade = calculateGrade(score);
+
+// Prepare interview data
+const interviewData = {
+    department: 'cs', // or 'ee', 'me', 'ce', 'ec'
+    score: score,     // 0-100
+    grade: grade      // 'A+', 'A', 'B', 'C', 'D', 'F'
+};
+
+// Save to leaderboard (automatic)
+await saveToLeaderboard(interviewData);
+
+// Show notification (optional)
+showLeaderboardNotification(rank, improvement);
+
+// Redirect to report
+window.location.href = 'ai-report.html';
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>6. Quick Links</h2>
+        <button class="btn" onclick="window.location.href='leaderboard.html'">🏆 View Leaderboard</button>
+        <button class="btn" onclick="window.location.href='docs/LEADERBOARD_SYSTEM.md'">📖 Read Docs</button>
+        <button class="btn" onclick="window.location.href='dashboard.html'">🏠 Dashboard</button>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="assets/js/firebase-config.js"></script>
+    <script src="assets/js/auth-check.js"></script>
+    <script src="assets/js/leaderboard-integration.js"></script>
+
+    <script>
+        // Demo functions
+        async function testLeaderboardSave() {
+            const resultDiv = document.getElementById('save-result');
+            resultDiv.innerHTML = '<p>⏳ Saving to leaderboard...</p>';
+
+            try {
+                const user = firebase.auth().currentUser;
+                if (!user) {
+                    resultDiv.innerHTML = '<p class="error">❌ Please log in first!</p>';
+                    return;
+                }
+
+                // Simulate interview data
+                const randomScore = Math.floor(Math.random() * 30) + 70; // 70-100
+                const interviewData = {
+                    department: 'cs',
+                    score: randomScore,
+                    grade: calculateGrade(randomScore)
+                };
+
+                await saveToLeaderboard(interviewData);
+
+                resultDiv.innerHTML = `
+                    <div class="result success">
+                        <p>✅ Successfully saved to leaderboard!</p>
+                        <p><strong>Score:</strong> ${randomScore}/100</p>
+                        <p><strong>Grade:</strong> ${interviewData.grade}</p>
+                        <p><strong>Department:</strong> Computer Science</p>
+                    </div>
+                `;
+
+                // Show notification
+                setTimeout(() => {
+                    showLeaderboardNotification(null, Math.floor(Math.random() * 20) - 5);
+                }, 500);
+
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
+            }
+        }
+
+        async function loadUserStats() {
+            const resultDiv = document.getElementById('stats-result');
+            resultDiv.innerHTML = '<p>⏳ Loading stats...</p>';
+
+            try {
+                const user = firebase.auth().currentUser;
+                if (!user) {
+                    resultDiv.innerHTML = '<p class="error">❌ Please log in first!</p>';
+                    return;
+                }
+
+                const snapshot = await firebase.database().ref(`leaderboard/${user.uid}`).once('value');
+                
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    const avgScore = data.totalInterviews > 0 
+                        ? Math.round(data.totalScore / data.totalInterviews) 
+                        : 0;
+
+                    resultDiv.innerHTML = `
+                        <div class="result">
+                            <h3>Your Stats:</h3>
+                            <p><strong>Best Score:</strong> ${data.bestScore || 0}/100</p>
+                            <p><strong>Total Interviews:</strong> ${data.totalInterviews || 0}</p>
+                            <p><strong>Average Score:</strong> ${avgScore}/100</p>
+                            <p><strong>Current Grade:</strong> ${data.grade || 'N/A'}</p>
+                            <p><strong>Department:</strong> ${data.department || 'Unknown'}</p>
+                            <p><strong>Improvement:</strong> <span class="${data.improvement > 0 ? 'success' : 'error'}">${data.improvement > 0 ? '+' : ''}${data.improvement || 0}%</span></p>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = '<p class="error">❌ No stats found. Complete an interview first!</p>';
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
+            }
+        }
+
+        async function loadTop10() {
+            const resultDiv = document.getElementById('top10-result');
+            resultDiv.innerHTML = '<p>⏳ Loading top 10...</p>';
+
+            try {
+                const snapshot = await firebase.database()
+                    .ref('leaderboard')
+                    .orderByChild('bestScore')
+                    .limitToLast(10)
+                    .once('value');
+
+                if (snapshot.exists()) {
+                    const users = [];
+                    snapshot.forEach(child => {
+                        users.push({ ...child.val(), uid: child.key });
+                    });
+                    
+                    // Sort descending by score
+                    users.sort((a, b) => (b.bestScore || 0) - (a.bestScore || 0));
+
+                    let html = '<div class="result"><h3>🏆 Top 10 Users:</h3><ol style="padding-left: 20px;">';
+                    users.forEach(user => {
+                        const medal = users.indexOf(user) === 0 ? '🥇' : users.indexOf(user) === 1 ? '🥈' : users.indexOf(user) === 2 ? '🥉' : '🎯';
+                        html += `<li style="margin: 10px 0;"><strong>${user.name || 'Anonymous'}</strong> - ${user.bestScore || 0}/100 ${medal}</li>`;
+                    });
+                    html += '</ol></div>';
+
+                    resultDiv.innerHTML = html;
+                } else {
+                    resultDiv.innerHTML = '<p class="error">❌ No leaderboard data found!</p>';
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
+            }
+        }
+
+        function testNotification() {
+            const rank = Math.floor(Math.random() * 100) + 1;
+            const improvement = Math.floor(Math.random() * 30) - 10;
+            showLeaderboardNotification(rank, improvement);
+        }
+
+
+    </script>
+
+    <!-- Particle Generation Script -->
+    <script>
+      // Create 120 floating purple particles
+      if (document.getElementById('particlesContainer')) {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 120;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          // Random size (2-6px)
+          const size = 2 + Math.random() * 4;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          // Random horizontal position
+          const leftPos = Math.random() * 100;
+          particle.style.left = `${leftPos}%`;
+          
+          // Random animation duration (12-25 seconds)
+          const duration = 12 + Math.random() * 13;
+          particle.style.animationDuration = `${duration}s`;
+          
+          // Random delay
+          const delay = Math.random() * 10;
+          particle.style.animationDelay = `${delay}s`;
+          
+          // Random horizontal drift
+          const drift = (Math.random() - 0.5) * 150;
+          particle.style.setProperty('--drift', `${drift}px`);
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+  
+    <!-- Particle Generation Script -->
+    <script>
+      // Create 120 floating purple particles
+      if (document.getElementById('particlesContainer')) {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 120;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          const size = 2 + Math.random() * 4;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          const leftPos = Math.random() * 100;
+          particle.style.left = `${leftPos}%`;
+          
+          const duration = 12 + Math.random() * 13;
+          particle.style.animationDuration = `${duration}s`;
+          
+          const delay = Math.random() * 10;
+          particle.style.animationDelay = `${delay}s`;
+          
+          const drift = (Math.random() - 0.5) * 150;
+          particle.style.setProperty('--drift', `${drift}px`);
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+    
+    <!-- Three.js + Robot Interviewer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="assets/js/robot-interviewer.js"></script>
+    <script>
+      // Initialize Background Robot
+      (function initBgRobot(){
+        if (typeof THREE === 'undefined' || typeof window.RobotInterviewer === 'undefined') {
+          return setTimeout(initBgRobot, 100);
+        }
+        try {
+          window.bgRobot = new window.RobotInterviewer('bg-robot-container', THREE, {
+            canvasId: 'bg-robot-canvas',
+            trackCursor: true
+          });
+          window.bgRobot.setState('neutral');
+          console.log('✅ Background robot initialized');
+        } catch (e) {
+          console.error('❌ Failed to init background robot:', e);
+        }
+      })();
+      
+      // Advanced Parallax and Depth Effect
+      let targetX = 0, targetY = 0;
+      let currentX = 0, currentY = 0;
+      
+      document.addEventListener('mousemove', (e) => {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        targetX = (x - 0.5);
+        targetY = (y - 0.5);
+      });
+      
+      function animateParallax() {
+        currentX += (targetX - currentX) * 0.1;
+        currentY += (targetY - currentY) * 0.1;
+        
+        const container = document.getElementById('bg-robot-container');
+        if (container) {
+          const moveX1 = currentX * 80;
+          const moveY1 = currentY * 80;
+          const rotateY1 = currentX * 20;
+          const rotateX1 = -currentY * 20;
+          const scale1 = 1 + (Math.abs(currentX) + Math.abs(currentY)) * 0.05;
+          
+          container.style.transform = `
+            perspective(2000px) 
+            translateX(${moveX1}px) 
+            translateY(${moveY1}px) 
+            translateZ(-100px)
+            rotateX(${rotateX1}deg) 
+            rotateY(${rotateY1}deg)
+            scale(${scale1})
+          `;
+        }
+        
+        const particles = document.getElementById('particlesContainer');
+        if (particles) {
+          const moveX2 = currentX * 40;
+          const moveY2 = currentY * 40;
+          particles.style.transform = `
+            translateX(${moveX2}px) 
+            translateY(${moveY2}px)
+            translateZ(50px)
+          `;
+        }
+        
+        const bodyBefore = document.body;
+        if (bodyBefore) {
+          const gradientX = 50 + currentX * 10;
+          const gradientY = 50 + currentY * 10;
+          bodyBefore.style.setProperty('--gradient-x', `${gradientX}%`);
+          bodyBefore.style.setProperty('--gradient-y', `${gradientY}%`);
+        }
+        
+        const main = document.querySelector('main');
+        if (main) {
+          const moveX4 = -currentX * 15;
+          const moveY4 = -currentY * 15;
+          main.style.transform = `
+            translateX(${moveX4}px) 
+            translateY(${moveY4}px)
+            translateZ(100px)
+          `;
+        }
+        
+        requestAnimationFrame(animateParallax);
+      }
+      
+      animateParallax();
+    </script>
+    <script src="assets/js/auto-purple-bg.js"></script>
+  </body>
+</html>
+

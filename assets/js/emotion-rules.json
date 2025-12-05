@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "features": ["mouthOpen", "eyeOpen", "smileCurve"],
+  "rules": [
+    {
+      "emotion": "surprised",
+      "conditions": {
+        "mouthOpen": { ">": 0.32 },
+        "eyeOpen":   { ">": 0.12 }
+      }
+    },
+    {
+      "emotion": "sad",
+      "conditions": {
+        "smileCurve": { "<": 0.30 },
+        "eyeOpen": { "<": 0.09 }
+      }
+    },
+    {
+      "emotion": "happy",
+      "conditions": {
+        "mouthOpen": { ">": 0.18 },
+        "smileCurve": { ">": 0.38 }
+      }
+    },
+    {
+      "emotion": "neutral",
+      "conditions": {}
+    }
+  ],
+  "weights": {"surprised": 1, "happy": 1, "neutral": 1, "sad": 0.5}
+}

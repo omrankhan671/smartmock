@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - SmartMock AI</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/leaderboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      /* Dark Black Theme with Purple Particles */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  
+    <style>
+      /* Dark Black Theme with Purple Particles & Parallax */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at var(--gradient-x, 50%) var(--gradient-y, 50%), 
+          rgba(168, 85, 247, 0.05) 0%, 
+          transparent 70%
+        );
+        pointer-events: none;
+        z-index: 0;
+        will-change: transform;
+        transition: background 0.3s ease;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        z-index: 2000 !important;
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  </head>
+<body>
+    <!-- Particles + Background Robot Containers (manual injection) -->
+    <div class="particles-container" id="particlesContainer"></div>
+    <div id="bg-robot-container"><canvas id="bg-robot-canvas"></canvas></div>
+    <style>
+      #bg-robot-container { position:fixed; inset:0; z-index: -1; pointer-events:none; }
+      #bg-robot-container canvas { width:100%; height:100%; display:block; }
+      .particles-container { z-index: 0; }
+      .site-header { z-index: 2000 !important; }
+      #menu-overlay { position:fixed; inset:0; background:rgba(0,0,0,.6); backdrop-filter:blur(10px); display:none; z-index:1500; }
+      #menu-panel { position:fixed; top:0; right:0; width:min(320px,80vw); height:100%; background:rgba(18,18,18,.9); border-left:1px solid rgba(168,85,247,.3); box-shadow:-10px 0 40px rgba(0,0,0,.4); transform:translateX(100%); transition:transform .3s ease; z-index:1600; }
+      #menu-panel.open { transform:translateX(0); }
+      body.menu-open #menu-overlay { display:block; }
+    </style>
+    <header class="site-header">
+      <div class="site-header-inner container">
+        <nav class="menu menu-left">
+          <div class="menu-button">☰ Menu</div>
+          <ul class="dropdown">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="leaderboard.html">🏆 Leaderboard</a></li>
+            <li class="has-submenu"><a href="interview.html">Interview</a>
+              <ul class="submenu">
+                <li><a href="interview/cs/ai-interview.html">AI Interview (CS)</a></li>
+                <li><a href="interview/ee/ai-interview.html">AI Interview (EE)</a></li>
+                <li><a href="interview/me/ai-interview.html">AI Interview (ME)</a></li>
+                <li><a href="interview/ce/ai-interview.html">AI Interview (CE)</a></li>
+                <li><a href="interview/ec/ai-interview.html">AI Interview (EC)</a></li>
+              </ul>
+            </li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="report.html">Report</a></li>
+            <li><a href="community.html">Community</a></li>
+            <li><a href="verify-certificate.html">🔍 Verify Certificate</a></li>
+            <li><a href="certificate.html">Certificate</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="recruiter/dashboard.html">Recruiter Dashboard</a></li>
+          </ul>
+        </nav>
+        <div class="brand"><a href="home.html"><span class="logo">Smart</span><span class="logo-accent">Mock</span></a></div>
+        <div class="menu" style="margin-left:auto;">
+          <a class="btn" href="profile.html">Profile</a>
+          <a class="btn" href="#" onclick="signOut(); return false;">Sign out</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="leaderboard-container">
+        <!-- Header Section -->
+        <div class="leaderboard-header">
+            <h1 class="page-title">🏆 Global Leaderboard</h1>
+            <p class="page-subtitle">Compete with thousands of engineering students worldwide</p>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-content">
+                    <h3 id="total-users">0</h3>
+                    <p>Total Users</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-content">
+                    <h3 id="total-interviews">0</h3>
+                    <p>Interviews Completed</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-content">
+                    <h3 id="avg-score">0</h3>
+                    <p>Average Score</p>
+                </div>
+            </div>
+            <div class="stat-card highlight">
+                <div class="stat-icon">🥇</div>
+                <div class="stat-content">
+                    <h3 id="user-rank">--</h3>
+                    <p>Your Rank</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters Section -->
+        <div class="filters-section">
+            <div class="filter-group">
+                <label for="department-filter">Department</label>
+                <select id="department-filter" class="filter-select">
+                    <option value="all">All Departments</option>
+                    <option value="cs">Computer Science</option>
+                    <option value="ee">Electrical Engineering</option>
+                    <option value="me">Mechanical Engineering</option>
+                    <option value="ce">Civil Engineering</option>
+                    <option value="ec">Electronics & Communication</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="timeframe-filter">Timeframe</label>
+                <select id="timeframe-filter" class="filter-select">
+                    <option value="all-time">All Time</option>
+                    <option value="month">This Month</option>
+                    <option value="week">This Week</option>
+                    <option value="today">Today</option>
+                </select>
+            </div>
+            <button id="refresh-btn" class="refresh-btn">🔄 Refresh</button>
+        </div>
+
+        <!-- Top 3 Podium -->
+        <div class="podium-section" id="podium-section">
+            <div class="podium-placeholder">
+                <div class="loading-spinner"></div>
+                <p>Loading top performers...</p>
+            </div>
+        </div>
+
+        <!-- Leaderboard Table -->
+        <div class="leaderboard-table-container">
+            <div class="table-header">
+                <h2>Full Rankings</h2>
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Search by name..." />
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>User</th>
+                            <th>Department</th>
+                            <th>Score</th>
+                            <th>Stars</th>
+                            <th>Interviews</th>
+                            <th>Grade</th>
+                            <th>Last Active</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-tbody">
+                        <tr>
+                            <td colspan="7" class="loading-row">
+                                <div class="loading-spinner"></div>
+                                <p>Loading rankings...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination">
+                <button id="prev-btn" class="page-btn" disabled>← Previous</button>
+                <span id="page-info">Page 1 of 1</span>
+                <button id="next-btn" class="page-btn" disabled>Next →</button>
+            </div>
+        </div>
+
+        <!-- User Performance Card -->
+        <div class="user-performance-card" id="user-performance-card" style="display: none;">
+            <div class="performance-header">
+                <h3>Your Performance</h3>
+                <button class="close-btn" id="close-performance">×</button>
+            </div>
+            <div class="performance-content">
+                <div class="performance-stat">
+                    <span class="label">Global Rank</span>
+                    <span class="value" id="user-global-rank">--</span>
+                </div>
+                <div class="performance-stat">
+                    <span class="label">Department Rank</span>
+                    <span class="value" id="user-dept-rank">--</span>
+                </div>
+                <div class="performance-stat">
+                    <span class="label">Best Score</span>
+                    <span class="value" id="user-best-score">--</span>
+                </div>
+                <div class="performance-stat">
+                    <span class="label">Total Interviews</span>
+                    <span class="value" id="user-total-interviews">--</span>
+                </div>
+                <div class="performance-stat">
+                    <span class="label">Average Score</span>
+                    <span class="value" id="user-avg-score">--</span>
+                </div>
+                <div class="performance-stat">
+                    <span class="label">Improvement</span>
+                    <span class="value improvement" id="user-improvement">--</span>
+                </div>
+            </div>
+            <button class="view-profile-btn" onclick="window.location.href='profile.html'">View Full Profile</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="assets/js/firebase-config.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/auth-check.js"></script>
+    <script src="assets/js/leaderboard.js"></script>
+
+    <!-- Particle Generation Script -->
+    <script>
+      // Create 120 floating purple particles
+      if (document.getElementById('particlesContainer')) {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 120;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          // Random size (2-6px)
+          const size = 2 + Math.random() * 4;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          // Random horizontal position
+          const leftPos = Math.random() * 100;
+          particle.style.left = `${leftPos}%`;
+          
+          // Random animation duration (12-25 seconds)
+          const duration = 12 + Math.random() * 13;
+          particle.style.animationDuration = `${duration}s`;
+          
+          // Random delay
+          const delay = Math.random() * 10;
+          particle.style.animationDelay = `${delay}s`;
+          
+          // Random horizontal drift
+          const drift = (Math.random() - 0.5) * 150;
+          particle.style.setProperty('--drift', `${drift}px`);
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+    <!-- Three.js + Robot + Overlay Init -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="assets/js/robot-interviewer.js"></script>
+    <script>
+      (function initBgRobot(){
+        if(!document.getElementById('bg-robot-container')) return;
+        if(typeof THREE==='undefined' || typeof window.RobotInterviewer==='undefined') return setTimeout(initBgRobot,120);
+        try {
+          if(!window.bgRobotGlobal){
+            window.bgRobotGlobal = new window.RobotInterviewer('bg-robot-container', THREE, { canvasId:'bg-robot-canvas', trackCursor:true });
+            window.bgRobotGlobal.setState('neutral');
+            console.log('✅ Background robot initialized (leaderboard)');
+          }
+        } catch(e){ console.error('Robot init failed', e); }
+      })();
+      (function initHamburger(){
+        const menuBtn=document.querySelector('.menu-button');
+        const dropdown=document.querySelector('.dropdown');
+        if(!menuBtn||!dropdown) return;
+        if(document.getElementById('menu-overlay')) return;
+        const overlay=document.createElement('div'); overlay.id='menu-overlay'; document.body.appendChild(overlay);
+        const panel=document.createElement('div'); panel.id='menu-panel'; document.body.appendChild(panel);
+        const clone=dropdown.cloneNode(true); clone.style.display='block'; clone.style.padding='20px'; panel.appendChild(clone);
+        function close(){ document.body.classList.remove('menu-open'); panel.classList.remove('open'); }
+        menuBtn.addEventListener('click',e=>{e.preventDefault(); document.body.classList.add('menu-open'); panel.classList.add('open');});
+        overlay.addEventListener('click', close);
+        document.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
+      })();
+    </script>
+  
+    <!-- Particle Generation Script -->
+    <script>
+      // Create 120 floating purple particles
+      if (document.getElementById('particlesContainer')) {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 120;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          const size = 2 + Math.random() * 4;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          const leftPos = Math.random() * 100;
+          particle.style.left = `${leftPos}%`;
+          
+          const duration = 12 + Math.random() * 13;
+          particle.style.animationDuration = `${duration}s`;
+          
+          const delay = Math.random() * 10;
+          particle.style.animationDelay = `${delay}s`;
+          
+          const drift = (Math.random() - 0.5) * 150;
+          particle.style.setProperty('--drift', `${drift}px`);
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+    
+    <!-- Three.js + Robot Interviewer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="assets/js/robot-interviewer.js"></script>
+    <script>
+      // Initialize Background Robot
+      (function initBgRobot(){
+        if (typeof THREE === 'undefined' || typeof window.RobotInterviewer === 'undefined') {
+          return setTimeout(initBgRobot, 100);
+        }
+        try {
+          window.bgRobot = new window.RobotInterviewer('bg-robot-container', THREE, {
+            canvasId: 'bg-robot-canvas',
+            trackCursor: true
+          });
+          window.bgRobot.setState('neutral');
+          console.log('✅ Background robot initialized');
+        } catch (e) {
+          console.error('❌ Failed to init background robot:', e);
+        }
+      })();
+      
+      // Advanced Parallax and Depth Effect
+      let targetX = 0, targetY = 0;
+      let currentX = 0, currentY = 0;
+      
+      document.addEventListener('mousemove', (e) => {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        targetX = (x - 0.5);
+        targetY = (y - 0.5);
+      });
+      
+      function animateParallax() {
+        currentX += (targetX - currentX) * 0.1;
+        currentY += (targetY - currentY) * 0.1;
+        
+        const container = document.getElementById('bg-robot-container');
+        if (container) {
+          const moveX1 = currentX * 80;
+          const moveY1 = currentY * 80;
+          const rotateY1 = currentX * 20;
+          const rotateX1 = -currentY * 20;
+          const scale1 = 1 + (Math.abs(currentX) + Math.abs(currentY)) * 0.05;
+          
+          container.style.transform = `
+            perspective(2000px) 
+            translateX(${moveX1}px) 
+            translateY(${moveY1}px) 
+            translateZ(-100px)
+            rotateX(${rotateX1}deg) 
+            rotateY(${rotateY1}deg)
+            scale(${scale1})
+          `;
+        }
+        
+        const particles = document.getElementById('particlesContainer');
+        if (particles) {
+          const moveX2 = currentX * 40;
+          const moveY2 = currentY * 40;
+          particles.style.transform = `
+            translateX(${moveX2}px) 
+            translateY(${moveY2}px)
+            translateZ(50px)
+          `;
+        }
+        
+        const bodyBefore = document.body;
+        if (bodyBefore) {
+          const gradientX = 50 + currentX * 10;
+          const gradientY = 50 + currentY * 10;
+          bodyBefore.style.setProperty('--gradient-x', `${gradientX}%`);
+          bodyBefore.style.setProperty('--gradient-y', `${gradientY}%`);
+        }
+        
+        const main = document.querySelector('main');
+        if (main) {
+          const moveX4 = -currentX * 15;
+          const moveY4 = -currentY * 15;
+          main.style.transform = `
+            translateX(${moveX4}px) 
+            translateY(${moveY4}px)
+            translateZ(100px)
+          `;
+        }
+        
+        requestAnimationFrame(animateParallax);
+      }
+      
+      animateParallax();
+    </script>
+    <script src="assets/js/auto-purple-bg.js"></script>
+  </body>
+</html>

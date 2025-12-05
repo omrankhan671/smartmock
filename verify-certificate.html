@@ -1,0 +1,828 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SmartMock – Verify Certificate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <style>
+      .verify-container {
+        max-width: 800px;
+        margin: 80px auto;
+        padding: 40px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+      }
+
+      .verify-header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .verify-header h1 {
+        font-size: 36px;
+        margin-bottom: 10px;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .verify-header p {
+        color: #666;
+        font-size: 16px;
+      }
+
+      .search-section {
+        margin-bottom: 40px;
+      }
+
+      .search-box {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .search-input {
+        flex: 1;
+        padding: 15px 20px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 16px;
+        font-family: 'Courier New', monospace;
+        transition: all 0.3s ease;
+      }
+
+      .search-input:focus {
+        border-color: var(--primary);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      .search-btn {
+        padding: 15px 40px;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .search-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+      }
+
+      .search-hint {
+        font-size: 14px;
+        color: #888;
+        text-align: center;
+      }
+
+      .result-section {
+        display: none;
+        animation: fadeIn 0.5s ease;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .result-card {
+        border: 2px solid #e0e0e0;
+        border-radius: 15px;
+        padding: 30px;
+        background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+      }
+
+      .result-success {
+        border-color: #28a745;
+        background: linear-gradient(to bottom, #d4edda 0%, #c3e6cb 100%);
+      }
+
+      .result-error {
+        border-color: #dc3545;
+        background: linear-gradient(to bottom, #f8d7da 0%, #f5c6cb 100%);
+      }
+
+      .result-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid rgba(0,0,0,0.1);
+      }
+
+      .status-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+      }
+
+      .status-icon.success {
+        background: #28a745;
+        color: white;
+      }
+
+      .status-icon.error {
+        background: #dc3545;
+        color: white;
+      }
+
+      .result-title {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .result-title.success {
+        color: #155724;
+      }
+
+      .result-title.error {
+        color: #721c24;
+      }
+
+      .cert-details {
+        margin-top: 20px;
+      }
+
+      .detail-row {
+        display: flex;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+      }
+
+      .detail-row:last-child {
+        border-bottom: none;
+      }
+
+      .detail-label {
+        flex: 0 0 180px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      .detail-value {
+        flex: 1;
+        color: #555;
+      }
+
+      .error-message {
+        color: #721c24;
+        font-size: 16px;
+        line-height: 1.6;
+      }
+
+      .back-btn {
+        display: inline-block;
+        margin-top: 30px;
+        padding: 12px 30px;
+        background: white;
+        color: var(--primary);
+        border: 2px solid var(--primary);
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .back-btn:hover {
+        background: var(--primary);
+        color: white;
+      }
+
+      .scanner-section {
+        margin-top: 40px;
+        padding-top: 40px;
+        border-top: 2px dashed #e0e0e0;
+        text-align: center;
+      }
+
+      .scanner-info {
+        color: #666;
+        margin-bottom: 20px;
+      }
+
+      .scanner-placeholder {
+        padding: 40px;
+        background: #f8f9fa;
+        border: 2px dashed #ccc;
+        border-radius: 10px;
+        color: #888;
+      }
+    </style>
+      <style>
+      /* Dark Black Theme with Purple Particles */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  
+    <style>
+      /* Dark Black Theme with Purple Particles & Parallax */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at var(--gradient-x, 50%) var(--gradient-y, 50%), 
+          rgba(168, 85, 247, 0.05) 0%, 
+          transparent 70%
+        );
+        pointer-events: none;
+        z-index: 0;
+        will-change: transform;
+        transition: background 0.3s ease;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        z-index: 2000 !important;
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Background Robot & Particles Layer -->
+    <div class="particles-container" id="particlesContainer"></div>
+    <style>
+      #bg-robot-container { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+      #bg-robot-container canvas { width: 100%; height: 100%; display: block; }
+      .particles-container { z-index: 0; }
+    </style>
+    <div id="bg-robot-container"><canvas id="bg-robot-canvas"></canvas></div>
+    <div class="verify-container">
+      <div class="verify-header">
+        <h1>🔍 Verify Certificate</h1>
+        <p>Enter the certificate ID to verify its authenticity</p>
+      </div>
+
+      <div class="search-section">
+        <div class="search-box">
+          <input 
+            type="text" 
+            id="cert-id-input" 
+            class="search-input" 
+            placeholder="Enter Certificate ID (e.g., SM-2025-DSA-A1B2C3)"
+            autocomplete="off"
+          />
+          <button class="search-btn" onclick="verifyCertificate()">Verify</button>
+        </div>
+        <p class="search-hint">
+          Certificate ID format: SM-YEAR-INITIALS-CODE
+        </p>
+      </div>
+
+      <div id="result-section" class="result-section">
+        <!-- Results will be displayed here -->
+      </div>
+
+      <div class="scanner-section">
+        <h3>Or Scan QR Code</h3>
+        <p class="scanner-info">
+          Use your device's camera to scan the QR code on the certificate
+        </p>
+        <div class="scanner-placeholder">
+          📷 QR Scanner Coming Soon
+        </div>
+      </div>
+
+      <div style="text-align: center;">
+        <a href="index.html" class="back-btn">Back to Home</a>
+      </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="assets/js/firebase-config.js"></script>
+    <!-- Three.js + Robot Interviewer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="assets/js/robot-interviewer.js"></script>
+    <script>
+      (function initBgRobot(){
+        if (typeof THREE === 'undefined' || typeof window.RobotInterviewer === 'undefined') {
+          return setTimeout(initBgRobot, 100);
+        }
+        try {
+          window.bgRobot = new window.RobotInterviewer('bg-robot-container', THREE, {
+            canvasId: 'bg-robot-canvas',
+            trackCursor: true
+          });
+          window.bgRobot.setState('neutral');
+          console.log('✅ Background robot initialized on verify-certificate.html');
+        } catch(e){ console.error('❌ Robot init failed (verify-certificate.html):', e); }
+      })();
+    </script>
+    
+    <!-- SmartMock v2.0 - Zero-Knowledge Verification -->
+    <script src="assets/js/zk-verification.js"></script>
+    
+    <script>
+      // Initialize Zero-Knowledge Verification
+      let zkSystem = null;
+      if (typeof ZKVerification !== 'undefined') {
+        zkSystem = ZKVerification.init();
+        console.log('✅ Zero-Knowledge Verification System loaded');
+      }
+      
+      // Check if certId is in URL (from QR code scan)
+      window.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const certId = urlParams.get('certId');
+        if (certId) {
+          document.getElementById('cert-id-input').value = certId;
+          verifyCertificate();
+        }
+      });
+
+      async function verifyCertificate() {
+        const certId = document.getElementById('cert-id-input').value.trim();
+        
+        if (!certId) {
+          showError('Please enter a certificate ID');
+          return;
+        }
+
+        // Validate format
+        const certPattern = /^SM-\d{4}-[A-Z]{2,4}-[A-Z0-9]{6}$/;
+        if (!certPattern.test(certId)) {
+          showError('Invalid certificate ID format. Expected format: SM-YEAR-INITIALS-CODE');
+          return;
+        }
+
+        // Try Zero-Knowledge Verification first if available
+        if (zkSystem) {
+          try {
+            const quickCode = certId.split('-').pop(); // Extract last part as quick code
+            const zkResult = zkSystem.quickVerify(certId, quickCode);
+            
+            if (zkResult.isValid) {
+              console.log('✅ Zero-Knowledge quick verification passed');
+            } else {
+              console.warn('⚠️ Zero-Knowledge quick verification inconclusive');
+            }
+          } catch (error) {
+            console.error('ZK Verification error:', error);
+          }
+        }
+
+        // Query Firebase
+        firebase.database().ref('certificates/' + certId).once('value')
+          .then(snapshot => {
+            if (snapshot.exists()) {
+              showSuccess(snapshot.val());
+            } else {
+              showNotFound(certId);
+            }
+          })
+          .catch(error => {
+            console.error('Error verifying certificate:', error);
+            showError('Error verifying certificate. Please check your Firebase configuration and network connection.');
+          });
+      }
+
+      function showSuccess(cert) {
+        const resultSection = document.getElementById('result-section');
+        resultSection.style.display = 'block';
+        resultSection.innerHTML = `
+          <div class="result-card result-success">
+            <div class="result-header">
+              <div class="status-icon success">✓</div>
+              <h2 class="result-title success">Certificate Verified!</h2>
+            </div>
+            <div class="cert-details">
+              <div class="detail-row">
+                <div class="detail-label">Certificate ID:</div>
+                <div class="detail-value"><strong>${cert.certificateId}</strong></div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Student Name:</div>
+                <div class="detail-value">${cert.studentName}</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Course:</div>
+                <div class="detail-value">${cert.courseName}</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Issue Date:</div>
+                <div class="detail-value">${new Date(cert.issueDate).toLocaleDateString('en-US', { 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
+                })}</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Status:</div>
+                <div class="detail-value" style="color: #28a745; font-weight: 600;">✓ Valid & Authentic</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function showNotFound(certId) {
+        const resultSection = document.getElementById('result-section');
+        resultSection.style.display = 'block';
+        resultSection.innerHTML = `
+          <div class="result-card result-error">
+            <div class="result-header">
+              <div class="status-icon error">✗</div>
+              <h2 class="result-title error">Certificate Not Found</h2>
+            </div>
+            <div class="cert-details">
+              <p class="error-message">
+                The certificate ID <strong>${certId}</strong> could not be found in our records.
+                <br><br>
+                Possible reasons:
+                <br>• The certificate ID may be incorrect
+                <br>• The certificate may not have been issued yet
+                <br>• The certificate may have been revoked
+                <br><br>
+                Please verify the certificate ID and try again.
+              </p>
+            </div>
+          </div>
+        `;
+      }
+
+      function showError(message) {
+        const resultSection = document.getElementById('result-section');
+        resultSection.style.display = 'block';
+        resultSection.innerHTML = `
+          <div class="result-card result-error">
+            <div class="result-header">
+              <div class="status-icon error">!</div>
+              <h2 class="result-title error">Error</h2>
+            </div>
+            <div class="cert-details">
+              <p class="error-message">${message}</p>
+            </div>
+          </div>
+        `;
+      }
+
+      // Allow Enter key to trigger verification
+      document.getElementById('cert-id-input').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          verifyCertificate();
+        }
+      });
+    </script>
+  
+    <!-- Particle Generation Script -->
+    <script>
+      // Create 120 floating purple particles
+      if (document.getElementById('particlesContainer')) {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 120;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          // Random size (2-6px)
+          const size = 2 + Math.random() * 4;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          // Random horizontal position
+          const leftPos = Math.random() * 100;
+          particle.style.left = `${leftPos}%`;
+          
+          // Random animation duration (12-25 seconds)
+          const duration = 12 + Math.random() * 13;
+          particle.style.animationDuration = `${duration}s`;
+          
+          // Random delay
+          const delay = Math.random() * 10;
+          particle.style.animationDelay = `${delay}s`;
+          
+          // Random horizontal drift
+          const drift = (Math.random() - 0.5) * 150;
+          particle.style.setProperty('--drift', `${drift}px`);
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+  
+    <!-- Particle Generation Script -->
+    <script>
+      // Create 120 floating purple particles
+      if (document.getElementById('particlesContainer')) {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 120;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          const size = 2 + Math.random() * 4;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          const leftPos = Math.random() * 100;
+          particle.style.left = `${leftPos}%`;
+          
+          const duration = 12 + Math.random() * 13;
+          particle.style.animationDuration = `${duration}s`;
+          
+          const delay = Math.random() * 10;
+          particle.style.animationDelay = `${delay}s`;
+          
+          const drift = (Math.random() - 0.5) * 150;
+          particle.style.setProperty('--drift', `${drift}px`);
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+    
+    <!-- Three.js + Robot Interviewer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="assets/js/robot-interviewer.js"></script>
+    <script>
+      // Initialize Background Robot
+      (function initBgRobot(){
+        if (typeof THREE === 'undefined' || typeof window.RobotInterviewer === 'undefined') {
+          return setTimeout(initBgRobot, 100);
+        }
+        try {
+          window.bgRobot = new window.RobotInterviewer('bg-robot-container', THREE, {
+            canvasId: 'bg-robot-canvas',
+            trackCursor: true
+          });
+          window.bgRobot.setState('neutral');
+          console.log('✅ Background robot initialized');
+        } catch (e) {
+          console.error('❌ Failed to init background robot:', e);
+        }
+      })();
+      
+      // Advanced Parallax and Depth Effect
+      let targetX = 0, targetY = 0;
+      let currentX = 0, currentY = 0;
+      
+      document.addEventListener('mousemove', (e) => {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        targetX = (x - 0.5);
+        targetY = (y - 0.5);
+      });
+      
+      function animateParallax() {
+        currentX += (targetX - currentX) * 0.1;
+        currentY += (targetY - currentY) * 0.1;
+        
+        const container = document.getElementById('bg-robot-container');
+        if (container) {
+          const moveX1 = currentX * 80;
+          const moveY1 = currentY * 80;
+          const rotateY1 = currentX * 20;
+          const rotateX1 = -currentY * 20;
+          const scale1 = 1 + (Math.abs(currentX) + Math.abs(currentY)) * 0.05;
+          
+          container.style.transform = `
+            perspective(2000px) 
+            translateX(${moveX1}px) 
+            translateY(${moveY1}px) 
+            translateZ(-100px)
+            rotateX(${rotateX1}deg) 
+            rotateY(${rotateY1}deg)
+            scale(${scale1})
+          `;
+        }
+        
+        const particles = document.getElementById('particlesContainer');
+        if (particles) {
+          const moveX2 = currentX * 40;
+          const moveY2 = currentY * 40;
+          particles.style.transform = `
+            translateX(${moveX2}px) 
+            translateY(${moveY2}px)
+            translateZ(50px)
+          `;
+        }
+        
+        const bodyBefore = document.body;
+        if (bodyBefore) {
+          const gradientX = 50 + currentX * 10;
+          const gradientY = 50 + currentY * 10;
+          bodyBefore.style.setProperty('--gradient-x', `${gradientX}%`);
+          bodyBefore.style.setProperty('--gradient-y', `${gradientY}%`);
+        }
+        
+        const main = document.querySelector('main');
+        if (main) {
+          const moveX4 = -currentX * 15;
+          const moveY4 = -currentY * 15;
+          main.style.transform = `
+            translateX(${moveX4}px) 
+            translateY(${moveY4}px)
+            translateZ(100px)
+          `;
+        }
+        
+        requestAnimationFrame(animateParallax);
+      }
+      
+      animateParallax();
+    </script>
+    <script src="assets/js/auto-purple-bg.js"></script>
+  </body>
+</html>

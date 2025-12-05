@@ -1,0 +1,1974 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://cdn.jsdelivr.net https://fonts.googleapis.com https://www.google.com https://www.recaptcha.net https://cdnjs.cloudflare.com;
+      script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://cdn.jsdelivr.net https://fonts.googleapis.com https://www.google.com https://www.recaptcha.net https://cdnjs.cloudflare.com;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https:;
+      connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://*.firebasedatabase.app https://www.gstatic.com wss://*.firebaseio.com http://localhost:5000;
+      frame-src 'self' https://www.google.com https://www.recaptcha.net;
+      media-src 'self' blob:;
+      worker-src 'self' blob:;
+    ">
+    <title>SmartMock – EE AI Interview</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23007bff'/%3E%3Ctext x='32' y='39' font-size='28' text-anchor='middle' fill='white' font-family='Arial'%3ES%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/styles.css" />
+    <style>
+      /* Dark Theme for AI Interview */
+      body {
+        background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #16213e 100%);
+        min-height: 100vh;
+      }
+      
+      .ai-interview-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 25px;
+        padding: 20px 0;
+      }
+      
+      .video-container {
+        position: relative;
+        width: 100%;
+        max-width: 640px;
+        border-radius: 20px;
+        overflow: hidden;
+        background: linear-gradient(145deg, #1e1e2e 0%, #252538 100%);
+        border: 2px solid rgba(102, 126, 234, 0.3);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      }
+      
+      #user-video {
+        width: 100%;
+        height: auto;
+        background-color: #0a0a0a;
+        min-height: 480px;
+        object-fit: cover;
+        display: block;
+      }
+      
+      #emotion-display {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(10px);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 0.95em;
+        border: 1px solid rgba(102, 126, 234, 0.3);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      }
+      .ai-avatar-container {
+        width: 100%;
+        max-width: 600px;
+        height: 220px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 15px 0;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+      }
+      .ai-avatar {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+        border-radius: 50%;
+        position: relative;
+        transition: transform 0.3s ease;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+      .ai-avatar.speaking {
+        animation: speaking 0.5s ease-in-out infinite;
+      }
+      .ai-avatar.happy {
+        animation: bounce 0.6s ease;
+      }
+      .ai-avatar.sad {
+        animation: shake 0.5s ease;
+      }
+      @keyframes speaking {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+      }
+      @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+      }
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+      }
+      /* Avatar Eyes */
+      .ai-avatar::before,
+      .ai-avatar::after {
+        content: '';
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        background: #333;
+        border-radius: 50%;
+        top: 35px;
+        transition: all 0.3s ease;
+      }
+      .ai-avatar::before {
+        left: 30px;
+      }
+      .ai-avatar::after {
+        right: 30px;
+      }
+      /* Winking eyes when happy */
+      .ai-avatar.happy::before {
+        height: 3px;
+        border-radius: 0;
+      }
+      /* Sad eyes */
+      .ai-avatar.sad::before,
+      .ai-avatar.sad::after {
+        top: 40px;
+      }
+      .ai-mouth {
+        width: 50px;
+        height: 8px;
+        background: #333;
+        border-radius: 0 0 25px 25px;
+        position: absolute;
+        bottom: 30px;
+        left: 35px;
+        transition: all 0.3s ease;
+      }
+      /* Speaking mouth animation */
+      .ai-avatar.speaking .ai-mouth {
+        animation: mouthMove 0.3s ease-in-out infinite;
+        border-radius: 25px;
+      }
+      @keyframes mouthMove {
+        0%, 100% { 
+          height: 8px; 
+          bottom: 30px;
+        }
+        50% { 
+          height: 20px; 
+          bottom: 25px;
+        }
+      }
+      /* Happy smile */
+      .ai-avatar.happy .ai-mouth {
+        border-radius: 0 0 30px 30px;
+        height: 15px;
+        bottom: 28px;
+        background: #4CAF50;
+      }
+      /* Sad frown */
+      .ai-avatar.sad .ai-mouth {
+        border-radius: 30px 30px 0 0;
+        height: 12px;
+        bottom: 22px;
+        background: #f44336;
+      }
+      /* Avatar status text */
+      .avatar-status {
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .avatar-status.show {
+        opacity: 1;
+      }
+      .conversation-container {
+        width: 100%;
+        max-width: 640px;
+        background: linear-gradient(145deg, #1e1e2e 0%, #252538 100%);
+        border-radius: 20px;
+        padding: 25px;
+        min-height: 250px;
+        max-height: 400px;
+        overflow-y: auto;
+        border: 1px solid rgba(102, 126, 234, 0.2);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        color: #e8e8e8;
+      }
+      
+      .conversation-container p {
+        margin: 15px 0;
+        line-height: 1.8;
+        padding: 12px 15px;
+        border-radius: 10px;
+        background: rgba(102, 126, 234, 0.05);
+      }
+      
+      .conversation-container strong {
+        color: #a0a0ff;
+        font-weight: 600;
+      }
+      
+      .conversation-container em {
+        color: #b0b0b0;
+        font-size: 0.9em;
+      }
+      
+      .controls-container {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      /* Enhanced button styles */
+      button, select {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 25px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        font-size: 1em;
+      }
+      
+      button:hover, select:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+      }
+      
+      button:active {
+        transform: translateY(0);
+      }
+      
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+      
+      #stop-btn, #stop-interview-btn {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+      }
+      
+      #stop-btn:hover, #stop-interview-btn:hover {
+        box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+      }
+      
+      select {
+        background: rgba(102, 126, 234, 0.2);
+        border: 1px solid rgba(102, 126, 234, 0.3);
+        color: white;
+        padding: 10px 20px;
+      }
+      
+      select option {
+        background: #1e1e2e;
+        color: white;
+      }
+      
+      /* Camera diagnostics */
+      #camera-diag {
+        width: 100%;
+        max-width: 640px;
+        color: #b0b0b0;
+        font-size: 0.9em;
+        padding: 15px;
+        background: rgba(30, 30, 46, 0.5);
+        border-radius: 12px;
+        border: 1px solid rgba(102, 126, 234, 0.2);
+      }
+      
+      #camera-diag div {
+        margin: 8px 0;
+      }
+      
+      #camera-diag strong {
+        color: #667eea;
+      }
+      
+      /* Scrollbar for conversation */
+      .conversation-container::-webkit-scrollbar {
+        width: 8px;
+      }
+      
+      .conversation-container::-webkit-scrollbar-track {
+        background: rgba(30, 30, 46, 0.5);
+        border-radius: 10px;
+      }
+      
+      .conversation-container::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 10px;
+      }
+      
+      .conversation-container::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+      }
+    </style>
+      <style>
+      /* Dark Black Theme with Purple Particles */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  
+    <style>
+      /* Dark Black Theme with Purple Particles & Parallax */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at var(--gradient-x, 50%) var(--gradient-y, 50%), 
+          rgba(168, 85, 247, 0.05) 0%, 
+          transparent 70%
+        );
+        pointer-events: none;
+        z-index: 0;
+        will-change: transform;
+        transition: background 0.3s ease;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        z-index: 2000 !important;
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Background Robot (fixed, non-interactive) -->
+    <style>
+      #bg-robot-container { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+      #bg-robot-container canvas { width: 100%; height: 100%; display: block; }
+      /* Keep particles (if any) above */
+      .particles-container { z-index: 0; }
+    </style>
+    <div id="bg-robot-container"><canvas id="bg-robot-canvas"></canvas></div>
+    <header class="site-header">
+      <div class="site-header-inner container">
+        <nav class="menu menu-left">
+          <div class="menu-button">☰ Menu</div>
+          <ul class="dropdown">
+            <li><a href="../../home.html">Home</a></li>
+            <li><a href="../../dashboard.html">Dashboard</a></li>
+            <li class="has-submenu"><a href="../../interview.html">Interview</a>
+              <ul class="submenu">
+                <li class="has-submenu"><a href="../cs/courses.html">Computer Science</a>
+                  <ul class="submenu">
+                    <li><a href="../cs/courses.html">Courses</a></li>
+                    <li><a href="../cs/interview.html">Interview</a></li>
+                    <li><a href="../cs/preparation.html">Interview Preparation</a></li>
+                    <li><a href="../cs/report.html">Report</a></li>
+                    <li><a href="./ai-interview.html">AI Interview</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="../ee/courses.html">Electrical</a>
+                  <ul class="submenu">
+                    <li><a href="../ee/courses.html">Courses</a></li>
+                    <li><a href="../ee/interview.html">Interview</a></li>
+                    <li><a href="../ee/preparation.html">Interview Preparation</a></li>
+                    <li><a href="../ee/report.html">Report</a></li>
+                    <li><a href="../ee/ai-interview.html">AI Interview</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="../me/courses.html">Mechanical</a>
+                  <ul class="submenu">
+                    <li><a href="../me/courses.html">Courses</a></li>
+                    <li><a href="../me/interview.html">Interview</a></li>
+                    <li><a href="../me/preparation.html">Interview Preparation</a></li>
+                    <li><a href="../me/report.html">Report</a></li>
+                    <li><a href="../me/ai-interview.html">AI Interview</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="../ce/courses.html">Civil</a>
+                  <ul class="submenu">
+                    <li><a href="../ce/courses.html">Courses</a></li>
+                    <li><a href="../ce/interview.html">Interview</a></li>
+                    <li><a href="../ce/preparation.html">Interview Preparation</a></li>
+                    <li><a href="../ce/report.html">Report</a></li>
+                    <li><a href="../ce/ai-interview.html">AI Interview</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="../ec/courses.html">Electronic Communication</a>
+                  <ul class="submenu">
+                    <li><a href="../ec/courses.html">Courses</a></li>
+                    <li><a href="../ec/interview.html">Interview</a></li>
+                    <li><a href="../ec/preparation.html">Interview Preparation</a></li>
+                    <li><a href="../ec/report.html">Report</a></li>
+                    <li><a href="../ec/ai-interview.html">AI Interview</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li><a href="../../about.html">About</a></li>
+            <li><a href="../../report.html">Report</a></li>
+            <li><a href="../../community.html">Community</a></li>
+            <li><a href="../../contact.html">Contact Us</a></li>
+          </ul>
+        </nav>
+        <div class="brand"><a href="../../home.html"><span class="logo">Smart</span><span class="logo-accent">Mock</span></a></div>
+        <div class="menu" style="margin-left:auto;">
+          <a class="btn" href="../../profile.html">Profile</a>
+          <a class="btn" href="#" onclick="signOut(); return false;">Sign out</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section>
+        <h2>Electrical Engineering – AI Interview</h2>
+        <div class="ai-interview-container">
+          <div class="video-container">
+            <video id="user-video" autoplay muted playsinline></video>
+            <div id="emotion-display">Emotion: ...</div>
+          </div>
+          <div id="camera-diag" style="width:100%;max-width:600px;color:#bbb;font-size:0.9em;">
+            <!-- diagnostics populated at runtime -->
+          </div>
+          <div class="ai-avatar-container">
+            <div class="ai-avatar" id="ai-avatar">
+              <div class="ai-mouth"></div>
+            </div>
+            <div class="avatar-status" id="avatar-status"></div>
+          </div>
+          <div class="conversation-container" id="conversation"></div>
+          <div class="controls-container">
+            <select id="level-select">
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+            <select id="topic-select">
+              <option value="circuits">Circuits</option>
+              <option value="power_systems">Power Systems</option>
+              <option value="electronics">Electronics</option>
+            </select>
+            <select id="camera-select" title="Camera">
+              <option value="">Auto Camera</option>
+            </select>
+            <label style="display:flex;align-items:center;gap:6px;">
+              <input type="checkbox" id="mock-toggle"> Mock Emotion
+            </label>
+            <button id="start-btn" class="btn">Start Interview</button>
+            <button id="answer-btn" class="btn" style="display: none;">Answer</button>
+            <button id="stop-btn" class="btn" style="display: none;">Stop Answering</button>
+            <button id="stop-interview-btn" class="btn" style="display: none; background: #f44336;">Stop Interview</button>
+            <button id="retry-camera-btn" class="btn" type="button">Retry Camera</button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">© <span id="year"></span> SmartMock.</footer>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="../../assets/js/firebase-config.js"></script>
+    <script src="../../assets/js/main.js"></script>
+
+    <!-- SmartMock v2.0 Advanced Features -->
+    <script src="../../assets/js/advanced-features.js"></script>
+    <script src="../../assets/js/adaptive-interview.js"></script>
+    <script src="../../assets/js/visualizations.js"></script>
+    <script src="../../assets/js/integrity-monitor.js"></script>
+    <script src="../../assets/js/ai-tutor.js"></script>
+    <script src="../../assets/js/i18n-accessibility.js"></script>
+    
+    <!-- Leaderboard integration -->
+    <script src="../../assets/js/leaderboard.js"></script>
+    <script src="../../assets/js/interview-postprocess.js"></script>
+    
+
+  <!-- MediaPipe FaceMesh (no TFJS required) -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/face_mesh.js" crossorigin="anonymous"></script>
+    <script>
+
+      // Initialize v2.0 features
+      if (typeof SmartMockI18n !== 'undefined') SmartMockI18n.init();
+      if (typeof SmartMockA11y !== 'undefined') SmartMockA11y.init();
+      if (typeof IntegrityMonitor !== 'undefined') IntegrityMonitor.init({ strict: true });
+      if (typeof AITutor !== 'undefined') AITutor.init('ee');
+      
+      // Initialize AdaptiveInterview system
+      if (typeof AdaptiveInterview !== 'undefined') {
+        console.log('Initializing AdaptiveInterview for ME department...');
+        AdaptiveInterview.init({ department: 'ee' });
+      } else {
+        console.error('AdaptiveInterview script not loaded!');
+      }
+      
+
+      const userVideo = document.getElementById('user-video');
+      const startBtn = document.getElementById('start-btn');
+      const answerBtn = document.getElementById('answer-btn');
+      const stopBtn = document.getElementById('stop-btn');
+      const levelSelect = document.getElementById('level-select');
+      const topicSelect = document.getElementById('topic-select');
+  const conversationDiv = document.getElementById('conversation');
+      const emotionDisplay = document.getElementById('emotion-display');
+      const aiAvatar = document.getElementById('ai-avatar');
+      const avatarStatus = document.getElementById('avatar-status');
+  const EMOTION_RULES_URL = '../../assets/js/emotion-rules.json';
+  const API_BASE = (location.origin && location.origin.includes(':5000')) ? '' : 'http://localhost:5000';
+  const mockToggle = document.getElementById('mock-toggle');
+  const cameraSelect = document.getElementById('camera-select');
+  const retryCameraBtn = document.getElementById('retry-camera-btn');
+  const cameraDiag = document.getElementById('camera-diag');
+
+      // Avatar control functions
+      function setAvatarState(state, message = '') {
+        // Remove all state classes
+        aiAvatar.classList.remove('speaking', 'happy', 'sad');
+        
+        // Add new state class
+        if (state) {
+          aiAvatar.classList.add(state);
+        }
+        
+        // Update status message
+        if (message) {
+          avatarStatus.textContent = message;
+          avatarStatus.classList.add('show');
+          setTimeout(() => {
+            avatarStatus.classList.remove('show');
+          }, 3000);
+        }
+      }
+
+      function avatarSpeak() {
+        setAvatarState('speaking', 'AI is asking...');
+      }
+
+      function avatarHappy() {
+        setAvatarState('happy', '😊 Great answer!');
+      }
+
+      function avatarSad() {
+        setAvatarState('sad', '😔 Needs improvement');
+      }
+
+      function avatarNeutral() {
+        setAvatarState('', '');
+      }
+
+      // No external API keys required. On-device face landmark detection
+      // is used to derive a simple emotion estimate (happy/surprised/neutral).
+
+    let stream;
+      // Interview configuration
+      const TOTAL_QUESTIONS = 5; // Total questions to ask
+      const COMMON_QUESTIONS_COUNT = 2; // Number of common HR questions
+      
+      let question_list = [];
+      let answer_list = [];
+      let feedback_list = [];
+      let wpm_list = [];
+      let expression_list = [];
+      let score_list = [];
+      let answerTimes = [];
+      let totalWords = 0;
+      let interviewStartTime = 0;
+      let answerStartTime = 0;
+      let interviewStopped = false;
+  let mediaRecorder;
+  let socket;
+  // Enrichment state for emotion stability
+  let recentEmotions = [];
+  const EMOTION_WINDOW = 18; // ~0.6s at ~30fps
+  // Speech Recognition state
+  let recognition = null;
+  let isRecognizing = false;
+  let currentAnswer = "";
+  const PREF_CAM_KEY = 'preferredCameraId';
+
+      function isSecureOrLocalhost(){
+        return location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+      }
+
+      function stopCurrentStream(){
+        try { if (stream) stream.getTracks().forEach(t => t.stop()); } catch(_) {}
+        stream = null;
+      }
+
+      async function openStreamForDevice(deviceId){
+        try {
+          // Stop any existing stream first
+          stopCurrentStream();
+          
+          // Use less restrictive constraints to avoid NotReadableError
+          const constraints = deviceId 
+            ? { video: { deviceId: { ideal: deviceId }, width: { ideal: 640 }, height: { ideal: 480 } }, audio: false }
+            : { video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }, audio: false };
+          
+          console.log('📷 Requesting camera with constraints:', constraints);
+          const s = await navigator.mediaDevices.getUserMedia(constraints);
+          stream = s;
+          
+          // Ensure video element is ready
+          userVideo.srcObject = stream;
+          userVideo.muted = true;
+          userVideo.playsInline = true;
+          userVideo.autoplay = true;
+          
+          // Wait for video to be ready with longer timeout
+          await new Promise((resolve, reject) => {
+            const timeout = setTimeout(() => {
+              console.warn('⏰ Video metadata load timeout, continuing anyway');
+              resolve();
+            }, 5000);
+            
+            userVideo.onloadedmetadata = () => {
+              clearTimeout(timeout);
+              console.log('✅ Video metadata loaded:', userVideo.videoWidth, 'x', userVideo.videoHeight);
+              resolve();
+            };
+            userVideo.onerror = (err) => {
+              clearTimeout(timeout);
+              console.error('❌ Video element error:', err);
+              reject(err);
+            };
+          });
+          
+          // Force play with retry logic
+          let playAttempts = 0;
+          while (playAttempts < 3) {
+            try {
+              await userVideo.play();
+              console.log('✅ Video playing successfully');
+              return true;
+            } catch(playErr) {
+              playAttempts++;
+              console.warn(`⚠️ Video play attempt ${playAttempts} failed:`, playErr.name);
+              if (playAttempts < 3) {
+                await new Promise(r => setTimeout(r, 200 * playAttempts));
+              }
+            }
+          }
+          
+          // If we got here, play failed but stream exists
+          console.warn('⚠️ Video play failed but stream exists, continuing');
+          return true;
+          
+        } catch (e) {
+          console.error('❌ openStreamForDevice error:', e.name, e.message);
+          return false;
+        }
+      }
+
+      async function populateCameras(selectId){
+        try {
+          const devices = await navigator.mediaDevices.enumerateDevices();
+          const cams = devices.filter(d => d.kind === 'videoinput');
+          cameraSelect.innerHTML = '<option value="">Auto Camera</option>';
+          cams.forEach((d, idx) => {
+            const opt = document.createElement('option');
+            opt.value = d.deviceId;
+            opt.textContent = d.label || `Camera ${idx+1}`;
+            cameraSelect.appendChild(opt);
+          });
+          if (selectId) cameraSelect.value = selectId;
+        } catch (e) {
+          console.warn('populateCameras failed', e);
+        }
+      }
+
+      async function tryAllCameras(){
+        try {
+          const devices = await navigator.mediaDevices.enumerateDevices();
+          const cams = devices.filter(d => d.kind === 'videoinput');
+          for (const d of cams) {
+            const ok = await openStreamForDevice(d.deviceId);
+            if (ok) {
+              localStorage.setItem(PREF_CAM_KEY, d.deviceId);
+              await populateCameras(d.deviceId);
+              return true;
+            }
+          }
+        } catch (e) {
+          console.warn('tryAllCameras error', e);
+        }
+        return false;
+      }
+
+      async function setupCamera() {
+        try {
+          console.log('🎥 Setting up camera...');
+          
+          if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            throw new Error('getUserMedia not supported in this browser.');
+          }
+
+          if (!isSecureOrLocalhost()) {
+            console.warn('Camera requires HTTPS or localhost. Current origin:', location.origin);
+          }
+
+          // Open with preferred or selected device first
+          const preferred = localStorage.getItem(PREF_CAM_KEY);
+          const selectedId = cameraSelect.value || preferred || '';
+          console.log('🎥 Attempting to open camera:', selectedId || 'auto');
+          
+          let opened = await openStreamForDevice(selectedId);
+          if (!opened) {
+            console.log('🎥 First attempt failed, trying auto mode...');
+            // Try auto (facingMode)
+            opened = await openStreamForDevice('');
+          }
+          
+          // Now we should have permission; populate with labels
+          await populateCameras(opened ? (selectedId || localStorage.getItem(PREF_CAM_KEY) || '') : '');
+          
+          if (opened) {
+            console.log('✅ Camera setup successful');
+            // Verify video is actually playing
+            setTimeout(() => {
+              if (userVideo.videoWidth > 0 && userVideo.videoHeight > 0) {
+                console.log(`✅ Video dimensions: ${userVideo.videoWidth}x${userVideo.videoHeight}`);
+              } else {
+                console.warn('⚠️ Video element has no dimensions - stream may not be working');
+              }
+            }, 500);
+            return userVideo;
+          }
+          
+          // If still not opened, cycle through all cameras
+          console.log('🎥 Trying all available cameras...');
+          const cycled = await tryAllCameras();
+          if (cycled) {
+            console.log('✅ Camera found in cycle');
+            return userVideo;
+          }
+          
+          // Graceful fallback: enable mock mode and continue
+          console.warn('⚠️ No working camera found, switching to mock mode');
+          emotionDisplay.textContent = 'Camera not found. Switching to Mock Emotion mode.';
+          if (mockToggle) { mockToggle.checked = true; }
+          return null;
+        } catch (err) {
+          console.error('❌ Camera error:', err);
+          const name = err && err.name ? err.name : 'Error';
+          let hint = '';
+          switch (name) {
+            case 'NotAllowedError':
+            case 'SecurityError':
+              hint = 'Permission denied. Click the lock icon in the address bar and allow Camera, then retry.'; break;
+            case 'NotFoundError':
+              hint = 'No camera detected. Connect a webcam or enable it in Windows Privacy settings.'; break;
+            case 'NotReadableError':
+              hint = 'Camera is in use by another app (Zoom/Teams/Meet). Close other apps and retry.'; break;
+            case 'OverconstrainedError':
+              hint = 'Selected camera not available. Choose a different camera or clear selection.'; break;
+            default:
+              hint = 'Ensure you are on HTTPS or localhost and that your browser allows camera access.';
+          }
+          // Auto-retry flow for camera busy
+          if (name === 'NotReadableError' && cameraRetryAttempts < maxCameraRetries) {
+            const delay = 800 + Math.min(3000, cameraRetryAttempts * 500);
+            cameraRetryAttempts++;
+            emotionDisplay.textContent = `Waiting for camera (retry ${cameraRetryAttempts}/${maxCameraRetries})... ${hint}`;
+            setTimeout(() => { setupCamera().then(() => updateDiagnostics()); }, delay);
+            return null;
+          }
+          // If NotFoundError, attempt cycling through devices as last resort
+          if (name === 'NotFoundError') {
+            const ok = await tryAllCameras();
+            if (ok) { await updateDiagnostics(); return userVideo; }
+          }
+          emotionDisplay.textContent = `Camera error: ${name}. ${hint}`;
+          // Auto-switch to mock mode so the interview is still usable
+          if (mockToggle) {
+            mockToggle.checked = true;
+          }
+          return null;
+        }
+      }
+
+      async function updateDiagnostics(){
+        let permission = 'unknown';
+        try {
+          if (navigator.permissions && navigator.permissions.query) {
+            const p = await navigator.permissions.query({ name: 'camera' });
+            permission = p.state;
+          }
+        } catch (_) {}
+        try {
+          const devices = await navigator.mediaDevices.enumerateDevices();
+          const cams = devices.filter(d => d.kind === 'videoinput');
+          cameraDiag.innerHTML = `
+            <div>Secure/Localhost: <strong>${isSecureOrLocalhost() ? 'Yes' : 'No'}</strong></div>
+            <div>Permission: <strong>${permission}</strong> (allow via site lock icon if denied)</div>
+            <div>Cameras detected: <strong>${cams.length}</strong></div>
+            <div>Selected: <strong>${cameraSelect.options[cameraSelect.selectedIndex]?.text || 'Auto'}</strong></div>
+          `;
+        } catch (_) {
+          cameraDiag.textContent = 'Diagnostics unavailable (device enumeration blocked).';
+        }
+      }
+
+  // Simple emotion heuristic from face landmarks (MediaPipe FaceMesh)
+  let faceMeshInstance;
+  let faceMeshReady = false;
+  let emotionRules = null; // loaded from JSON
+  let mockTimer = null;
+  let cameraRetryAttempts = 0;
+  const maxCameraRetries = 8;
+      
+      function dist(a,b){ const dx=a[0]-b[0], dy=a[1]-b[1]; return Math.hypot(dx,dy); }
+      
+      function computeFeatures(landmarks){
+        // indices based on MediaPipe FaceMesh
+        const upperLipTop = landmarks[13];
+        const lowerLipBottom = landmarks[14];
+        const mouthLeft = landmarks[61];
+        const mouthRight = landmarks[291];
+        const leftEyeTop = landmarks[159];
+        const leftEyeBottom = landmarks[145];
+        const rightEyeTop = landmarks[386];
+        const rightEyeBottom = landmarks[374];
+        const mouthWidth = dist(mouthLeft, mouthRight) || 1;
+        const mouthOpen = dist(upperLipTop, lowerLipBottom) / mouthWidth;
+        const eyeOpen = (
+          dist(leftEyeTop, leftEyeBottom) + dist(rightEyeTop, rightEyeBottom)
+        ) / (2 * mouthWidth);
+        const smileCurve = (landmarks[48] && landmarks[54]) ? dist(landmarks[48], landmarks[54]) : mouthWidth;
+        return { mouthOpen, eyeOpen, smileCurve };
+      }
+
+      function conditionsPass(features, conditions){
+        for (const [feat, expr] of Object.entries(conditions || {})) {
+          const val = features[feat];
+          if (val == null) return false;
+          if (">" in expr && !(val > expr[">"])) return false;
+          if (">=" in expr && !(val >= expr[">="])) return false;
+          if ("<" in expr && !(val < expr["<"])) return false;
+          if ("<=" in expr && !(val <= expr["<="])) return false;
+          if ("between" in expr) {
+            const [min, max] = expr["between"]; if (!(val >= min && val <= max)) return false;
+          }
+        }
+        return true;
+      }
+
+      function classifyEmotion(landmarks){
+        const features = computeFeatures(landmarks);
+        if (emotionRules && Array.isArray(emotionRules.rules)) {
+          for (const rule of emotionRules.rules) {
+            if (conditionsPass(features, rule.conditions)) {
+              return rule.emotion || 'neutral';
+            }
+          }
+          return 'neutral';
+        }
+        // Fallback if rules JSON didn't load
+        if (features.mouthOpen > 0.32 && features.eyeOpen > 0.12) return 'surprised';
+        if (features.mouthOpen > 0.18 && features.smileCurve > 0.38) return 'happy';
+        if (features.smileCurve < 0.30 && features.eyeOpen < 0.09) return 'sad';
+        return 'neutral';
+      }
+
+      function majorityEmotion(list){
+        const m = new Map();
+        for (const e of list) m.set(e, (m.get(e)||0)+1);
+        let top='neutral', cnt=0;
+        for (const [k,v] of m.entries()) { if (v>cnt) { top=k; cnt=v; } }
+        return top;
+      }
+
+      function enrichEmotion(base){
+        // Track recent emotions to infer nervous/confident overlays
+        recentEmotions.push(base);
+        if (recentEmotions.length > EMOTION_WINDOW) recentEmotions.shift();
+        // Count flips
+        let flips=0; for (let i=1;i<recentEmotions.length;i++){ if (recentEmotions[i]!==recentEmotions[i-1]) flips++; }
+        const maj = majorityEmotion(recentEmotions);
+        const majShare = recentEmotions.length ? recentEmotions.filter(e=>e===maj).length/recentEmotions.length : 0;
+        if (flips >= Math.max(3, Math.floor(recentEmotions.length*0.5))) return 'nervous';
+        if (majShare >= 0.8) return 'confident';
+        return base;
+      }
+
+      function pickWeightedEmotion(weights){
+        const entries = Object.entries(weights || { happy:1, neutral:1, surprised:1 });
+        const total = entries.reduce((s,[,w]) => s + (Number(w)||0), 0) || 1;
+        let r = Math.random() * total;
+        for (const [emo, w] of entries) {
+          const ww = Number(w)||0; r -= ww; if (r <= 0) return emo;
+        }
+        return entries[0][0];
+      }
+
+      function startMockEmotion(){
+        const weights = (emotionRules && emotionRules.weights) || { happy: 1, neutral: 1, surprised: 1 };
+        if (mockTimer) clearInterval(mockTimer);
+        mockTimer = setInterval(() => {
+          const base = pickWeightedEmotion(weights);
+          const emo = enrichEmotion(base);
+          expression_list.push(emo);
+          emotionDisplay.textContent = `Emotion: ${emo}`;
+        }, 700);
+      }
+
+      async function initFaceMesh() {
+        return new Promise((resolve) => {
+          faceMeshInstance = new FaceMesh({
+            locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/${file}`
+          });
+          faceMeshInstance.setOptions({
+            maxNumFaces: 1,
+            refineLandmarks: true,
+            minDetectionConfidence: 0.5,
+            minTrackingConfidence: 0.5
+          });
+          faceMeshInstance.onResults((results) => {
+            if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
+              const lms = results.multiFaceLandmarks[0];
+              // Convert landmarks to [x,y] pairs (normalized)
+              const lm = lms.map(pt => [pt.x, pt.y]);
+              const base = classifyEmotion(lm);
+              const emo = enrichEmotion(base);
+              expression_list.push(emo);
+              emotionDisplay.textContent = `Emotion: ${emo}`;
+            } else {
+              emotionDisplay.textContent = 'Emotion: Not Detected';
+            }
+          });
+          faceMeshReady = true;
+          resolve();
+        });
+      }
+
+      async function loadEmotionRules(){
+        try {
+          const resp = await fetch(EMOTION_RULES_URL, { cache: 'no-store' });
+          if (resp.ok) {
+            emotionRules = await resp.json();
+            console.log('Emotion rules loaded', emotionRules);
+          } else {
+            console.warn('Failed to load emotion rules JSON, status', resp.status);
+          }
+        } catch (e) {
+          console.warn('Error loading emotion rules JSON', e);
+        }
+      }
+
+      async function detectFace(){
+        if (!faceMeshReady) {
+          await initFaceMesh();
+        }
+        
+        // Check if video has valid dimensions before sending to FaceMesh
+        if (!userVideo || userVideo.videoWidth === 0 || userVideo.videoHeight === 0) {
+          console.log('⏳ Video not ready yet, dimensions:', userVideo?.videoWidth, 'x', userVideo?.videoHeight);
+          setTimeout(detectFace, 150);
+          return;
+        }
+        
+        try {
+          await faceMeshInstance.send({ image: userVideo });
+        } catch (e) {
+          console.warn('detect error', e);
+        }
+        setTimeout(detectFace, 150);
+      }
+
+      // Web Speech API integration
+      function initSpeechRecognition(){
+        console.log('🎤 Initializing Speech Recognition...');
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SR) {
+          console.warn('❌ Speech Recognition API not supported in this browser.');
+          return null;
+        }
+        const r = new SR();
+        r.lang = 'en-US';
+        r.continuous = false; // single answer per start
+        r.interimResults = false;
+        r.maxAlternatives = 1;
+        r.onstart = () => {
+          isRecognizing = true;
+          currentAnswer = "";
+          console.log('🎤 Speech Recognition started.');
+        };
+        r.onresult = (ev) => {
+          let txt = '';
+          for (let i=ev.resultIndex; i<ev.results.length; i++) { txt += ev.results[i][0].transcript + ' '; }
+          currentAnswer = txt.trim();
+          console.log('🎤 Speech Recognition result:', currentAnswer);
+        };
+        r.onerror = (ev) => {
+          console.error('❌ Speech Recognition error:', ev.error);
+          conversationDiv.innerHTML += `<p><strong>AI:</strong> Speech error (${ev.error}). You can type your answer instead.</p>`;
+        };
+        r.onend = () => {
+          isRecognizing = false;
+          console.log('🎤 Speech Recognition ended. Final answer:', currentAnswer);
+          if (currentAnswer) handleFinalAnswer(currentAnswer);
+          answerBtn.style.display = 'inline-block';
+          stopBtn.style.display = 'none';
+        };
+        return r;
+      }
+
+      function startSpeech(){
+        console.log('🎤 Attempting to start speech recognition...');
+        if (isRecognizing) {
+          console.log('🎤 Speech recognition already running.');
+          return;
+        }
+        if (!recognition) recognition = initSpeechRecognition();
+        if (!recognition) {
+          conversationDiv.innerHTML += `<p><strong>AI:</strong> Speech recognition not supported in this browser. Please type your answer.</p>`;
+          return;
+        }
+        try {
+          recognition.start();
+          console.log('🎤 recognition.start() called.');
+        } catch (e) {
+          console.error('❌ Error calling recognition.start():', e);
+          conversationDiv.innerHTML += `<p><strong>AI:</strong> Error starting speech recognition. Please check microphone permissions.</p>`;
+        }
+      }
+
+      function stopSpeech(){
+        if (recognition && isRecognizing) {
+          try { recognition.stop(); } catch (_) {}
+        }
+      }
+
+      function handleFinalAnswer(text){
+        // Calculate answer time
+        const answerEndTime = Date.now();
+        const answerDuration = (answerEndTime - answerStartTime) / 1000; // in seconds
+        answerTimes.push(answerDuration);
+        
+        // Calculate WPM (Words Per Minute)
+        const wordCount = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+        totalWords += wordCount;
+        const wpm = answerDuration > 0 ? (wordCount / answerDuration) * 60 : 0;
+        wpm_list.push(wpm);
+        
+        answer_list.push(text);
+        conversationDiv.innerHTML += `<p><strong>You:</strong> ${text} <em>(${wordCount} words, ${wpm.toFixed(0)} WPM, ${answerDuration.toFixed(1)}s)</em></p>`;
+        evaluateAnswer(text);
+      }
+
+      // Store current question for providing correct answer
+      let currentQuestion = '';
+      let currentQuestionIndex = -1;
+
+      async function getQuestion(_, level) {
+        // Always hide topic selector since we're using department-specific questions
+        topicSelect.style.display = 'none';
+
+        // Ensure AdaptiveInterview is available
+        if (typeof AdaptiveInterview === 'undefined') {
+          console.error('AdaptiveInterview not loaded! Check script inclusion.');
+          return 'Error: Interview system not properly initialized. Please refresh the page.';
+        }
+
+        // Common HR/behavioral questions for first phase
+        const commonQuestions = [
+          "Tell me about yourself and your background.",
+          "Why should we hire you for this position?",
+          "Where do you see yourself in 5 years?",
+          "Tell me about a challenging project you worked on.",
+          "How do you handle stress and pressure?"
+        ];
+
+        // Select question based on count
+        const currentCount = question_list.length;
+
+        // First COMMON_QUESTIONS_COUNT questions are common HR questions
+        if (currentCount < COMMON_QUESTIONS_COUNT) {
+          const shuffledCommon = commonQuestions.slice().sort(() => Math.random() - 0.5);
+          const unseenCommon = shuffledCommon.filter(q => !question_list.includes(q));
+          return unseenCommon[0] || shuffledCommon[0];
+        }
+
+        // Map UI level to AdaptiveInterview difficulty and use department-specific questions
+        const difficultyMap = { beginner: 1, intermediate: 2, advanced: 3 };
+        const difficulty = difficultyMap[level] || 1;
+        const department = 'ee'; // Electrical Engineering department code
+
+        // Get next question from AdaptiveInterview
+        try {
+          const result = await AdaptiveInterview.getNextQuestion(department, difficulty);
+          if (result && result.text) {
+            return result.text;
+          }
+        } catch (err) {
+          console.error('Error getting question from AdaptiveInterview:', err);
+        }
+
+        // Fallback pool if AdaptiveInterview fails
+        const fallback = {
+          1: ["What is Newton's Second Law of Motion?", "Explain the difference between stress and strain.", "What is the First Law of circuits?"],
+          2: ["Explain how a four-stroke engine works.", "What is the difference between laminar and turbulent flow?", "Describe the working of a centrifugal pump."],
+          3: ["How do you calculate the critical speed of a rotating shaft?", "Explain the Carnot cycle and its efficiency.", "What factors affect the strength of a welded joint?"]
+        };
+        const poolTexts = fallback[difficulty] || fallback[1];
+
+        // Shuffle and pick an unseen technical question
+        const shuffled = poolTexts.slice().sort(() => Math.random() - 0.5);
+        const unseen = shuffled.filter(q => !question_list.includes(q));
+        return unseen.length > 0 ? unseen[0] : shuffled[Math.floor(Math.random() * shuffled.length)] || poolTexts[0];
+      }
+
+      async function askQuestion() {
+        // Check if interview stopped or reached limit
+        if (interviewStopped || question_list.length >= TOTAL_QUESTIONS) {
+          console.log(`🎯 Interview complete! Questions asked: ${question_list.length}/${TOTAL_QUESTIONS}`);
+          console.log(`🔍 Reason: interviewStopped=${interviewStopped}, question_list.length=${question_list.length}, TOTAL_QUESTIONS=${TOTAL_QUESTIONS}`);
+          console.trace('📍 Call stack:');
+          finishInterview();
+          return;
+        }
+        
+        console.log(`❓ Asking question ${question_list.length + 1}/${TOTAL_QUESTIONS}`);
+        
+        const topic = topicSelect.value;
+        const level = levelSelect.value;
+
+        const question = await getQuestion(topic, level);
+        if(question_list.includes(question)){
+            askQuestion();
+            return;
+        }
+        question_list.push(question);
+        currentQuestion = question; // Store current question for providing correct answer
+        
+        // Start timer for this answer
+        answerStartTime = Date.now();
+
+        speak(question, { rate: 1.0, pitch: 1.05 });
+        conversationDiv.innerHTML += `<p><strong>AI:</strong> Question ${question_list.length}/${TOTAL_QUESTIONS}: ${question}</p>`;
+        answerBtn.style.display = 'inline-block';
+        
+        // Show stop interview button if not already visible
+        const stopInterviewBtn = document.getElementById('stop-interview-btn');
+        if (stopInterviewBtn) stopInterviewBtn.style.display = 'inline-block';
+      }
+
+      function speak(text, { rate = 1.0, pitch = 1.0 } = {}){
+        try {
+          const u = new SpeechSynthesisUtterance(text);
+          u.rate = rate; u.pitch = pitch;
+          const voices = speechSynthesis.getVoices();
+          // Pick a reasonably clear voice if available
+          const prefer = voices.find(v => /en-US/i.test(v.lang) && /female|Google US English/i.test(v.name)) || voices.find(v => /en/i.test(v.lang));
+          if (prefer) u.voice = prefer;
+          
+          // Avatar animation during speech
+          u.onstart = () => {
+            avatarSpeak();
+          };
+          u.onend = () => {
+            avatarNeutral();
+          };
+          
+          speechSynthesis.speak(u);
+        } catch (_) {}
+      }
+
+      function evaluateAnswer(answer){
+        // Heuristic scoring: content + delivery via emotions
+        const text = (answer||'').toLowerCase();
+        const goodSignals = ['experience','team','project','learned','solve','optimiz','design','impact','result','metric'];
+        const badSignals = ["don't know",'no idea','never done','nothing','idk'];
+        const lenScore = Math.min((text.split(/\s+/).length||0)/40, 1.0);
+        const goodScore = goodSignals.reduce((s,k)=> s + (text.includes(k)?0.12:0), 0);
+        const badScore = badSignals.reduce((s,k)=> s + (text.includes(k)?0.3:0), 0);
+        const lastDelivery = majorityEmotion(recentEmotions.slice(-10));
+        const deliveryBoost = lastDelivery==='confident'?0.25 : lastDelivery==='nervous'?-0.25 : 0;
+        const moodPenalty = lastDelivery==='sad'?-0.1:0;
+        const score = Math.max(0, Math.min(1, lenScore + goodScore - badScore + deliveryBoost + moodPenalty));
+        
+        // Store score and emotion
+        score_list.push(score);
+        expression_list.push(lastDelivery || 'neutral');
+        
+        const verdict = score >= 0.6 ? 'positive' : 'negative';
+        const feedback = verdict==='positive'
+          ? 'Strong answer. Nice structure and delivery. Consider adding a brief metric to quantify impact.'
+          : 'Try the STAR format: Situation, Task, Action, Result. Keep a steady, confident tone.';
+        feedback_list.push(`${verdict.toUpperCase()}: ${feedback}`);
+        conversationDiv.innerHTML += `<p><strong>AI (${verdict}, Score: ${(score * 100).toFixed(0)}%):</strong> ${feedback}</p>`;
+        
+        // Trigger avatar emotion based on verdict
+        if (verdict === 'positive') {
+          avatarHappy();
+        } else {
+          avatarSad();
+        }
+        
+        // Speak feedback
+        speak((verdict==='positive'?'Positive: ':'Negative: ') + feedback, { rate: 1.0, pitch: verdict==='positive'?1.05:0.95 });
+
+        // If negative feedback, provide the correct answer
+        if (verdict === 'negative') {
+          const correctAnswers = {
+            "What is the difference between `let`, `const`, and `var`?": "`var` is function-scoped and can be redeclared, `let` is block-scoped and can be reassigned but not redeclared, and `const` is block-scoped and cannot be reassigned or redeclared after initialization.",
+            "What are the different data types in JavaScript?": "JavaScript has 7 primitive types: String, Number, Boolean, Undefined, Null, Symbol, and BigInt. Plus Object as a non-primitive type.",
+            "What is a closure and how does it work?": "A closure is a function that has access to variables in its outer (enclosing) scope, even after the outer function has returned. It 'closes over' those variables.",
+            "Explain the concept of hoisting in JavaScript.": "Hoisting is JavaScript's behavior of moving declarations to the top of their scope before code execution. Variables declared with `var` are hoisted and initialized with `undefined`, while `let` and `const` are hoisted but not initialized (temporal dead zone).",
+            "What is the difference between `==` and `===`?": "`==` performs type coercion before comparison (loose equality), while `===` compares both value and type without coercion (strict equality).",
+            "What are arrow functions and how do they differ from regular functions?": "Arrow functions have shorter syntax and don't have their own `this`, `arguments`, `super`, or `new.target`. They cannot be used as constructors.",
+            "What is the `this` keyword in JavaScript?": "`this` refers to the context in which a function is executed. Its value depends on how the function is called: in methods it refers to the object, in regular functions it's the global object (or undefined in strict mode), and in arrow functions it's lexically inherited.",
+            "How do you create an object in JavaScript?": "Objects can be created using: object literal notation `{}`, constructor functions with `new`, `Object.create()`, or ES6 classes.",
+            "What is the difference between `null` and `undefined`?": "`undefined` means a variable has been declared but not assigned a value, while `null` is an explicit assignment representing 'no value' or 'empty'.",
+            "Explain what a callback function is.": "A callback is a function passed as an argument to another function, which is then executed inside that function. It's commonly used for asynchronous operations.",
+            
+            "Explain the event loop in JavaScript.": "The event loop is a mechanism that handles asynchronous operations. It continuously checks the call stack and task queues, executing tasks from the queue when the stack is empty.",
+            "What is `this` in different contexts?": "In methods: the object. In regular functions: global object (window) or undefined in strict mode. In arrow functions: inherited from enclosing scope. In constructors: the new instance. With call/apply/bind: explicitly set.",
+            "What are promises and how do they work?": "Promises are objects representing the eventual completion or failure of an asynchronous operation. They have three states: pending, fulfilled, or rejected, and can be chained with `.then()`, `.catch()`, and `.finally()`.",
+            "Explain async/await syntax.": "`async` declares an asynchronous function that returns a Promise. `await` pauses execution until the Promise resolves, making asynchronous code look synchronous.",
+            "What is the difference between `map`, `filter`, and `reduce`?": "`map()` transforms each element and returns a new array of same length. `filter()` returns a new array with elements that pass a test. `reduce()` accumulates array elements into a single value.",
+            "How does prototypal inheritance work?": "Every object has a prototype property pointing to another object. When accessing a property, JavaScript first checks the object, then walks up the prototype chain until found or reaching null.",
+            "What are higher-order functions?": "Functions that either take other functions as arguments or return functions. Examples: map, filter, reduce, and function factories.",
+            "Explain event delegation.": "Event delegation is attaching a single event listener to a parent element instead of multiple listeners to children, leveraging event bubbling to handle events from child elements.",
+            
+            "Explain the prototype chain in detail.": "Every object has an internal [[Prototype]] link. Property lookups traverse the chain from object → Object.prototype → null. Constructor functions' prototypes are shared among instances, enabling efficient method sharing.",
+            "What is memoization and how would you implement it?": "Memoization caches function results based on inputs. Implementation: use a Map to store results keyed by stringified arguments, check cache before computing, and store new results.",
+            "What are the different ways to handle asynchronous operations?": "Callbacks, Promises (then/catch), async/await, event emitters, streams, and reactive programming with RxJS. Modern code prefers async/await for readability.",
+            "Explain the module pattern in JavaScript.": "A design pattern using closures to create private variables and public APIs. Classic: IIFE returning object with public methods. Modern: ES6 modules with import/export.",
+            "What are Web Workers and when would you use them?": "Web Workers run JavaScript in background threads, separate from the main thread. Use for CPU-intensive tasks (data processing, calculations) to prevent UI blocking.",
+            
+            "What are the different data types in Python?": "Python has numeric types (int, float, complex), sequences (str, list, tuple), sets, dictionaries, booleans, and None. Everything in Python is an object.",
+            "What is the difference between a list and a tuple?": "Lists are mutable (can be changed) and use square brackets `[]`. Tuples are immutable (cannot be changed) and use parentheses `()`. Tuples are faster and can be used as dictionary keys.",
+            "What is a dictionary and how do you use it?": "A dictionary is a mutable, unordered collection of key-value pairs, created with `{}` or `dict()`. Access values using keys: `dict[key]` or `dict.get(key)`.",
+            "Explain what a function is in Python.": "A function is a reusable block of code that performs a specific task, defined with `def` keyword. It can take parameters, perform operations, and return values.",
+            "What is the difference between `append()` and `extend()` for lists?": "`append()` adds a single element (even if it's a list) to the end. `extend()` iterates over the argument and adds each element separately.",
+            "How do you handle exceptions in Python?": "Use try-except blocks: code that might raise exceptions in `try`, handling in `except` with specific exception types, optional `else` for no-exception code, and `finally` for cleanup.",
+            "What are Python modules and packages?": "A module is a .py file containing Python code. A package is a directory containing modules and an __init__.py file. They organize and reuse code.",
+            "Explain what `self` means in Python classes.": "`self` is the first parameter in instance methods, referring to the instance itself. It's a convention (not a keyword) that allows access to instance attributes and methods.",
+            "What is the difference between `is` and `==`?": "`is` checks if two references point to the same object in memory (identity). `==` checks if values are equal (equality).",
+            "How do you read from and write to files in Python?": "Use `open(filename, mode)` with modes 'r' (read), 'w' (write), 'a' (append). Best practice: use `with open() as f:` for automatic closing.",
+            
+            "What is a decorator in Python?": "A decorator is a function that takes another function and extends its behavior without modifying it. Syntax: `@decorator_name` above function definition. Used for logging, timing, authentication, etc.",
+            "Explain the difference between a generator and a list comprehension.": "List comprehensions create entire lists in memory `[x for x in range(10)]`. Generators use `()` or `yield` and produce values lazily (on-demand), saving memory.",
+            "What is the Global Interpreter Lock (GIL)?": "The GIL is a mutex that protects Python objects from concurrent access, allowing only one thread to execute Python bytecode at a time. Use multiprocessing for CPU-bound parallelism.",
+            "How does memory management work in Python?": "Python uses reference counting (tracks object references) and garbage collection (cycle detection). Memory is managed automatically; use `del` to remove references explicitly.",
+            "What are `*args` and `**kwargs`?": "`*args` collects positional arguments into a tuple. `**kwargs` collects keyword arguments into a dictionary. Used for variable-length arguments.",
+            
+            "What is an array and what are its characteristics?": "An array is a contiguous block of memory storing elements of the same type. It provides O(1) access by index, fixed or dynamic size, and O(n) insertion/deletion.",
+            "What is a linked list and how does it differ from an array?": "A linked list is a sequence of nodes where each node contains data and a pointer to the next node. Unlike arrays, it allows O(1) insertion/deletion at known positions but O(n) access by index.",
+            "What is a stack and what operations does it support?": "A stack is a LIFO (Last-In-First-Out) data structure supporting push (add to top), pop (remove from top), peek (view top), and isEmpty operations, all in O(1) time.",
+            "What is a queue and how does it work?": "A queue is a FIFO (First-In-First-Out) data structure supporting enqueue (add to rear), dequeue (remove from front), peek, and isEmpty operations.",
+            "Explain what Big O notation means.": "Big O notation describes the upper bound of time or space complexity as input size grows. It focuses on the dominant term and ignores constants. Common: O(1), O(log n), O(n), O(n log n), O(n²).",
+            "What is the difference between a linear and binary search?": "Linear search checks each element sequentially (O(n)). Binary search divides sorted array in half each iteration (O(log n)) but requires sorted data.",
+            "What is a hash table?": "A hash table stores key-value pairs using a hash function to compute array indices. Provides O(1) average insert/search/delete. Handles collisions via chaining or open addressing.",
+            "Explain what recursion is.": "Recursion is when a function calls itself to solve smaller instances of the same problem. Must have: base case (termination) and recursive case (problem reduction).",
+            
+            "What is a binary tree and what are its properties?": "A binary tree is a hierarchical structure where each node has at most two children (left and right). Properties include height, depth, and balance. Types: BST, AVL, Red-Black.",
+            "Explain how a binary search tree works.": "A BST maintains the property: left subtree values < node value < right subtree values. This enables O(log n) search in balanced trees by eliminating half the tree each comparison.",
+            "What is a graph and how do you represent it?": "A graph is nodes (vertices) connected by edges. Representations: adjacency matrix (2D array), adjacency list (array of lists), edge list. Choice depends on density and operations.",
+            "What are the different tree traversal methods?": "In-order (left, root, right), Pre-order (root, left, right), Post-order (left, right, root), Level-order (breadth-first). Each has specific use cases.",
+            "Explain the difference between DFS and BFS.": "DFS (Depth-First) uses a stack, explores deep before backtracking. BFS (Breadth-First) uses a queue, explores level by level. DFS: O(V+E) time, O(V) space. BFS: O(V+E) time, O(V) space.",
+            "What is dynamic programming?": "DP solves problems by breaking into overlapping subproblems, solving each once, and storing results (memoization or tabulation). Key: optimal substructure and overlapping subproblems.",
+            "Explain the concept of greedy algorithms.": "Greedy algorithms make locally optimal choices at each step hoping for global optimum. Don't always work (need proof). Examples: Dijkstra's, Huffman coding, activity selection.",
+            "What is the difference between Dijkstra's and Bellman-Ford algorithms?": "Both find shortest paths. Dijkstra uses priority queue (O((V+E)log V)), works only with non-negative weights. Bellman-Ford is O(VE), handles negative weights, detects negative cycles."
+          };
+
+          const correctAnswer = correctAnswers[currentQuestion];
+          if (correctAnswer) {
+            const correctAnswerMessage = `Here's the correct answer: ${correctAnswer}`;
+            conversationDiv.innerHTML += `<p><strong>AI (Correct Answer):</strong> ${correctAnswerMessage}</p>`;
+            // Speak the correct answer
+            speak(correctAnswerMessage, { rate: 0.95, pitch: 1.0 });
+            // Add to feedback list for report
+            feedback_list[feedback_list.length - 1] += ` | CORRECT ANSWER: ${correctAnswer}`;
+          }
+        }
+
+        // Check if we've reached the limit, if not ask next question
+        if (question_list.length < TOTAL_QUESTIONS) {
+          console.log(`✅ Answer evaluated. Moving to next question (${question_list.length + 1}/${TOTAL_QUESTIONS})`);
+          setTimeout(() => askQuestion(), 2000); // Wait 2 seconds before next question
+        } else {
+          console.log(`🏁 All ${TOTAL_QUESTIONS} questions completed. Will call finishInterview() on next askQuestion check.`);
+        }
+        // Note: finishInterview() is called automatically in askQuestion() when limit reached
+      }
+
+      function countExpressions(list){
+        return list.reduce((acc, e) => { acc[e] = (acc[e]||0)+1; return acc; }, {});
+      }
+
+      // OLD FUNCTION - No longer used, replaced by finishInterview()
+      // Kept for reference only
+      /*
+      async function generateReportDataAndSave() {
+        const sessionId = `SM-I-${Date.now()}-${Math.random().toString(36).slice(2,8).toUpperCase()}`;
+        const startedAt = window.__aiStartTime || new Date();
+        const endedAt = new Date();
+
+        const reportData = {
+          sessionId,
+          department: 'ee',
+          topic: topicSelect.value,
+          level: levelSelect.value,
+          summary: "This is a summary of your performance.",
+          questions: question_list,
+          answers: answer_list,
+          feedback: feedback_list,
+          wpm: wpm_list.length ? (wpm_list.reduce((a, b) => a + b, 0) / wpm_list.length) : 0,
+          expressions: expression_list,
+          expressionCounts: countExpressions(expression_list),
+          averageEmotion: (() => {
+            const counts = countExpressions(expression_list);
+            const top = Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
+            return top ? top[0] : 'N/A';
+          })(),
+          startedAt,
+          endedAt
+        };
+
+        if (typeof saveInterviewReport === 'function') {
+          saveInterviewReport(reportData)
+            .then(result => {
+              if (result.success) {
+                console.log('✅ Interview report saved to Firebase:', result.sessionId);
+                localStorage.setItem('ai_interview_report', JSON.stringify(reportData));
+                window.location.href = `./ai-report.html?sessionId=${encodeURIComponent(sessionId)}`;
+              } else {
+                console.warn('⚠️ Firebase save failed, using localStorage only');
+                localStorage.setItem('ai_interview_report', JSON.stringify(reportData));
+                window.location.href = `./ai-report.html?sessionId=${encodeURIComponent(sessionId)}`;
+              }
+            })
+            .catch(error => {
+              console.error('❌ Error saving report:', error);
+              localStorage.setItem('ai_interview_report', JSON.stringify(reportData));
+              window.location.href = `./ai-report.html?sessionId=${encodeURIComponent(sessionId)}`;
+            });
+        } else {
+          console.warn('⚠️ Firebase not available, using localStorage');
+          localStorage.setItem('ai_interview_report', JSON.stringify(reportData));
+          window.location.href = `./ai-report.html?sessionId=${encodeURIComponent(sessionId)}`;
+        }
+
+        if (mockTimer) { clearInterval(mockTimer); mockTimer = null; }
+      }
+      */
+
+      startBtn.addEventListener('click', async () => {
+        window.__aiStartTime = new Date();
+        
+        // Hide start button immediately
+        startBtn.style.display = 'none';
+        startBtn.disabled = true;
+        levelSelect.disabled = true;
+        topicSelect.disabled = true;
+        
+        // Show loading message
+        conversationDiv.innerHTML = '<p><strong>AI:</strong> Initializing interview... Please wait.</p>';
+        
+        // Setup camera first
+        const cameraReady = await setupCamera();
+        await updateDiagnostics();
+        
+        // Load rules and init emotion detection
+        try { await loadEmotionRules(); } catch(_) {}
+        
+        if (mockToggle.checked || !cameraReady) {
+          mockToggle.checked = true;
+          startMockEmotion();
+        } else {
+          // Ensure video is fully ready before starting face detection
+          await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second for video to stabilize
+          
+          // Final check: verify video dimensions
+          if (userVideo.videoWidth > 0 && userVideo.videoHeight > 0) {
+            console.log('✅ Starting face detection with video:', userVideo.videoWidth, 'x', userVideo.videoHeight);
+            await initFaceMesh();
+            detectFace();
+          } else {
+            console.warn('⚠️ Video not ready after camera setup, switching to mock mode');
+            mockToggle.checked = true;
+            startMockEmotion();
+          }
+        }
+        
+        // Clear loading message
+        conversationDiv.innerHTML = '<p><strong>AI:</strong> Interview starting now. Good luck! 🚀</p>';
+        
+        // Start interview
+        askQuestion();
+      });
+
+      let isFinishing = false; // Guard to prevent multiple calls
+      
+      async function finishInterview() {
+        if (isFinishing) {
+          console.log('⚠️ finishInterview() already in progress, skipping');
+          return;
+        }
+        isFinishing = true;
+        console.log('🎬 finishInterview() called');
+        interviewStopped = true;
+        
+        // Stop camera and speech recognition
+        if (stream) {
+          stream.getTracks().forEach(track => track.stop());
+          console.log('📷 Camera stopped');
+        }
+        if (isRecognizing) {
+          stopSpeech();
+          console.log('🎤 Speech recognition stopped');
+        }
+        
+        // Stop mock emotion if running
+        if (mockTimer) {
+          clearInterval(mockTimer);
+          mockTimer = null;
+          console.log('🤖 Mock emotion stopped');
+        }
+        
+        console.log('📊 Calculating metrics...');
+        
+        // Calculate final metrics
+        const totalAnswerTime = answerTimes.reduce((sum, time) => sum + time, 0) || 0;
+        const avgAnswerTime = answerTimes.length > 0 ? totalAnswerTime / answerTimes.length : 0;
+        
+        // Calculate overall WPM
+        const avgWPM = wpm_list.length > 0 ? wpm_list.reduce((sum, wpm) => sum + wpm, 0) / wpm_list.length : 0;
+        
+        // Calculate overall score
+        const overallScore = score_list.length > 0 ? score_list.reduce((sum, score) => sum + score, 0) / score_list.length : 0;
+        
+        // Get dominant emotion
+        const emotionCounts = {};
+        expression_list.forEach(emotion => {
+          emotionCounts[emotion] = (emotionCounts[emotion] || 0) + 1;
+        });
+        const dominantEmotion = Object.keys(emotionCounts).length > 0 
+          ? Object.keys(emotionCounts).reduce((a, b) => emotionCounts[a] > emotionCounts[b] ? a : b, 'neutral')
+          : 'neutral';
+        
+        console.log('📈 Metrics calculated:', {
+          avgWPM: avgWPM.toFixed(0),
+          overallScore: (overallScore * 100).toFixed(1) + '%',
+          dominantEmotion,
+          questionsAnswered: question_list.length
+        });
+        
+        // Prepare interview data
+        const interviewData = {
+          timestamp: new Date().toISOString(),
+          department: 'ee',
+          topic: topicSelect.value,
+          level: levelSelect.value,
+          questionsAsked: question_list.length,
+          totalQuestions: TOTAL_QUESTIONS,
+          questions: question_list,
+          answers: answer_list,
+          wpm_list: wpm_list,
+          expression_list: expression_list,
+          score_list: score_list,
+          feedback_list: feedback_list,
+          answerTimes: answerTimes,
+          avgAnswerTime: avgAnswerTime,
+          avgWPM: avgWPM,
+          overallScore: overallScore,
+          dominantEmotion: dominantEmotion,
+          completed: question_list.length >= TOTAL_QUESTIONS
+        };
+        
+        console.log('💾 Interview data prepared:', interviewData);
+        
+        // Process interview result: calculate stars and update leaderboard
+        let processedData = interviewData;
+        try {
+          if (typeof processInterviewResult === 'function') {
+            console.log('⭐ Processing interview result (stars + leaderboard)...');
+            processedData = await processInterviewResult(interviewData, 'ee');
+            console.log('✅ Interview result processed successfully');
+          } else {
+            console.warn('⚠️ processInterviewResult function not found, skipping post-processing');
+          }
+        } catch (processError) {
+          console.error('❌ Error processing interview result:', processError);
+          // Continue with original data
+        }
+        
+        // Save to Firebase with stars included
+        try {
+          const user = firebase.auth().currentUser;
+          if (user) {
+            const sessionId = Date.now().toString();
+            console.log('🔥 Saving to Firebase...', `interviews/${user.uid}/${sessionId}`);
+            await firebase.database().ref(`interviews/${user.uid}/${sessionId}`).set(processedData);
+            console.log('✅ Interview saved successfully to Firebase with stars:', processedData.stars);
+          } else {
+            console.warn('⚠️ No user logged in, cannot save to Firebase');
+          }
+        } catch (error) {
+          console.error('❌ Error saving interview:', error);
+        }
+        
+        // Display completion message
+        conversationDiv.innerHTML += `
+          <div style="margin-top: 20px; padding: 20px; background: #e8f5e9; border-radius: 8px; text-align: center;">
+            <h3>🎉 Interview Complete!</h3>
+            <p><strong>Questions Answered:</strong> ${question_list.length}/${TOTAL_QUESTIONS}</p>
+            <p><strong>Overall Score:</strong> ${(overallScore * 100).toFixed(1)}%</p>
+            <p><strong>Stars Awarded:</strong> ${renderStars(processedData.stars || 0)}</p>
+            <p><strong>Grade:</strong> ${processedData.grade || 'N/A'}</p>
+            <p><strong>Average WPM:</strong> ${avgWPM.toFixed(0)}</p>
+            <p><strong>Dominant Emotion:</strong> ${dominantEmotion}</p>
+            <p style="margin-top: 15px; font-size: 14px; color: #666;">Redirecting to report page in 3 seconds...</p>
+          </div>
+        `;
+        
+        // Hide buttons
+        answerBtn.style.display = 'none';
+        stopBtn.style.display = 'none';
+        const stopInterviewBtn = document.getElementById('stop-interview-btn');
+        if (stopInterviewBtn) stopInterviewBtn.style.display = 'none';
+        
+        // Set avatar to happy state
+        avatarHappy();
+        
+        // Speak completion message
+        speak('Interview complete! Great job. Redirecting to your detailed report.', { rate: 1.0, pitch: 1.05 });
+        
+        console.log('⏰ Setting redirect timer for 3 seconds...');
+        // Automatically redirect to report page after 3 seconds
+        setTimeout(() => {
+          console.log('🚀 Redirecting to report.html...');
+          window.location.href = './ai-report.html';
+        }, 3000);
+      }
+
+      function stopInterview() {
+        if (confirm('Are you sure you want to stop the interview? Your progress will be saved and you will be redirected to the report page.')) {
+          finishInterview();
+        }
+      }
+
+      retryCameraBtn.addEventListener('click', async () => {
+        cameraRetryAttempts = 0;
+        await setupCamera();
+        await updateDiagnostics();
+      });
+
+      answerBtn.addEventListener('click', () => {
+        answerBtn.style.display = 'none';
+        stopBtn.style.display = 'inline-block';
+        conversationDiv.innerHTML += `<p><strong>AI:</strong> Listening... please begin your answer.</p>`;
+        startSpeech();
+      });
+
+      stopBtn.addEventListener('click', () => {
+        stopBtn.style.display = 'none';
+        stopSpeech();
+        if (!isRecognizing && !currentAnswer) {
+          conversationDiv.innerHTML += `<p><strong>AI:</strong> Stopped listening.</p>`;
+          answerBtn.style.display = 'inline-block';
+        }
+      });
+
+      // Stop Interview button
+      const stopInterviewBtn = document.getElementById('stop-interview-btn');
+      if (stopInterviewBtn) {
+        stopInterviewBtn.addEventListener('click', stopInterview);
+      }
+
+      // Camera selection change -> reopen stream and persist preference
+      cameraSelect.addEventListener('change', async () => {
+        const id = cameraSelect.value || '';
+        if (await openStreamForDevice(id)) {
+          if (id) localStorage.setItem(PREF_CAM_KEY, id);
+          await updateDiagnostics();
+        } else {
+          conversationDiv.innerHTML += `<p><strong>AI:</strong> Unable to open the selected camera. Trying others...</p>`;
+          const ok = await tryAllCameras();
+          if (!ok) conversationDiv.innerHTML += `<p><strong>AI:</strong> No working camera found.</p>`;
+          await updateDiagnostics();
+        }
+      });
+    </script>
+  
+    <!-- Particle Generation Script -->
+    <script>
+      // Create 120 floating purple particles
+      if (document.getElementById('particlesContainer')) {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 120;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          // Random size (2-6px)
+          const size = 2 + Math.random() * 4;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          // Random horizontal position
+          const leftPos = Math.random() * 100;
+          particle.style.left = `${leftPos}%`;
+          
+          // Random animation duration (12-25 seconds)
+          const duration = 12 + Math.random() * 13;
+          particle.style.animationDuration = `${duration}s`;
+          
+          // Random delay
+          const delay = Math.random() * 10;
+          particle.style.animationDelay = `${delay}s`;
+          
+          // Random horizontal drift
+          const drift = (Math.random() - 0.5) * 150;
+          particle.style.setProperty('--drift', `${drift}px`);
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+    <!-- Background Robot Initialization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="../../assets/js/robot-interviewer.js"></script>
+    <script>
+      (function initBgRobot(){
+        if (typeof THREE === 'undefined' || typeof window.RobotInterviewer === 'undefined') {
+          return setTimeout(initBgRobot, 100);
+        }
+        try {
+          window.bgRobotEE = new window.RobotInterviewer('bg-robot-container', THREE, {
+            canvasId: 'bg-robot-canvas',
+            trackCursor: true
+          });
+          window.bgRobotEE.setState('neutral');
+          console.log('✅ EE background robot initialized');
+        } catch (e) {
+          console.error('❌ EE background robot init failed:', e);
+        }
+      })();
+    </script>
+  
+    <!-- Particle Generation Script -->
+    <script>
+      // Create 120 floating purple particles
+      if (document.getElementById('particlesContainer')) {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 120;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          const size = 2 + Math.random() * 4;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          const leftPos = Math.random() * 100;
+          particle.style.left = `${leftPos}%`;
+          
+          const duration = 12 + Math.random() * 13;
+          particle.style.animationDuration = `${duration}s`;
+          
+          const delay = Math.random() * 10;
+          particle.style.animationDelay = `${delay}s`;
+          
+          const drift = (Math.random() - 0.5) * 150;
+          particle.style.setProperty('--drift', `${drift}px`);
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+    
+    <!-- Three.js + Robot Interviewer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="assets/js/robot-interviewer.js"></script>
+    <script>
+      // Initialize Background Robot
+      (function initBgRobot(){
+        if (typeof THREE === 'undefined' || typeof window.RobotInterviewer === 'undefined') {
+          return setTimeout(initBgRobot, 100);
+        }
+        try {
+          window.bgRobot = new window.RobotInterviewer('bg-robot-container', THREE, {
+            canvasId: 'bg-robot-canvas',
+            trackCursor: true
+          });
+          window.bgRobot.setState('neutral');
+          console.log('✅ Background robot initialized');
+        } catch (e) {
+          console.error('❌ Failed to init background robot:', e);
+        }
+      })();
+      
+      // Advanced Parallax and Depth Effect
+      let targetX = 0, targetY = 0;
+      let currentX = 0, currentY = 0;
+      
+      document.addEventListener('mousemove', (e) => {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        targetX = (x - 0.5);
+        targetY = (y - 0.5);
+      });
+      
+      function animateParallax() {
+        currentX += (targetX - currentX) * 0.1;
+        currentY += (targetY - currentY) * 0.1;
+        
+        const container = document.getElementById('bg-robot-container');
+        if (container) {
+          const moveX1 = currentX * 80;
+          const moveY1 = currentY * 80;
+          const rotateY1 = currentX * 20;
+          const rotateX1 = -currentY * 20;
+          const scale1 = 1 + (Math.abs(currentX) + Math.abs(currentY)) * 0.05;
+          
+          container.style.transform = `
+            perspective(2000px) 
+            translateX(${moveX1}px) 
+            translateY(${moveY1}px) 
+            translateZ(-100px)
+            rotateX(${rotateX1}deg) 
+            rotateY(${rotateY1}deg)
+            scale(${scale1})
+          `;
+        }
+        
+        const particles = document.getElementById('particlesContainer');
+        if (particles) {
+          const moveX2 = currentX * 40;
+          const moveY2 = currentY * 40;
+          particles.style.transform = `
+            translateX(${moveX2}px) 
+            translateY(${moveY2}px)
+            translateZ(50px)
+          `;
+        }
+        
+        const bodyBefore = document.body;
+        if (bodyBefore) {
+          const gradientX = 50 + currentX * 10;
+          const gradientY = 50 + currentY * 10;
+          bodyBefore.style.setProperty('--gradient-x', `${gradientX}%`);
+          bodyBefore.style.setProperty('--gradient-y', `${gradientY}%`);
+        }
+        
+        const main = document.querySelector('main');
+        if (main) {
+          const moveX4 = -currentX * 15;
+          const moveY4 = -currentY * 15;
+          main.style.transform = `
+            translateX(${moveX4}px) 
+            translateY(${moveY4}px)
+            translateZ(100px)
+          `;
+        }
+        
+        requestAnimationFrame(animateParallax);
+      }
+      
+      animateParallax();
+    </script>
+  </body>
+</html>
+

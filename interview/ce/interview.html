@@ -1,0 +1,789 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SmartMock – Electrical Interview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/styles.css" />
+      <style>
+      /* Dark Black Theme with Purple Particles */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  
+    <style>
+      /* Dark Black Theme with Purple Particles & Parallax */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at var(--gradient-x, 50%) var(--gradient-y, 50%), 
+          rgba(168, 85, 247, 0.05) 0%, 
+          transparent 70%
+        );
+        pointer-events: none;
+        z-index: 0;
+        will-change: transform;
+        transition: background 0.3s ease;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        z-index: 2000 !important;
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- Floating Particles -->
+    <div class="particles-container" id="particlesContainer"></div>
+    <!-- Fullscreen Background Robot with Parallax Depth -->
+    <style>
+      #bg-robot-container { 
+        position: fixed; 
+        inset: 0; 
+        z-index: -1; 
+        pointer-events: none;
+        will-change: transform;
+        transform-style: preserve-3d;
+        perspective: 2000px;
+      }
+      #bg-robot-container canvas { 
+        width: 100%; 
+        height: 100%; 
+        display: block; 
+      }
+      
+      /* Full-screen 3D rotation animation */
+      @keyframes rotate3D {
+        0% { transform: perspective(2000px) rotateX(0deg) rotateY(0deg); }
+        25% { transform: perspective(2000px) rotateX(3deg) rotateY(90deg); }
+        50% { transform: perspective(2000px) rotateX(0deg) rotateY(180deg); }
+        75% { transform: perspective(2000px) rotateX(-3deg) rotateY(270deg); }
+        100% { transform: perspective(2000px) rotateX(0deg) rotateY(360deg); }
+      }
+      
+      #bg-robot-container {
+        animation: none !important;
+      }
+    </style>
+    <div id="bg-robot-container">
+      <canvas id="bg-robot-canvas"></canvas>
+    </div>
+    <header class="site-header">
+      <div class="site-header-inner container">
+        <nav class="menu menu-left">
+          <div class="menu-button">☰ Menu</div>
+          <ul class="dropdown">
+            <li><a href="../../home.html">Home</a></li>
+            <li><a href="../../dashboard.html">Dashboard</a></li>
+            <li class="has-submenu"><a href="../../interview.html">Interview</a>
+              <ul class="submenu">
+                <li class="has-submenu"><a href="../cs/courses.html">Computer Science</a>
+                  <ul class="submenu">
+                    <li><a href="../cs/courses.html">Courses</a></li>
+                    <li><a href="../cs/interview.html">Interview</a></li>
+                    <li><a href="../cs/preparation.html">Interview Preparation</a></li>
+                    <li><a href="../cs/report.html">Report</a></li>
+                    <li><a href="../cs/ai-interview.html">AI Interview</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="../ce/courses.html">Civil Engineering</a>
+                  <ul class="submenu">
+                    <li><a href="../ee/courses.html">Courses</a></li>
+                    <li><a href="../ee/interview.html">Interview</a></li>
+                    <li><a href="../ee/preparation.html">Interview Preparation</a></li>
+                    <li><a href="../ee/report.html">Report</a></li>
+                    <li><a href="../ee/ai-interview.html">AI Interview</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="../me/courses.html">Mechanical</a>
+                  <ul class="submenu">
+                    <li><a href="../me/courses.html">Courses</a></li>
+                    <li><a href="../me/interview.html">Interview</a></li>
+                    <li><a href="../me/preparation.html">Interview Preparation</a></li>
+                    <li><a href="../me/report.html">Report</a></li>
+                    <li><a href="../me/ai-interview.html">AI Interview</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="../ce/courses.html">Civil</a>
+                  <ul class="submenu">
+                    <li><a href="../ce/courses.html">Courses</a></li>
+                    <li><a href="../ce/interview.html">Interview</a></li>
+                    <li><a href="../ce/preparation.html">Interview Preparation</a></li>
+                    <li><a href="../ce/report.html">Report</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="../ec/courses.html">Electronic Communication</a>
+                  <ul class="submenu">
+                    <li><a href="../ec/courses.html">Courses</a></li>
+                    <li><a href="../ec/interview.html">Interview</a></li>
+                    <li><a href="../ec/preparation.html">Interview Preparation</a></li>
+                    <li><a href="../ec/report.html">Report</a></li>
+                    <li><a href="../ec/ai-interview.html">AI Interview</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li><a href="../../about.html">About</a></li>
+            <li><a href="../../report.html">Report</a></li>
+            <li><a href="../../community.html">Community</a></li>
+            <li><a href="../../contact.html">Contact Us</a></li>
+          </ul>
+        </nav>
+        <div class="brand"><a href="../../home.html"><span class="logo">Smart</span><span class="logo-accent">Mock</span></a></div>
+        <div class="menu" style="margin-left:auto;">
+          <a class="btn" href="../../profile.html">Profile</a>
+          <a class="btn" href="#" onclick="signOut(); return false;">Sign out</a>
+        </div>
+      </div>
+    </header>
+    <main class="container">
+      <section>
+        <h2>Civil Engineering – Interview Quiz</h2>
+        <div class="section-card">
+          <p class="muted">Test your civil engineering knowledge with multiple-choice questions.</p>
+          
+          <div style="margin: 20px 0;">
+            <label for="quiz-topic">Select Topic:</label>
+            <select id="quiz-topic" style="margin-left: 10px; padding: 8px;">
+              <option value="circuits">Circuit Analysis</option>
+              <option value="power_systems">Power Systems</option>
+              <option value="machines">Electrical Machines</option>
+              <option value="electronics">Electronics</option>
+            </select>
+            
+            <label for="quiz-level" style="margin-left: 20px;">Select Level:</label>
+            <select id="quiz-level" style="margin-left: 10px; padding: 8px;">
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+            
+            <button id="start-quiz-btn" class="btn" style="margin-left: 20px;">Start Quiz</button>
+          </div>
+          
+          <div id="quiz-container" style="display: none; margin-top: 30px;">
+            <div id="question-counter" style="margin-bottom: 15px; font-weight: bold; color: #4a90e2;"></div>
+            <div id="question-text" style="font-size: 1.2em; margin-bottom: 20px; font-weight: 600;"></div>
+            <div id="options-container" style="margin-bottom: 20px;"></div>
+            <div id="feedback-box" style="margin-top: 20px; padding: 15px; border-radius: 8px; display: none;"></div>
+            <button id="next-question-btn" class="btn" style="display: none; margin-top: 15px;">Next Question</button>
+            <button id="finish-quiz-btn" class="btn" style="display: none; margin-top: 15px;">Finish Quiz</button>
+          </div>
+          
+          <div id="results-container" style="display: none; margin-top: 30px;">
+            <h3>Quiz Results</h3>
+            <div id="score-display" style="font-size: 1.5em; margin: 20px 0; font-weight: bold;"></div>
+            <div id="performance-summary"></div>
+            <button id="restart-quiz-btn" class="btn" style="margin-top: 20px;">Start New Quiz</button>
+          </div>
+          
+          <div class="cta-row" style="margin-top:30px;">
+            <a class="btn" href="courses.html">View EE Courses</a>
+            <a class="btn" href="preparation.html">EE Preparation</a>
+            <a class="btn" href="report.html">View Reports</a>
+            <a class="btn" href="ai-interview.html">AI Interview</a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">© <span id="year"></span> SmartMock.</footer>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="../../assets/js/firebase-config.js"></script>
+  <script src="../../assets/js/main.js"></script>
+    <script>
+      // EE Quiz MCQ Bank
+      const quizBank = {
+        circuits: {
+          beginner: [
+            { q: "What is Ohm's Law?", options: ["V=IR", "P=VI", "Q=CV", "F=ma"], correct: 0, explanation: "Ohm's Law states V=IR: Voltage equals Current times Resistance." },
+            { q: "What does KCL stand for?", options: ["Kirchhoff's Current Law", "Kinetic Circuit Law", "Kirchhoff's Capacitance Law", "Kinematic Current Law"], correct: 0, explanation: "KCL is Kirchhoff's Current Law: sum of currents entering a node equals sum leaving." },
+            { q: "In a series circuit, what remains constant?", options: ["Voltage", "Current", "Resistance", "Power"], correct: 1, explanation: "In series circuits, current remains constant throughout all components." },
+            { q: "What is the unit of electrical resistance?", options: ["Ampere", "Volt", "Ohm", "Watt"], correct: 2, explanation: "Resistance is measured in Ohms (Ω)." },
+            { q: "What type of current flows in one direction only?", options: ["Alternating Current", "Direct Current", "Pulsating Current", "Sinusoidal Current"], correct: 1, explanation: "Direct Current (DC) flows in one direction only." }
+          ],
+          intermediate: [
+            { q: "What is the power factor of a purely resistive circuit?", options: ["0", "0.5", "1", "∞"], correct: 2, explanation: "Purely resistive circuits have a power factor of 1 (unity) as voltage and current are in phase." },
+            { q: "In an RC circuit, what does the time constant represent?", options: ["R/C", "RC", "R+C", "C/R"], correct: 1, explanation: "Time constant τ = RC, representing the time to charge/discharge to 63.2% of final value." },
+            { q: "What is impedance in AC circuits?", options: ["Only resistance", "R + jX (complex)", "Only reactance", "Conductance"], correct: 1, explanation: "Impedance Z = R + jX combines resistance and reactance in complex form." },
+            { q: "What is resonance in an RLC circuit?", options: ["XL = XC", "R = 0", "I = 0", "V = 0"], correct: 0, explanation: "Resonance occurs when inductive reactance equals capacitive reactance (XL = XC)." },
+            { q: "What is the phase difference between voltage and current in a pure inductor?", options: ["0°", "90° (V leads I)", "180°", "90° (I leads V)"], correct: 1, explanation: "In pure inductors, voltage leads current by 90°." }
+          ],
+          advanced: [
+            { q: "What is the Thevenin equivalent circuit?", options: ["Voltage source + series R", "Current source + parallel R", "Only voltage source", "Only resistance"], correct: 0, explanation: "Thevenin's theorem replaces a complex circuit with a voltage source in series with a resistance." },
+            { q: "In a balanced 3-phase system, what is the phase angle between phases?", options: ["90°", "120°", "180°", "360°"], correct: 1, explanation: "Three-phase systems have 120° phase separation between phases." },
+            { q: "What does a negative resistance coefficient indicate?", options: ["Superconductor", "Semiconductor", "Insulator", "Normal conductor"], correct: 1, explanation: "Negative temperature coefficient means resistance decreases with temperature, typical of semiconductors." },
+            { q: "What is the Q factor of a resonant circuit?", options: ["R/ωL", "ωL/R", "1/RC", "RC"], correct: 1, explanation: "Quality factor Q = ωL/R represents the sharpness of resonance." },
+            { q: "What is the Norton equivalent circuit?", options: ["Voltage source + series R", "Current source + parallel R", "Only current source", "Voltage + current source"], correct: 1, explanation: "Norton's theorem replaces a circuit with a current source in parallel with a resistance." }
+          ]
+        },
+        power_systems: {
+          beginner: [
+            { q: "What is the standard frequency of AC power in most countries?", options: ["50 Hz or 60 Hz", "100 Hz", "25 Hz", "120 Hz"], correct: 0, explanation: "Most countries use either 50 Hz (Europe, Asia) or 60 Hz (Americas) for AC power." },
+            { q: "What device increases or decreases AC voltage?", options: ["Capacitor", "Resistor", "Transformer", "Inductor"], correct: 2, explanation: "Transformers change AC voltage levels through electromagnetic induction." },
+            { q: "What is the purpose of a circuit breaker?", options: ["Increase voltage", "Protect from overcurrent", "Store energy", "Generate power"], correct: 1, explanation: "Circuit breakers protect circuits by interrupting current flow during overload or faults." },
+            { q: "What does kWh measure?", options: ["Power", "Energy", "Voltage", "Current"], correct: 1, explanation: "Kilowatt-hour (kWh) measures electrical energy consumption." },
+            { q: "What is a conductor's main property?", options: ["High resistance", "Low resistance", "No current flow", "Infinite impedance"], correct: 1, explanation: "Conductors have low resistance allowing easy current flow." }
+          ],
+          intermediate: [
+            { q: "What is power factor?", options: ["Real/Apparent power", "Apparent/Real power", "Reactive/Real power", "Real/Reactive power"], correct: 0, explanation: "Power factor = Real Power / Apparent Power = cos(φ)." },
+            { q: "What is the advantage of 3-phase power over single-phase?", options: ["Lower cost only", "More efficient transmission", "Simpler circuits", "Lower voltage"], correct: 1, explanation: "3-phase power provides more efficient transmission, constant power, and smaller conductors." },
+            { q: "What is the purpose of a neutral wire?", options: ["Carry fault current", "Complete circuit & provide return path", "Increase voltage", "Store energy"], correct: 1, explanation: "Neutral provides a return path for current and completes the circuit." },
+            { q: "What causes power loss in transmission lines?", options: ["Voltage drop", "I²R losses (resistance)", "Frequency change", "Magnetic fields"], correct: 1, explanation: "Power loss in lines is primarily due to I²R (resistive) heating." },
+            { q: "What is a busbar in a substation?", options: ["Control device", "Common connection point", "Measuring instrument", "Protection device"], correct: 1, explanation: "Busbars are conductors serving as common connection points for circuits." }
+          ],
+          advanced: [
+            { q: "What is HVDC transmission used for?", options: ["Short distances", "Long-distance bulk power & undersea cables", "Low power", "AC conversion only"], correct: 1, explanation: "HVDC is efficient for long-distance transmission and undersea cables with lower losses." },
+            { q: "What is load shedding?", options: ["Increasing load", "Intentionally cutting power to prevent blackout", "Load balancing", "Power generation"], correct: 1, explanation: "Load shedding deliberately disconnects load to prevent total system collapse." },
+            { q: "What is a smart grid?", options: ["Traditional grid", "Digital grid with 2-way communication", "High voltage grid", "DC grid"], correct: 1, explanation: "Smart grids use digital technology for two-way communication and automation." },
+            { q: "What is the skin effect?", options: ["Current flows uniformly", "Current concentrates at conductor surface at high freq", "Voltage drop", "Insulation breakdown"], correct: 1, explanation: "Skin effect causes AC current to flow near the conductor surface, increasing effective resistance." },
+            { q: "What is reactive power compensation?", options: ["Increase real power", "Improve power factor using capacitors/reactors", "Reduce voltage", "Generate power"], correct: 1, explanation: "Reactive compensation improves power factor using capacitors or reactors to offset inductive loads." }
+          ]
+        },
+        machines: {
+          beginner: [
+            { q: "What is the main difference between AC and DC motors?", options: ["Power source type", "Speed", "Size", "Color"], correct: 0, explanation: "AC motors run on alternating current, DC motors on direct current." },
+            { q: "What does a motor convert?", options: ["Mechanical to electrical", "Electrical to mechanical", "Heat to electrical", "Light to mechanical"], correct: 1, explanation: "Motors convert electrical energy into mechanical energy (motion)." },
+            { q: "What does a generator do?", options: ["Consume power", "Convert mechanical to electrical energy", "Store energy", "Reduce voltage"], correct: 1, explanation: "Generators convert mechanical energy into electrical energy." },
+            { q: "What is the rotor in an electric machine?", options: ["Stationary part", "Rotating part", "Winding only", "Frame"], correct: 1, explanation: "The rotor is the rotating component of an electrical machine." },
+            { q: "What is the stator?", options: ["Rotating part", "Stationary part", "Shaft", "Bearing"], correct: 1, explanation: "The stator is the stationary part of an electrical machine." }
+          ],
+          intermediate: [
+            { q: "What is slip in an induction motor?", options: ["Zero always", "(Ns-N)/Ns", "Motor speed", "Frequency"], correct: 1, explanation: "Slip = (Synchronous speed - Rotor speed) / Synchronous speed." },
+            { q: "What type of motor is most commonly used in industry?", options: ["DC series", "3-phase induction motor", "Single-phase AC", "Synchronous motor"], correct: 1, explanation: "3-phase induction motors are most common due to simplicity and robustness." },
+            { q: "What is back EMF in a DC motor?", options: ["Supply voltage", "Voltage opposing applied voltage", "Zero", "Forward voltage"], correct: 1, explanation: "Back EMF is induced voltage that opposes the applied voltage as motor rotates." },
+            { q: "What is synchronous speed?", options: ["Actual rotor speed", "120f/P rpm", "Zero", "Variable"], correct: 1, explanation: "Synchronous speed = 120 × frequency / number of poles (in rpm)." },
+            { q: "What is torque-speed characteristic?", options: ["Voltage vs current", "Torque vs speed relationship", "Power vs frequency", "Resistance vs temperature"], correct: 1, explanation: "Torque-speed characteristic shows how torque varies with motor speed." }
+          ],
+          advanced: [
+            { q: "What is field weakening in DC motors?", options: ["Increase field", "Reduce field to increase speed above base", "Stop motor", "Reverse direction"], correct: 1, explanation: "Field weakening reduces field current to allow motor speed above base speed." },
+            { q: "What is vector control (FOC)?", options: ["Simple on/off control", "Independent control of torque and flux", "Speed control only", "Voltage control"], correct: 1, explanation: "Field-Oriented Control (FOC) independently controls torque and flux for precise motor control." },
+            { q: "What causes cogging torque?", options: ["Smooth operation", "Interaction between stator slots and rotor poles", "High speed", "Low resistance"], correct: 1, explanation: "Cogging torque results from magnetic attraction between stator slots and rotor poles." },
+            { q: "What is armature reaction?", options: ["No effect", "Armature MMF distorting main field", "Rotor heating", "Speed change"], correct: 1, explanation: "Armature reaction is the distortion of main magnetic field by armature current MMF." },
+            { q: "What is a doubly-fed induction generator (DFIG)?", options: ["DC generator", "Rotor & stator both externally powered", "Single-fed machine", "Synchronous machine"], correct: 1, explanation: "DFIG has both stator and rotor connected to power sources, common in wind turbines." }
+          ]
+        },
+        electronics: {
+          beginner: [
+            { q: "What is a diode?", options: ["Bidirectional device", "One-way valve for current", "Amplifier", "Oscillator"], correct: 1, explanation: "Diodes allow current flow in one direction only." },
+            { q: "What is a transistor's main function?", options: ["Store charge", "Amplify or switch signals", "Generate AC", "Measure current"], correct: 1, explanation: "Transistors amplify signals or act as electronic switches." },
+            { q: "What does LED stand for?", options: ["Light Emitting Diode", "Low Energy Device", "Linear Electronic Diode", "Laser Emission Device"], correct: 0, explanation: "LED is Light Emitting Diode - emits light when current flows through it." },
+            { q: "What is the basic logic gate?", options: ["Amplifier", "AND, OR, NOT gates", "Transformer", "Capacitor"], correct: 1, explanation: "Basic logic gates are AND, OR, and NOT, forming the basis of digital circuits." },
+            { q: "What is a rectifier?", options: ["AC to DC converter", "DC to AC converter", "Amplifier", "Filter"], correct: 0, explanation: "Rectifiers convert alternating current (AC) to direct current (DC)." }
+          ],
+          intermediate: [
+            { q: "What is the purpose of a capacitor in a power supply filter?", options: ["Amplify signal", "Smooth DC output (reduce ripple)", "Generate AC", "Measure voltage"], correct: 1, explanation: "Filter capacitors smooth rectified DC by reducing voltage ripple." },
+            { q: "What is an operational amplifier (op-amp)?", options: ["Power amplifier", "High-gain differential amplifier", "Digital device", "Rectifier"], correct: 1, explanation: "Op-amps are high-gain voltage amplifiers with differential inputs." },
+            { q: "What is PWM (Pulse Width Modulation)?", options: ["Amplitude modulation", "Varying pulse width to control power", "Frequency modulation", "Phase modulation"], correct: 1, explanation: "PWM controls average power by varying the width of pulses." },
+            { q: "What is a Zener diode used for?", options: ["Amplification", "Voltage regulation", "Switching", "Oscillation"], correct: 1, explanation: "Zener diodes maintain constant voltage for regulation applications." },
+            { q: "What is the gain of a common emitter amplifier?", options: ["Always 1", "Can be greater than 1 (voltage gain)", "Always less than 1", "Zero"], correct: 1, explanation: "Common emitter configuration provides voltage gain greater than 1." }
+          ],
+          advanced: [
+            { q: "What is a MOSFET?", options: ["Bipolar device", "Metal-Oxide-Semiconductor Field-Effect Transistor", "Mechanical switch", "Diode"], correct: 1, explanation: "MOSFET is a voltage-controlled device with high input impedance." },
+            { q: "What is shoot-through in an H-bridge?", options: ["Normal operation", "Both switches in leg conducting (fault)", "Open circuit", "Reverse bias"], correct: 1, explanation: "Shoot-through occurs when both switches in one leg conduct simultaneously, causing short circuit." },
+            { q: "What is a Class-D amplifier?", options: ["Linear amplifier", "Switching amplifier using PWM", "Low power amplifier", "DC amplifier"], correct: 1, explanation: "Class-D amplifiers use switching and PWM for high efficiency." },
+            { q: "What is gate drive circuit?", options: ["Power circuit", "Circuit providing gate signal to switch transistor", "Load circuit", "Sensing circuit"], correct: 1, explanation: "Gate drivers provide appropriate voltage/current to switch power transistors." },
+            { q: "What is snubber circuit?", options: ["Amplifier", "Protect switch from voltage/current spikes", "Filter", "Oscillator"], correct: 1, explanation: "Snubber circuits protect switching devices from transient overvoltages and overcurrents." }
+          ]
+        }
+      };
+      
+      let currentTopic = 'circuits';
+      let currentLevel = 'beginner';
+      let currentQuestions = [];
+      let currentQuestionIndex = 0;
+      let score = 0;
+      let answers = [];
+      
+      const startQuizBtn = document.getElementById('start-quiz-btn');
+      const quizContainer = document.getElementById('quiz-container');
+      const resultsContainer = document.getElementById('results-container');
+      const questionCounter = document.getElementById('question-counter');
+      const questionText = document.getElementById('question-text');
+      const optionsContainer = document.getElementById('options-container');
+      const feedbackBox = document.getElementById('feedback-box');
+      const nextBtn = document.getElementById('next-question-btn');
+      const finishBtn = document.getElementById('finish-quiz-btn');
+      const restartBtn = document.getElementById('restart-quiz-btn');
+      
+      startQuizBtn.addEventListener('click', startQuiz);
+      nextBtn.addEventListener('click', nextQuestion);
+      finishBtn.addEventListener('click', showResults);
+      restartBtn.addEventListener('click', resetQuiz);
+      
+      function startQuiz() {
+        currentTopic = document.getElementById('quiz-topic').value;
+        currentLevel = document.getElementById('quiz-level').value;
+        currentQuestions = [...quizBank[currentTopic][currentLevel]].sort(() => Math.random() - 0.5);
+        currentQuestionIndex = 0;
+        score = 0;
+        answers = [];
+        
+        document.querySelector('.section-card > p').style.display = 'none';
+        document.querySelector('.section-card > div').style.display = 'none';
+        quizContainer.style.display = 'block';
+        resultsContainer.style.display = 'none';
+        
+        showQuestion();
+      }
+      
+      function showQuestion() {
+        const q = currentQuestions[currentQuestionIndex];
+        questionCounter.textContent = `Question ${currentQuestionIndex + 1} of ${currentQuestions.length}`;
+        questionText.textContent = q.q;
+        optionsContainer.innerHTML = '';
+        feedbackBox.style.display = 'none';
+        nextBtn.style.display = 'none';
+        finishBtn.style.display = 'none';
+        
+        q.options.forEach((option, idx) => {
+          const label = document.createElement('label');
+          label.style.display = 'block';
+          label.style.padding = '12px';
+          label.style.margin = '8px 0';
+          label.style.border = '2px solid #ddd';
+          label.style.borderRadius = '8px';
+          label.style.cursor = 'pointer';
+          label.style.transition = 'all 0.2s';
+          
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = 'quiz-option';
+          radio.value = idx;
+          radio.style.marginRight = '10px';
+          radio.addEventListener('change', () => checkAnswer(idx));
+          
+          label.appendChild(radio);
+          label.appendChild(document.createTextNode(option));
+          optionsContainer.appendChild(label);
+          
+          label.addEventListener('mouseenter', () => {
+            if (!radio.checked) label.style.backgroundColor = '#f0f0f0';
+          });
+          label.addEventListener('mouseleave', () => {
+            if (!radio.checked) label.style.backgroundColor = 'transparent';
+          });
+        });
+      }
+      
+      function checkAnswer(selected) {
+        const q = currentQuestions[currentQuestionIndex];
+        const isCorrect = selected === q.correct;
+        answers.push({ question: q.q, selected, correct: q.correct, isCorrect });
+        
+        if (isCorrect) {
+          score++;
+          feedbackBox.style.backgroundColor = '#d4edda';
+          feedbackBox.style.color = '#155724';
+          feedbackBox.innerHTML = `<strong>✓ Correct!</strong><br>${q.explanation}`;
+        } else {
+          feedbackBox.style.backgroundColor = '#f8d7da';
+          feedbackBox.style.color = '#721c24';
+          feedbackBox.innerHTML = `<strong>✗ Incorrect.</strong> Correct answer: <strong>${q.options[q.correct]}</strong><br>${q.explanation}`;
+        }
+        
+        feedbackBox.style.display = 'block';
+        
+        document.querySelectorAll('input[name="quiz-option"]').forEach(r => r.disabled = true);
+        
+        const labels = optionsContainer.querySelectorAll('label');
+        labels[selected].style.backgroundColor = isCorrect ? '#d4edda' : '#f8d7da';
+        labels[selected].style.borderColor = isCorrect ? '#28a745' : '#dc3545';
+        labels[q.correct].style.backgroundColor = '#d4edda';
+        labels[q.correct].style.borderColor = '#28a745';
+        
+        if (currentQuestionIndex < currentQuestions.length - 1) {
+          nextBtn.style.display = 'inline-block';
+        } else {
+          finishBtn.style.display = 'inline-block';
+        }
+      }
+      
+      function nextQuestion() {
+        currentQuestionIndex++;
+        showQuestion();
+      }
+      
+      function showResults() {
+        quizContainer.style.display = 'none';
+        resultsContainer.style.display = 'block';
+        
+        const percentage = Math.round((score / currentQuestions.length) * 100);
+        document.getElementById('score-display').innerHTML = `Score: ${score}/${currentQuestions.length} (${percentage}%)`;
+        document.getElementById('score-display').style.color = percentage >= 70 ? '#28a745' : percentage >= 50 ? '#ffc107' : '#dc3545';
+        
+        let summary = '<h4>Question Review:</h4><ul style="text-align:left;">';
+        answers.forEach((a, i) => {
+          const icon = a.isCorrect ? '✓' : '✗';
+          const color = a.isCorrect ? '#28a745' : '#dc3545';
+          summary += `<li style="margin: 8px 0; color: ${color};"><strong>${icon} Q${i+1}:</strong> ${currentQuestions[i].q}</li>`;
+        });
+        summary += '</ul>';
+        
+        if (percentage >= 70) summary += '<p style="color: #28a745; font-weight: bold;">Excellent! You have strong knowledge in EE.</p>';
+        else if (percentage >= 50) summary += '<p style="color: #ffc107; font-weight: bold;">Good effort! Review the topics to improve.</p>';
+        else summary += '<p style="color: #dc3545; font-weight: bold;">Keep studying! Review the preparation materials.</p>';
+        
+        document.getElementById('performance-summary').innerHTML = summary;
+      }
+      
+      function resetQuiz() {
+        resultsContainer.style.display = 'none';
+        document.querySelector('.section-card > p').style.display = 'block';
+        document.querySelector('.section-card > div').style.display = 'block';
+      }
+    </script>
+  
+    <!-- Particle Generation Script -->
+    <script>
+      // Create 120 floating purple particles
+      if (document.getElementById('particlesContainer')) {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 120;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          // Random size (2-6px)
+          const size = 2 + Math.random() * 4;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          // Random horizontal position
+          const leftPos = Math.random() * 100;
+          particle.style.left = `${leftPos}%`;
+          
+          // Random animation duration (12-25 seconds)
+          const duration = 12 + Math.random() * 13;
+          particle.style.animationDuration = `${duration}s`;
+          
+          // Random delay
+          const delay = Math.random() * 10;
+          particle.style.animationDelay = `${delay}s`;
+          
+          // Random horizontal drift
+          const drift = (Math.random() - 0.5) * 150;
+          particle.style.setProperty('--drift', `${drift}px`);
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+  
+    <!-- Particle Generation Script -->
+    <script>
+      // Create 120 floating purple particles
+      if (document.getElementById('particlesContainer')) {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 120;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          const size = 2 + Math.random() * 4;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          const leftPos = Math.random() * 100;
+          particle.style.left = `${leftPos}%`;
+          
+          const duration = 12 + Math.random() * 13;
+          particle.style.animationDuration = `${duration}s`;
+          
+          const delay = Math.random() * 10;
+          particle.style.animationDelay = `${delay}s`;
+          
+          const drift = (Math.random() - 0.5) * 150;
+          particle.style.setProperty('--drift', `${drift}px`);
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+    
+    <!-- Three.js + Robot Interviewer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="assets/js/robot-interviewer.js"></script>
+    <script>
+      // Initialize Background Robot
+      (function initBgRobot(){
+        if (typeof THREE === 'undefined' || typeof window.RobotInterviewer === 'undefined') {
+          return setTimeout(initBgRobot, 100);
+        }
+        try {
+          window.bgRobot = new window.RobotInterviewer('bg-robot-container', THREE, {
+            canvasId: 'bg-robot-canvas',
+            trackCursor: true
+          });
+          window.bgRobot.setState('neutral');
+          console.log('✅ Background robot initialized');
+        } catch (e) {
+          console.error('❌ Failed to init background robot:', e);
+        }
+      })();
+      
+      // Advanced Parallax and Depth Effect
+      let targetX = 0, targetY = 0;
+      let currentX = 0, currentY = 0;
+      
+      document.addEventListener('mousemove', (e) => {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        targetX = (x - 0.5);
+        targetY = (y - 0.5);
+      });
+      
+      function animateParallax() {
+        currentX += (targetX - currentX) * 0.1;
+        currentY += (targetY - currentY) * 0.1;
+        
+        const container = document.getElementById('bg-robot-container');
+        if (container) {
+          const moveX1 = currentX * 80;
+          const moveY1 = currentY * 80;
+          const rotateY1 = currentX * 20;
+          const rotateX1 = -currentY * 20;
+          const scale1 = 1 + (Math.abs(currentX) + Math.abs(currentY)) * 0.05;
+          
+          container.style.transform = `
+            perspective(2000px) 
+            translateX(${moveX1}px) 
+            translateY(${moveY1}px) 
+            translateZ(-100px)
+            rotateX(${rotateX1}deg) 
+            rotateY(${rotateY1}deg)
+            scale(${scale1})
+          `;
+        }
+        
+        const particles = document.getElementById('particlesContainer');
+        if (particles) {
+          const moveX2 = currentX * 40;
+          const moveY2 = currentY * 40;
+          particles.style.transform = `
+            translateX(${moveX2}px) 
+            translateY(${moveY2}px)
+            translateZ(50px)
+          `;
+        }
+        
+        const bodyBefore = document.body;
+        if (bodyBefore) {
+          const gradientX = 50 + currentX * 10;
+          const gradientY = 50 + currentY * 10;
+          bodyBefore.style.setProperty('--gradient-x', `${gradientX}%`);
+          bodyBefore.style.setProperty('--gradient-y', `${gradientY}%`);
+        }
+        
+        const main = document.querySelector('main');
+        if (main) {
+          const moveX4 = -currentX * 15;
+          const moveY4 = -currentY * 15;
+          main.style.transform = `
+            translateX(${moveX4}px) 
+            translateY(${moveY4}px)
+            translateZ(100px)
+          `;
+        }
+        
+        requestAnimationFrame(animateParallax);
+      }
+      
+      animateParallax();
+    </script>
+  </body>
+  </html>
+
+

@@ -1,0 +1,1456 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SmartMock – Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <style>
+      .community-container {
+        display: grid;
+        grid-template-columns: 250px 1fr 300px;
+        gap: 25px;
+        margin-top: 30px;
+      }
+
+      @media (max-width: 1024px) {
+        .community-container {
+          grid-template-columns: 1fr;
+        }
+        .sidebar, .activity-sidebar {
+          display: none;
+        }
+      }
+
+      /* Sidebar Categories */
+      .sidebar {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        height: fit-content;
+        position: sticky;
+        top: 20px;
+      }
+
+      .sidebar h3 {
+        margin-top: 0;
+        color: #667eea;
+        font-size: 1.2em;
+      }
+
+      .category-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .category-item {
+        padding: 12px 15px;
+        margin: 5px 0;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .category-item:hover, .category-item.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .category-count {
+        background: rgba(0,0,0,0.1);
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.85em;
+      }
+
+      /* Main Feed */
+      .main-feed {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      }
+
+      .feed-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+
+      .feed-tabs {
+        display: flex;
+        gap: 10px;
+      }
+
+      .tab-btn {
+        padding: 10px 20px;
+        border: 2px solid #e0e0e0;
+        background: white;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: 500;
+      }
+
+      .tab-btn:hover, .tab-btn.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-color: transparent;
+      }
+
+      .new-post-btn {
+        padding: 12px 25px;
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+
+      .new-post-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(67, 233, 123, 0.3);
+      }
+
+      /* Post Form */
+      .post-form {
+        background: linear-gradient(145deg, #f5f7fa 0%, #ffffff 100%);
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 25px;
+        border: 2px solid #667eea;
+        display: none;
+      }
+
+      .post-form.active {
+        display: block;
+        animation: slideDown 0.3s ease;
+      }
+
+      @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+
+      .form-group input, .form-group textarea, .form-group select {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 1em;
+        font-family: 'Poppins', sans-serif;
+        transition: border-color 0.3s;
+      }
+
+      .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      .form-group textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      .form-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+      }
+
+      /* Post Card */
+      .post-card {
+        background: white;
+        border: 2px solid #f0f0f0;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        transition: all 0.3s;
+      }
+
+      .post-card:hover {
+        border-color: #667eea;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+      }
+
+      .post-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+
+      .post-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 1.2em;
+      }
+
+      .post-author-info h4 {
+        margin: 0;
+        color: #2c3e50;
+      }
+
+      .post-meta {
+        display: flex;
+        gap: 15px;
+        color: #7f8c8d;
+        font-size: 0.9em;
+      }
+
+      .post-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 15px;
+        font-size: 0.85em;
+        font-weight: 600;
+      }
+
+      .badge-doubt { background: #fff3cd; color: #856404; }
+      .badge-discussion { background: #d1ecf1; color: #0c5460; }
+      .badge-experience { background: #d4edda; color: #155724; }
+      .badge-question { background: #f8d7da; color: #721c24; }
+
+      .post-title {
+        font-size: 1.3em;
+        color: #2c3e50;
+        margin: 15px 0 10px 0;
+        font-weight: 600;
+      }
+
+      .post-content {
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 15px;
+      }
+
+      .post-tags {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 15px;
+      }
+
+      .tag {
+        padding: 5px 12px;
+        background: rgba(102, 126, 234, 0.1);
+        color: #667eea;
+        border-radius: 15px;
+        font-size: 0.85em;
+        font-weight: 500;
+      }
+
+      .post-actions {
+        display: flex;
+        gap: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #f0f0f0;
+      }
+
+      .action-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #7f8c8d;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+
+      .action-btn:hover { color: #667eea; }
+      .action-btn.liked { color: #e74c3c; }
+
+      /* Comments Section */
+      .comments-section {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #f0f0f0;
+        display: none;
+      }
+
+      .comments-section.active {
+        display: block;
+      }
+
+      .comment {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 12px;
+        margin: 10px 0;
+      }
+
+      .comment-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+
+      .comment-author {
+        font-weight: 600;
+        color: #2c3e50;
+      }
+
+      .comment-time {
+        color: #7f8c8d;
+        font-size: 0.85em;
+      }
+
+      .comment-input {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .comment-input input {
+        flex: 1;
+        padding: 10px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+      }
+
+      /* Activity Sidebar */
+      .activity-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .activity-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      }
+
+      .activity-card h3 {
+        margin-top: 0;
+        color: #667eea;
+        font-size: 1.1em;
+      }
+
+      .top-contributor {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px;
+        margin: 8px 0;
+        border-radius: 8px;
+        background: #f8f9fa;
+      }
+
+      .contributor-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+      }
+
+      .contributor-info {
+        flex: 1;
+      }
+
+      .contributor-name {
+        font-weight: 600;
+        color: #2c3e50;
+        font-size: 0.95em;
+      }
+
+      .contributor-posts {
+        color: #7f8c8d;
+        font-size: 0.85em;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .stat-item {
+        text-align: center;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .stat-number {
+        font-size: 1.8em;
+        font-weight: bold;
+        color: #667eea;
+      }
+
+      .stat-label {
+        font-size: 0.85em;
+        color: #7f8c8d;
+      }
+
+      .loading {
+        text-align: center;
+        padding: 40px;
+        color: #667eea;
+      }
+    </style>
+      <style>
+      /* Dark Black Theme with Purple Particles */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  
+    <style>
+      /* Dark Black Theme with Purple Particles & Parallax */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at var(--gradient-x, 50%) var(--gradient-y, 50%), 
+          rgba(168, 85, 247, 0.05) 0%, 
+          transparent 70%
+        );
+        pointer-events: none;
+        z-index: 0;
+        will-change: transform;
+        transition: background 0.3s ease;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        z-index: 2000 !important;
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Background Robot & Particles Layer -->
+    <div class="particles-container" id="particlesContainer"></div>
+    <style>
+      #bg-robot-container { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+      #bg-robot-container canvas { width: 100%; height: 100%; display: block; }
+      .particles-container { z-index: 0; }
+    </style>
+    <div id="bg-robot-container"><canvas id="bg-robot-canvas"></canvas></div>
+    <header class="site-header">
+      <div class="site-header-inner container">
+        <nav class="menu menu-left">
+          <div class="menu-button">☰ Menu</div>
+          <ul class="dropdown">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="leaderboard.html">🏆 Leaderboard</a></li>
+            <li class="has-submenu"><a href="interview.html">Interview</a>
+              <ul class="submenu">
+                <li><a href="interview.html">AI Interview</a></li>
+                <li class="has-submenu"><a href="interview/cs/courses.html">Computer Science</a>
+                  <ul class="submenu">
+                    <li><a href="interview/cs/courses.html">Courses</a></li>
+                    <li><a href="interview/cs/interview.html">Interview</a></li>
+                    <li><a href="interview/cs/preparation.html">Interview Preparation</a></li>
+                    <li><a href="interview/cs/report.html">Report</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="interview/ee/courses.html">Electrical</a>
+                  <ul class="submenu">
+                    <li><a href="interview/ee/courses.html">Courses</a></li>
+                    <li><a href="interview/ee/interview.html">Interview</a></li>
+                    <li><a href="interview/ee/preparation.html">Interview Preparation</a></li>
+                    <li><a href="interview/ee/report.html">Report</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="interview/me/courses.html">Mechanical</a>
+                  <ul class="submenu">
+                    <li><a href="interview/me/courses.html">Courses</a></li>
+                    <li><a href="interview/me/interview.html">Interview</a></li>
+                    <li><a href="interview/me/preparation.html">Interview Preparation</a></li>
+                    <li><a href="interview/me/report.html">Report</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="interview/ce/courses.html">Civil</a>
+                  <ul class="submenu">
+                    <li><a href="interview/ce/courses.html">Courses</a></li>
+                    <li><a href="interview/ce/interview.html">Interview</a></li>
+                    <li><a href="interview/ce/preparation.html">Interview Preparation</a></li>
+                    <li><a href="interview/ce/report.html">Report</a></li>
+                  </ul>
+                </li>
+                <li class="has-submenu"><a href="interview/ec/courses.html">Electronic Communication</a>
+                  <ul class="submenu">
+                    <li><a href="interview/ec/courses.html">Courses</a></li>
+                    <li><a href="interview/ec/interview.html">Interview</a></li>
+                    <li><a href="interview/ec/preparation.html">Interview Preparation</a></li>
+                    <li><a href="interview/ec/report.html">Report</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="report.html">Report</a></li>
+            <li><a href="community.html">Community</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="verify-certificate.html">Verify Certificate</a></li>
+            <li><a href="recruiter/dashboard.html">Recruiter</a></li>
+          </ul>
+        </nav>
+        <div class="brand"><a href="home.html"><span class="logo">Smart</span><span class="logo-accent">Mock</span></a></div>
+        <div class="menu" style="margin-left:auto;">
+          <a class="btn" href="profile.html">Profile</a>
+          <a class="btn" href="#" onclick="signOut(); return false;">Sign out</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section>
+        <h2>🌐 SmartMock Community</h2>
+        <p style="color: #7f8c8d; margin-bottom: 20px;">Connect with peers, share experiences, ask doubts, and collaborate on interview preparation</p>
+        
+        <div class="community-container">
+          <!-- Left Sidebar - Categories -->
+          <div class="sidebar">
+            <h3>📂 Categories</h3>
+            <ul class="category-list">
+              <li class="category-item active" data-category="all">
+                <span>🌟 All Posts</span>
+                <span class="category-count" id="count-all">0</span>
+              </li>
+              <li class="category-item" data-category="doubt">
+                <span>❓ Doubts</span>
+                <span class="category-count" id="count-doubt">0</span>
+              </li>
+              <li class="category-item" data-category="discussion">
+                <span>💬 Discussions</span>
+                <span class="category-count" id="count-discussion">0</span>
+              </li>
+              <li class="category-item" data-category="experience">
+                <span>📖 Experiences</span>
+                <span class="category-count" id="count-experience">0</span>
+              </li>
+              <li class="category-item" data-category="question">
+                <span>🎯 Questions</span>
+                <span class="category-count" id="count-question">0</span>
+              </li>
+            </ul>
+
+            <h3 style="margin-top: 30px;">🏷️ Popular Tags</h3>
+            <div id="popular-tags" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+          </div>
+
+          <!-- Main Feed -->
+          <div class="main-feed">
+            <div class="feed-header">
+              <div class="feed-tabs">
+                <button class="tab-btn active" data-tab="latest">Latest</button>
+                <button class="tab-btn" data-tab="trending">Trending</button>
+                <button class="tab-btn" data-tab="unanswered">Unanswered</button>
+              </div>
+              <button class="new-post-btn" id="new-post-btn">✍️ Create Post</button>
+            </div>
+
+            <!-- New Post Form -->
+            <div class="post-form" id="post-form">
+              <h3>Create a New Post</h3>
+              <form id="create-post-form">
+                <div class="form-group">
+                  <label>Type</label>
+                  <select id="post-type" required>
+                    <option value="doubt">❓ Doubt/Question</option>
+                    <option value="discussion">💬 Discussion</option>
+                    <option value="experience">📖 Interview Experience</option>
+                    <option value="question">🎯 Practice Question</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Title</label>
+                  <input type="text" id="post-title" placeholder="Give your post a descriptive title..." required maxlength="100">
+                </div>
+                <div class="form-group">
+                  <label>Content</label>
+                  <textarea id="post-content" placeholder="Share your thoughts, questions, or experiences..." required></textarea>
+                </div>
+                <div class="form-group">
+                  <label>Tags (comma-separated)</label>
+                  <input type="text" id="post-tags" placeholder="e.g., javascript, algorithms, interview-tips">
+                </div>
+                <div class="form-actions">
+                  <button type="button" class="btn" style="background: #e0e0e0; color: #333;" onclick="document.getElementById('post-form').classList.remove('active')">Cancel</button>
+                  <button type="submit" class="btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">Post</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Posts Feed -->
+            <div id="posts-feed">
+              <div class="loading">🔄 Loading community posts...</div>
+            </div>
+          </div>
+
+          <!-- Right Sidebar - Activity -->
+          <div class="activity-sidebar">
+            <!-- Community Stats -->
+            <div class="activity-card">
+              <h3>📊 Community Stats</h3>
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <div class="stat-number" id="total-posts">0</div>
+                  <div class="stat-label">Total Posts</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-number" id="total-members">0</div>
+                  <div class="stat-label">Members</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-number" id="total-comments">0</div>
+                  <div class="stat-label">Comments</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-number" id="today-posts">0</div>
+                  <div class="stat-label">Today</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Top Contributors -->
+            <div class="activity-card">
+              <h3>🏆 Top Contributors</h3>
+              <div id="top-contributors">
+                <div class="loading" style="padding: 20px; font-size: 0.9em;">Loading...</div>
+              </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="activity-card">
+              <h3>⚡ Recent Activity</h3>
+              <div id="recent-activity" style="font-size: 0.9em; color: #555;">
+                <div class="loading" style="padding: 20px; font-size: 0.9em;">Loading...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">© <span id="year"></span> SmartMock.</footer>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="assets/js/firebase-config.js"></script>
+  <script src="assets/js/main.js"></script>
+  <!-- Three.js + Robot Interviewer -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="assets/js/robot-interviewer.js"></script>
+  <script>
+    (function initBgRobot(){
+      if (typeof THREE === 'undefined' || typeof window.RobotInterviewer === 'undefined') {
+        return setTimeout(initBgRobot, 100);
+      }
+      try {
+        window.bgRobot = new window.RobotInterviewer('bg-robot-container', THREE, {
+          canvasId: 'bg-robot-canvas',
+          trackCursor: true
+        });
+        window.bgRobot.setState('neutral');
+        console.log('✅ Background robot initialized on community.html');
+      } catch(e){ console.error('❌ Robot init failed (community.html):', e); }
+    })();
+  </script>
+  <script>
+    let currentUser = null;
+    let allPosts = [];
+    let currentCategory = 'all';
+    let currentTab = 'latest';
+
+    // Initialize
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        currentUser = user;
+        loadCommunityData();
+      } else {
+        document.getElementById('posts-feed').innerHTML = `
+          <div style="text-align: center; padding: 60px; background: #f8f9fa; border-radius: 12px;">
+            <h3>🔒 Sign in to join the community</h3>
+            <p style="color: #7f8c8d;">Connect with peers and share your experiences</p>
+            <a href="index.html" class="btn" style="margin-top: 15px;">Sign In</a>
+          </div>
+        `;
+      }
+    });
+
+    // Load all community data
+    async function loadCommunityData() {
+      try {
+        // Load posts
+        const postsRef = firebase.database().ref('community/posts');
+        postsRef.on('value', (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            allPosts = Object.keys(data).map(key => ({
+              id: key,
+              ...data[key]
+            })).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            displayPosts(allPosts);
+            updateCategoryCounts();
+            updatePopularTags();
+          } else {
+            document.getElementById('posts-feed').innerHTML = `
+              <div style="text-align: center; padding: 60px; background: #f8f9fa; border-radius: 12px;">
+                <h3>🌱 Be the first to post!</h3>
+                <p style="color: #7f8c8d;">Start a discussion or share your experience</p>
+              </div>
+            `;
+          }
+        });
+
+        // Load community stats
+        loadCommunityStats();
+        loadTopContributors();
+        loadRecentActivity();
+
+      } catch (error) {
+        console.error('Error loading community data:', error);
+      }
+    }
+
+    // Display posts
+    function displayPosts(posts) {
+      let filteredPosts = posts;
+
+      // Filter by category
+      if (currentCategory !== 'all') {
+        filteredPosts = posts.filter(p => p.type === currentCategory);
+      }
+
+      // Filter by tab
+      if (currentTab === 'trending') {
+        filteredPosts = filteredPosts.sort((a, b) => (b.likes || 0) - (a.likes || 0));
+      } else if (currentTab === 'unanswered') {
+        filteredPosts = filteredPosts.filter(p => (p.comments || []).length === 0);
+      }
+
+      const feedHtml = filteredPosts.map(post => createPostCard(post)).join('');
+      document.getElementById('posts-feed').innerHTML = feedHtml || `
+        <div style="text-align: center; padding: 40px; color: #7f8c8d;">
+          <p>No posts found in this category</p>
+        </div>
+      `;
+    }
+
+    // Create post card HTML
+    function createPostCard(post) {
+      const userInitial = (post.authorName || 'U')[0].toUpperCase();
+      const timeAgo = getTimeAgo(post.timestamp);
+      const badgeClass = `badge-${post.type}`;
+      const typeEmoji = {
+        'doubt': '❓',
+        'discussion': '💬',
+        'experience': '📖',
+        'question': '🎯'
+      };
+
+      const isLiked = post.likedBy && post.likedBy[currentUser.uid];
+      const likes = post.likes || 0;
+      const commentsCount = post.comments ? Object.keys(post.comments).length : 0;
+
+      const tagsHtml = (post.tags || []).map(tag => `<span class="tag">#${tag}</span>`).join('');
+
+      return `
+        <div class="post-card" data-post-id="${post.id}">
+          <div class="post-header">
+            <div class="post-avatar">${userInitial}</div>
+            <div class="post-author-info">
+              <h4>${post.authorName || 'Anonymous'}</h4>
+              <div class="post-meta">
+                <span>${timeAgo}</span>
+                <span>•</span>
+                <span class="post-badge ${badgeClass}">${typeEmoji[post.type]} ${post.type.charAt(0).toUpperCase() + post.type.slice(1)}</span>
+              </div>
+            </div>
+          </div>
+          
+          <h3 class="post-title">${escapeHtml(post.title)}</h3>
+          <p class="post-content">${escapeHtml(post.content)}</p>
+          
+          ${tagsHtml ? `<div class="post-tags">${tagsHtml}</div>` : ''}
+          
+          <div class="post-actions">
+            <button class="action-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${post.id}')">
+              ${isLiked ? '❤️' : '🤍'} <span>${likes}</span>
+            </button>
+            <button class="action-btn" onclick="toggleComments('${post.id}')">
+              💬 <span>${commentsCount} ${commentsCount === 1 ? 'Comment' : 'Comments'}</span>
+            </button>
+            <button class="action-btn" onclick="sharePost('${post.id}')">
+              🔗 Share
+            </button>
+          </div>
+
+          <div class="comments-section" id="comments-${post.id}">
+            <div class="comments-list" id="comments-list-${post.id}">
+              ${renderComments(post.comments || {})}
+            </div>
+            <div class="comment-input">
+              <input type="text" placeholder="Write a comment..." id="comment-input-${post.id}">
+              <button class="btn" onclick="addComment('${post.id}')">Post</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Render comments
+    function renderComments(comments) {
+      return Object.keys(comments).map(key => {
+        const comment = comments[key];
+        const timeAgo = getTimeAgo(comment.timestamp);
+        return `
+          <div class="comment">
+            <div class="comment-header">
+              <span class="comment-author">${comment.authorName}</span>
+              <span class="comment-time">${timeAgo}</span>
+            </div>
+            <p style="margin: 0; color: #555;">${escapeHtml(comment.text)}</p>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Toggle like
+    async function toggleLike(postId) {
+      if (!currentUser) return;
+
+      const postRef = firebase.database().ref(`community/posts/${postId}`);
+      const snapshot = await postRef.once('value');
+      const post = snapshot.val();
+
+      const likedBy = post.likedBy || {};
+      const likes = post.likes || 0;
+
+      if (likedBy[currentUser.uid]) {
+        delete likedBy[currentUser.uid];
+        await postRef.update({
+          likedBy,
+          likes: Math.max(0, likes - 1)
+        });
+      } else {
+        likedBy[currentUser.uid] = true;
+        await postRef.update({
+          likedBy,
+          likes: likes + 1
+        });
+      }
+    }
+
+    // Toggle comments section
+    function toggleComments(postId) {
+      const commentsSection = document.getElementById(`comments-${postId}`);
+      commentsSection.classList.toggle('active');
+    }
+
+    // Add comment
+    async function addComment(postId) {
+      if (!currentUser) return;
+
+      const input = document.getElementById(`comment-input-${postId}`);
+      const text = input.value.trim();
+
+      if (!text) return;
+
+      const commentRef = firebase.database().ref(`community/posts/${postId}/comments`).push();
+      await commentRef.set({
+        authorId: currentUser.uid,
+        authorName: currentUser.displayName || currentUser.email.split('@')[0],
+        text: text,
+        timestamp: new Date().toISOString()
+      });
+
+      input.value = '';
+    }
+
+    // Share post
+    function sharePost(postId) {
+      const url = `${window.location.origin}${window.location.pathname}?post=${postId}`;
+      navigator.clipboard.writeText(url).then(() => {
+        alert('Link copied to clipboard!');
+      });
+    }
+
+    // Create new post
+    document.getElementById('new-post-btn').addEventListener('click', () => {
+      document.getElementById('post-form').classList.add('active');
+    });
+
+    document.getElementById('create-post-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (!currentUser) return;
+
+      const type = document.getElementById('post-type').value;
+      const title = document.getElementById('post-title').value.trim();
+      const content = document.getElementById('post-content').value.trim();
+      const tagsInput = document.getElementById('post-tags').value.trim();
+      const tags = tagsInput ? tagsInput.split(',').map(t => t.trim()) : [];
+
+      const postRef = firebase.database().ref('community/posts').push();
+      await postRef.set({
+        authorId: currentUser.uid,
+        authorName: currentUser.displayName || currentUser.email.split('@')[0],
+        type,
+        title,
+        content,
+        tags,
+        timestamp: new Date().toISOString(),
+        likes: 0,
+        likedBy: {},
+        comments: {}
+      });
+
+      // Reset form
+      document.getElementById('create-post-form').reset();
+      document.getElementById('post-form').classList.remove('active');
+    });
+
+    // Category filter
+    document.querySelectorAll('.category-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        currentCategory = item.dataset.category;
+        displayPosts(allPosts);
+      });
+    });
+
+    // Tab filter
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentTab = btn.dataset.tab;
+        displayPosts(allPosts);
+      });
+    });
+
+    // Update category counts
+    function updateCategoryCounts() {
+      const counts = {
+        all: allPosts.length,
+        doubt: allPosts.filter(p => p.type === 'doubt').length,
+        discussion: allPosts.filter(p => p.type === 'discussion').length,
+        experience: allPosts.filter(p => p.type === 'experience').length,
+        question: allPosts.filter(p => p.type === 'question').length
+      };
+
+      Object.keys(counts).forEach(key => {
+        const el = document.getElementById(`count-${key}`);
+        if (el) el.textContent = counts[key];
+      });
+    }
+
+    // Update popular tags
+    function updatePopularTags() {
+      const tagCounts = {};
+      allPosts.forEach(post => {
+        (post.tags || []).forEach(tag => {
+          tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+        });
+      });
+
+      const topTags = Object.entries(tagCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10);
+
+      const html = topTags.map(([tag, count]) => 
+        `<span class="tag" style="cursor: pointer;">#${tag} (${count})</span>`
+      ).join('');
+
+      document.getElementById('popular-tags').innerHTML = html || '<p style="color: #7f8c8d; font-size: 0.85em;">No tags yet</p>';
+    }
+
+    // Load community stats
+    async function loadCommunityStats() {
+      const totalPosts = allPosts.length;
+      const totalComments = allPosts.reduce((sum, post) => 
+        sum + (post.comments ? Object.keys(post.comments).length : 0), 0);
+      
+      const uniqueAuthors = new Set(allPosts.map(p => p.authorId)).size;
+      
+      const today = new Date().toDateString();
+      const todayPosts = allPosts.filter(p => 
+        new Date(p.timestamp).toDateString() === today).length;
+
+      document.getElementById('total-posts').textContent = totalPosts;
+      document.getElementById('total-members').textContent = uniqueAuthors;
+      document.getElementById('total-comments').textContent = totalComments;
+      document.getElementById('today-posts').textContent = todayPosts;
+    }
+
+    // Load top contributors
+    function loadTopContributors() {
+      const contributors = {};
+      
+      allPosts.forEach(post => {
+        const authorId = post.authorId;
+        if (!contributors[authorId]) {
+          contributors[authorId] = {
+            name: post.authorName,
+            posts: 0,
+            likes: 0
+          };
+        }
+        contributors[authorId].posts++;
+        contributors[authorId].likes += (post.likes || 0);
+      });
+
+      const topContributors = Object.entries(contributors)
+        .sort((a, b) => b[1].posts - a[1].posts)
+        .slice(0, 5);
+
+      const html = topContributors.map(([id, data]) => `
+        <div class="top-contributor">
+          <div class="contributor-avatar">${(data.name || 'U')[0].toUpperCase()}</div>
+          <div class="contributor-info">
+            <div class="contributor-name">${data.name}</div>
+            <div class="contributor-posts">${data.posts} posts • ${data.likes} likes</div>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('top-contributors').innerHTML = html || '<p style="color: #7f8c8d;">No contributors yet</p>';
+    }
+
+    // Load recent activity
+    function loadRecentActivity() {
+      const activities = [];
+
+      // Get recent posts
+      allPosts.slice(0, 5).forEach(post => {
+        activities.push({
+          time: new Date(post.timestamp),
+          text: `${post.authorName} posted in <strong>${post.type}</strong>`
+        });
+      });
+
+      // Get recent comments
+      allPosts.forEach(post => {
+        if (post.comments) {
+          Object.values(post.comments).slice(0, 3).forEach(comment => {
+            activities.push({
+              time: new Date(comment.timestamp),
+              text: `${comment.authorName} commented on a post`
+            });
+          });
+        }
+      });
+
+      activities.sort((a, b) => b.time - a.time);
+
+      const html = activities.slice(0, 8).map(activity => `
+        <div style="padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+          <p style="margin: 0; font-size: 0.9em;">${activity.text}</p>
+          <p style="margin: 5px 0 0 0; font-size: 0.8em; color: #7f8c8d;">${getTimeAgo(activity.time.toISOString())}</p>
+        </div>
+      `).join('');
+
+      document.getElementById('recent-activity').innerHTML = html || '<p style="color: #7f8c8d;">No recent activity</p>';
+    }
+
+    // Utility functions
+    function getTimeAgo(timestamp) {
+      const now = new Date();
+      const past = new Date(timestamp);
+      const seconds = Math.floor((now - past) / 1000);
+
+      if (seconds < 60) return 'Just now';
+      if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+      if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+      if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
+      return past.toLocaleDateString();
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
+  
+    <!-- Particle Generation Script -->
+    <script>
+      // Create 120 floating purple particles
+      if (document.getElementById('particlesContainer')) {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 120;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          // Random size (2-6px)
+          const size = 2 + Math.random() * 4;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          // Random horizontal position
+          const leftPos = Math.random() * 100;
+          particle.style.left = `${leftPos}%`;
+          
+          // Random animation duration (12-25 seconds)
+          const duration = 12 + Math.random() * 13;
+          particle.style.animationDuration = `${duration}s`;
+          
+          // Random delay
+          const delay = Math.random() * 10;
+          particle.style.animationDelay = `${delay}s`;
+          
+          // Random horizontal drift
+          const drift = (Math.random() - 0.5) * 150;
+          particle.style.setProperty('--drift', `${drift}px`);
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+  
+    <!-- Particle Generation Script -->
+    <script>
+      // Create 120 floating purple particles
+      if (document.getElementById('particlesContainer')) {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 120;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          const size = 2 + Math.random() * 4;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          const leftPos = Math.random() * 100;
+          particle.style.left = `${leftPos}%`;
+          
+          const duration = 12 + Math.random() * 13;
+          particle.style.animationDuration = `${duration}s`;
+          
+          const delay = Math.random() * 10;
+          particle.style.animationDelay = `${delay}s`;
+          
+          const drift = (Math.random() - 0.5) * 150;
+          particle.style.setProperty('--drift', `${drift}px`);
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+    
+    <!-- Three.js + Robot Interviewer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="assets/js/robot-interviewer.js"></script>
+    <script>
+      // Initialize Background Robot
+      (function initBgRobot(){
+        if (typeof THREE === 'undefined' || typeof window.RobotInterviewer === 'undefined') {
+          return setTimeout(initBgRobot, 100);
+        }
+        try {
+          window.bgRobot = new window.RobotInterviewer('bg-robot-container', THREE, {
+            canvasId: 'bg-robot-canvas',
+            trackCursor: true
+          });
+          window.bgRobot.setState('neutral');
+          console.log('✅ Background robot initialized');
+        } catch (e) {
+          console.error('❌ Failed to init background robot:', e);
+        }
+      })();
+      
+      // Advanced Parallax and Depth Effect
+      let targetX = 0, targetY = 0;
+      let currentX = 0, currentY = 0;
+      
+      document.addEventListener('mousemove', (e) => {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        targetX = (x - 0.5);
+        targetY = (y - 0.5);
+      });
+      
+      function animateParallax() {
+        currentX += (targetX - currentX) * 0.1;
+        currentY += (targetY - currentY) * 0.1;
+        
+        const container = document.getElementById('bg-robot-container');
+        if (container) {
+          const moveX1 = currentX * 80;
+          const moveY1 = currentY * 80;
+          const rotateY1 = currentX * 20;
+          const rotateX1 = -currentY * 20;
+          const scale1 = 1 + (Math.abs(currentX) + Math.abs(currentY)) * 0.05;
+          
+          container.style.transform = `
+            perspective(2000px) 
+            translateX(${moveX1}px) 
+            translateY(${moveY1}px) 
+            translateZ(-100px)
+            rotateX(${rotateX1}deg) 
+            rotateY(${rotateY1}deg)
+            scale(${scale1})
+          `;
+        }
+        
+        const particles = document.getElementById('particlesContainer');
+        if (particles) {
+          const moveX2 = currentX * 40;
+          const moveY2 = currentY * 40;
+          particles.style.transform = `
+            translateX(${moveX2}px) 
+            translateY(${moveY2}px)
+            translateZ(50px)
+          `;
+        }
+        
+        const bodyBefore = document.body;
+        if (bodyBefore) {
+          const gradientX = 50 + currentX * 10;
+          const gradientY = 50 + currentY * 10;
+          bodyBefore.style.setProperty('--gradient-x', `${gradientX}%`);
+          bodyBefore.style.setProperty('--gradient-y', `${gradientY}%`);
+        }
+        
+        const main = document.querySelector('main');
+        if (main) {
+          const moveX4 = -currentX * 15;
+          const moveY4 = -currentY * 15;
+          main.style.transform = `
+            translateX(${moveX4}px) 
+            translateY(${moveY4}px)
+            translateZ(100px)
+          `;
+        }
+        
+        requestAnimationFrame(animateParallax);
+      }
+      
+      animateParallax();
+    </script>
+    <script src="assets/js/auto-purple-bg.js"></script>
+  </body>
+</html>

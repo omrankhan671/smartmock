@@ -1,0 +1,619 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #0a0a0a;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+        
+        #robot-container {
+            width: 600px;
+            height: 400px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 14px;
+            position: relative;
+            margin: 20px auto;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+        }
+        
+        #robot-interviewer-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .status {
+            text-align: center;
+            margin: 20px;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+        
+        .controls {
+            text-align: center;
+            margin: 20px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background: #5568d3;
+        }
+        
+        .log {
+            background: #1a1a1a;
+            padding: 15px;
+            margin: 20px auto;
+            max-width: 800px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .log div {
+            margin: 5px 0;
+        }
+        
+        .success { color: #4CAF50; }
+        .error { color: #f44336; }
+        .info { color: #2196F3; }
+    </style>
+
+    <style>
+      /* Dark Black Theme with Purple Particles & Parallax */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at var(--gradient-x, 50%) var(--gradient-y, 50%), 
+          rgba(168, 85, 247, 0.05) 0%, 
+          transparent 70%
+        );
+        pointer-events: none;
+        z-index: 0;
+        will-change: transform;
+        transition: background 0.3s ease;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        z-index: 2000 !important;
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  </head>
+<body>
+
+    <!-- Floating Particles -->
+    <div class="particles-container" id="particlesContainer"></div>
+    <!-- Fullscreen Background Robot with Parallax Depth -->
+    <style>
+      #bg-robot-container { 
+        position: fixed; 
+        inset: 0; 
+        z-index: 1; 
+        pointer-events: none;
+        will-change: transform;
+        transform-style: preserve-3d;
+        perspective: 2000px;
+      }
+      #bg-robot-container canvas { 
+        width: 100%; 
+        height: 100%; 
+        display: block; 
+      }
+      
+      /* Full-screen 3D rotation animation */
+      @keyframes rotate3D {
+        0% { transform: perspective(2000px) rotateX(0deg) rotateY(0deg); }
+        25% { transform: perspective(2000px) rotateX(3deg) rotateY(90deg); }
+        50% { transform: perspective(2000px) rotateX(0deg) rotateY(180deg); }
+        75% { transform: perspective(2000px) rotateX(-3deg) rotateY(270deg); }
+        100% { transform: perspective(2000px) rotateX(0deg) rotateY(360deg); }
+      }
+      
+      #bg-robot-container {
+        animation: none !important;
+      }
+    </style>
+    <div id="bg-robot-container">
+      <canvas id="bg-robot-canvas"></canvas>
+    </div>
+    <h1 style="text-align: center;">🤖 3D Robot Test</h1>
+    
+    <div class="status" id="status">
+        Loading...
+    </div>
+    
+    <div id="robot-container">
+        <canvas id="robot-interviewer-canvas"></canvas>
+    </div>
+    
+    <div class="controls">
+        <button onclick="testSpeak()">Speaking</button>
+        <button onclick="testHappy()">Happy</button>
+        <button onclick="testSad()">Sad</button>
+        <button onclick="testNeutral()">Neutral</button>
+    </div>
+    
+    <div class="log" id="log"></div>
+
+    <!-- THREE.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <script>
+        // Logging
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const entry = document.createElement('div');
+            entry.className = type;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logDiv.insertBefore(entry, logDiv.firstChild);
+            console.log(message);
+        }
+
+        // Check THREE.js
+        if (typeof THREE === 'undefined') {
+            log('❌ THREE.js not loaded!', 'error');
+            document.getElementById('status').textContent = '❌ THREE.js not loaded';
+        } else {
+            log('✅ THREE.js loaded successfully', 'success');
+        }
+
+        // Simple Robot Interviewer
+        class SimpleRobotInterviewer {
+            constructor(containerId) {
+                log('Initializing robot...', 'info');
+                
+                this.container = document.getElementById(containerId);
+                this.canvas = document.getElementById('robot-interviewer-canvas');
+                
+                if (!this.container) {
+                    log('❌ Container not found: ' + containerId, 'error');
+                    return;
+                }
+                
+                if (!this.canvas) {
+                    log('❌ Canvas not found', 'error');
+                    return;
+                }
+                
+                log('✅ Container and canvas found', 'success');
+                
+                this.scene = null;
+                this.camera = null;
+                this.renderer = null;
+                this.robot = null;
+                this.robotHead = null;
+                this.currentState = 'neutral';
+                
+                this.init();
+            }
+
+            init() {
+                try {
+                    log('Creating scene...', 'info');
+                    
+                    // Scene
+                    this.scene = new THREE.Scene();
+                    log('✅ Scene created', 'success');
+
+                    // Camera
+                    const aspect = this.container.clientWidth / this.container.clientHeight;
+                    this.camera = new THREE.PerspectiveCamera(50, aspect, 0.1, 1000);
+                    this.camera.position.z = 4;
+                    log('✅ Camera created', 'success');
+
+                    // Renderer
+                    this.renderer = new THREE.WebGLRenderer({ 
+                        canvas: this.canvas,
+                        antialias: true, 
+                        alpha: true 
+                    });
+                    this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
+                    this.renderer.setPixelRatio(window.devicePixelRatio);
+                    log('✅ Renderer created', 'success');
+
+                    // Lights
+                    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+                    this.scene.add(ambientLight);
+                    
+                    const purpleLight = new THREE.PointLight(0xa855f7, 2, 100);
+                    purpleLight.position.set(0, 2, 3);
+                    this.scene.add(purpleLight);
+                    log('✅ Lights added', 'success');
+
+                    // Create Robot
+                    this.createRobot();
+                    
+                    // Start animation
+                    this.animate();
+                    
+                    log('✅ Robot initialized successfully!', 'success');
+                    document.getElementById('status').innerHTML = '✅ Robot Active!<br>Use buttons to test animations.';
+                    
+                } catch (error) {
+                    log('❌ Error during initialization: ' + error.message, 'error');
+                    document.getElementById('status').textContent = '❌ Initialization failed: ' + error.message;
+                }
+            }
+
+            createRobot() {
+                log('Creating robot mesh...', 'info');
+                
+                this.robot = new THREE.Group();
+
+                // Head
+                const headGeometry = new THREE.BoxGeometry(1, 1, 1);
+                const headMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0x333333,
+                    metalness: 0.8,
+                    roughness: 0.3
+                });
+                this.robotHead = new THREE.Mesh(headGeometry, headMaterial);
+                this.robot.add(this.robotHead);
+
+                // Eyes
+                const eyeGeometry = new THREE.SphereGeometry(0.12, 16, 16);
+                const eyeMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0x00f0ff,
+                    emissive: 0x00f0ff,
+                    emissiveIntensity: 1
+                });
+                
+                const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+                leftEye.position.set(-0.25, 0.15, 0.5);
+                this.robotHead.add(leftEye);
+
+                const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+                rightEye.position.set(0.25, 0.15, 0.5);
+                this.robotHead.add(rightEye);
+
+                // Body
+                const bodyGeometry = new THREE.BoxGeometry(1.2, 1.5, 0.8);
+                const bodyMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0x222222,
+                    metalness: 0.9,
+                    roughness: 0.4
+                });
+                const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+                body.position.y = -1.2;
+                this.robot.add(body);
+
+                this.robot.position.y = -0.3;
+                this.scene.add(this.robot);
+                
+                log('✅ Robot mesh created', 'success');
+            }
+
+            animate() {
+                requestAnimationFrame(() => this.animate());
+                
+                // Idle rotation
+                if (this.robot && this.currentState === 'neutral') {
+                    this.robot.rotation.y = Math.sin(Date.now() * 0.001) * 0.1;
+                }
+                
+                this.renderer.render(this.scene, this.camera);
+            }
+
+            setState(state) {
+                this.currentState = state;
+                log('State changed to: ' + state, 'info');
+                
+                if (!this.robot) return;
+                
+                switch(state) {
+                    case 'speaking':
+                        // Animate head
+                        const speakAnim = () => {
+                            if (this.currentState !== 'speaking') return;
+                            this.robotHead.position.y = Math.sin(Date.now() * 0.01) * 0.05;
+                            setTimeout(speakAnim, 50);
+                        };
+                        speakAnim();
+                        break;
+                        
+                    case 'happy':
+                        // Bounce animation
+                        let bounceCount = 0;
+                        const bounceAnim = setInterval(() => {
+                            if (bounceCount >= 20) {
+                                clearInterval(bounceAnim);
+                                this.robot.position.y = -0.3;
+                                return;
+                            }
+                            this.robot.position.y = -0.3 + Math.sin(bounceCount * 0.3) * 0.2;
+                            bounceCount++;
+                        }, 30);
+                        break;
+                        
+                    case 'sad':
+                        // Head droop
+                        this.robotHead.rotation.x = 0.3;
+                        setTimeout(() => {
+                            this.robotHead.rotation.x = 0;
+                        }, 1000);
+                        break;
+                        
+                    case 'neutral':
+                        this.robotHead.position.y = 0;
+                        this.robotHead.rotation.x = 0;
+                        break;
+                }
+            }
+        }
+
+        // Initialize
+        let robot;
+        
+        function initRobot() {
+            if (typeof THREE === 'undefined') {
+                log('Waiting for THREE.js...', 'info');
+                setTimeout(initRobot, 100);
+                return;
+            }
+            
+            robot = new SimpleRobotInterviewer('robot-container');
+        }
+
+        // Test functions
+        function testSpeak() {
+            if (robot) robot.setState('speaking');
+        }
+
+        function testHappy() {
+            if (robot) robot.setState('happy');
+        }
+
+        function testSad() {
+            if (robot) robot.setState('sad');
+        }
+
+        function testNeutral() {
+            if (robot) robot.setState('neutral');
+        }
+
+        // Start
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initRobot);
+        } else {
+            initRobot();
+        }
+    </script>
+
+    <!-- Particle Generation Script -->
+    <script>
+      // Create 120 floating purple particles
+      if (document.getElementById('particlesContainer')) {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 120;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          const size = 2 + Math.random() * 4;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          const leftPos = Math.random() * 100;
+          particle.style.left = `${leftPos}%`;
+          
+          const duration = 12 + Math.random() * 13;
+          particle.style.animationDuration = `${duration}s`;
+          
+          const delay = Math.random() * 10;
+          particle.style.animationDelay = `${delay}s`;
+          
+          const drift = (Math.random() - 0.5) * 150;
+          particle.style.setProperty('--drift', `${drift}px`);
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+    
+    <!-- Three.js + Robot Interviewer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="assets/js/robot-interviewer.js"></script>
+    <script>
+      // Initialize Background Robot
+      (function initBgRobot(){
+        if (typeof THREE === 'undefined' || typeof window.RobotInterviewer === 'undefined') {
+          return setTimeout(initBgRobot, 100);
+        }
+        try {
+          window.bgRobot = new window.RobotInterviewer('bg-robot-container', THREE, {
+            canvasId: 'bg-robot-canvas',
+            trackCursor: true
+          });
+          window.bgRobot.setState('neutral');
+          console.log('✅ Background robot initialized');
+        } catch (e) {
+          console.error('❌ Failed to init background robot:', e);
+        }
+      })();
+      
+      // Advanced Parallax and Depth Effect
+      let targetX = 0, targetY = 0;
+      let currentX = 0, currentY = 0;
+      
+      document.addEventListener('mousemove', (e) => {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        targetX = (x - 0.5);
+        targetY = (y - 0.5);
+      });
+      
+      function animateParallax() {
+        currentX += (targetX - currentX) * 0.1;
+        currentY += (targetY - currentY) * 0.1;
+        
+        const container = document.getElementById('bg-robot-container');
+        if (container) {
+          const moveX1 = currentX * 80;
+          const moveY1 = currentY * 80;
+          const rotateY1 = currentX * 20;
+          const rotateX1 = -currentY * 20;
+          const scale1 = 1 + (Math.abs(currentX) + Math.abs(currentY)) * 0.05;
+          
+          container.style.transform = `
+            perspective(2000px) 
+            translateX(${moveX1}px) 
+            translateY(${moveY1}px) 
+            translateZ(-100px)
+            rotateX(${rotateX1}deg) 
+            rotateY(${rotateY1}deg)
+            scale(${scale1})
+          `;
+        }
+        
+        const particles = document.getElementById('particlesContainer');
+        if (particles) {
+          const moveX2 = currentX * 40;
+          const moveY2 = currentY * 40;
+          particles.style.transform = `
+            translateX(${moveX2}px) 
+            translateY(${moveY2}px)
+            translateZ(50px)
+          `;
+        }
+        
+        const bodyBefore = document.body;
+        if (bodyBefore) {
+          const gradientX = 50 + currentX * 10;
+          const gradientY = 50 + currentY * 10;
+          bodyBefore.style.setProperty('--gradient-x', `${gradientX}%`);
+          bodyBefore.style.setProperty('--gradient-y', `${gradientY}%`);
+        }
+        
+        const main = document.querySelector('main');
+        if (main) {
+          const moveX4 = -currentX * 15;
+          const moveY4 = -currentY * 15;
+          main.style.transform = `
+            translateX(${moveX4}px) 
+            translateY(${moveY4}px)
+            translateZ(100px)
+          `;
+        }
+        
+        requestAnimationFrame(animateParallax);
+      }
+      
+      animateParallax();
+    </script>
+    <script src="assets/js/auto-purple-bg.js"></script>
+  </body>
+</html>
+

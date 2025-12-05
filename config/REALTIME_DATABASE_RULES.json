@@ -1,0 +1,58 @@
+{
+  "rules": {
+    "resumes": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$resumeId": {
+        ".validate": "newData.hasChildren()"
+      }
+    },
+    "studyGroups": {
+      ".read": "auth != null",
+      "$groupId": {
+        ".read": "auth != null",
+        ".write": "auth != null",
+        "messages": {
+          ".read": "auth != null",
+          ".write": "auth != null"
+        }
+      }
+    },
+    "reviewRequests": {
+      ".read": "auth != null",
+      "$requestId": {
+        ".write": "auth != null"
+      }
+    },
+    "reviews": {
+      "$requestId": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
+    "users": {
+      "$userId": {
+        ".read": "auth != null && auth.uid === $userId",
+        ".write": "auth != null && auth.uid === $userId",
+        "reviewPoints": {
+          ".validate": "newData.isNumber()"
+        },
+        "groups": {
+          "$groupId": {
+            ".validate": "newData.hasChildren(['groupId', 'role', 'joinedAt'])"
+          }
+        },
+        "reviewRequests": {
+          "$requestId": {
+            ".validate": "newData.hasChildren(['requestId', 'status', 'createdAt'])"
+          }
+        },
+        "resumes": {
+          "$resumeId": {
+            ".validate": "newData.hasChildren(['resumeId', 'title', 'createdAt'])"
+          }
+        }
+      }
+    }
+  }
+}

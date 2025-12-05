@@ -1,0 +1,91 @@
+/**
+ * 3D ROBOT INTERVIEWER
+ * Replaces emoji avatar with Three.js 3D robot
+ */
+
+.ai-avatar-container {
+  width: 100%;
+  max-width: 600px;
+  height: 300px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px 0;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+}
+
+/* 3D Robot Canvas */
+#robot-interviewer-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Avatar Status Message */
+.avatar-status {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  color: white;
+  padding: 10px 24px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 0.95em;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+  white-space: nowrap;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.avatar-status.show {
+  opacity: 1;
+}
+
+/* Robot States - will be applied via JavaScript */
+.robot-speaking {
+  animation: robotPulse 0.5s ease-in-out infinite;
+}
+
+.robot-happy {
+  animation: robotBounce 0.6s ease;
+}
+
+.robot-sad {
+  animation: robotShake 0.5s ease;
+}
+
+@keyframes robotPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes robotBounce {
+  0%, 100% { transform: translateY(0); }
+  25%, 75% { transform: translateY(-15px); }
+  50% { transform: translateY(-30px); }
+}
+
+@keyframes robotShake {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  25% { transform: translateX(-10px) rotate(-5deg); }
+  50% { transform: translateX(10px) rotate(5deg); }
+  75% { transform: translateX(-10px) rotate(-5deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ai-avatar-container {
+    height: 250px;
+  }
+}

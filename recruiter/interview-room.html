@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Recruiter – Interview Room</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="stylesheet" href="../assets/css/recruiter.css" />
+  <style>
+    #jitsi{width:100%;height:70vh;border:1px solid rgba(255,255,255,.06);border-radius:14px;overflow:hidden}
+  </style>
+    <style>
+      /* Dark Black Theme with Purple Particles */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  
+    <style>
+      /* Dark Black Theme with Purple Particles & Parallax */
+      body {
+        background: #000000 !important;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at var(--gradient-x, 50%) var(--gradient-y, 50%), 
+          rgba(168, 85, 247, 0.05) 0%, 
+          transparent 70%
+        );
+        pointer-events: none;
+        z-index: 0;
+        will-change: transform;
+        transition: background 0.3s ease;
+      }
+      
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .particle {
+        position: absolute;
+        background: #a855f7;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.5);
+        opacity: 0;
+        animation: floatUpward linear infinite;
+      }
+      
+      @keyframes floatUpward {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% {
+          transform: translateY(-20vh) translateX(var(--drift)) scale(1);
+          opacity: 0;
+        }
+      }
+      
+      header, main, section, .card, .hero-card, .auth-card, .report-card, .interview-container {
+        position: relative;
+        z-index: 10;
+        will-change: transform;
+        transform-style: preserve-3d;
+      }
+      
+      .site-header {
+        background: rgba(10, 10, 10, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        z-index: 2000 !important;
+      }
+      
+      .card, .hero-card, .report-card {
+        background: rgba(18, 18, 18, 0.8) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover, .hero-card:hover, .report-card:hover, .hover-card:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+        transform: translateY(-5px);
+      }
+      
+      .logo-accent {
+        color: #a855f7 !important;
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+      }
+      
+      .btn.primary {
+        background: linear-gradient(135deg, #a855f7, #d946ef) !important;
+        box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+      }
+      
+      .btn.primary:hover {
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+      }
+      
+      .auth-card {
+        background: rgba(18, 18, 18, 0.9) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+      }
+    </style>
+  </head>
+<body>
+  <header class="site-header">
+    <div class="site-header-inner container">
+      <nav class="menu menu-left">
+        <div class="menu-button">☰ Menu</div>
+        <ul class="dropdown">
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="candidates.html">Candidates</a></li>
+          <li><a href="schedule.html">Schedule</a></li>
+          <li><a href="reports.html">Reports</a></li>
+          <li><a href="leaderboard.html">Leaderboard</a></li>
+          <li><a href="settings.html">Settings</a></li>
+          <li><a href="../index.html">Exit Recruiter View</a></li>
+        </ul>
+      </nav>
+      <div class="brand"><a href="../home.html"><span class="logo">Smart</span><span class="logo-accent">Mock</span></a></div>
+      <div class="menu" style="margin-left:auto;">
+        <a class="btn" href="../profile.html">Profile</a>
+        <a class="btn" href="#" onclick="signOut(); return false;">Sign out</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2 class="section-title">Live Interview</h2>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="row">
+        <input class="input" id="room-input" placeholder="Room name (auto from schedule)" />
+        <select class="input" id="server-select">
+          <option value="meet.jit.si">meet.jit.si (Free, Open)</option>
+          <option value="8x8.vc">8x8.vc (May require auth)</option>
+        </select>
+        <button class="btn" id="start-btn">Start / Join</button>
+      </div>
+      <div class="muted" style="margin-top:8px;">Using meet.jit.si for free open rooms. Screen share, chat, and recording available. For private rooms, consider self-hosting Jitsi.</div>
+    </div>
+    <div id="jitsi"></div>
+  </main>
+
+  <!-- Standardized Firebase version -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="../assets/js/firebase-config.js"></script>
+  <script src="../assets/js/recruiter/auth.js"></script>
+  <script src="../assets/js/recruiter/menu.js"></script>
+  <script src="https://meet.jit.si/external_api.js"></script>
+  <script>
+    (function(){
+      let api = null;
+      if (window.RecruiterAuth?.requireRecruiter) {
+        window.RecruiterAuth.requireRecruiter().then(init).catch(()=>{});
+      } else { init(); }
+
+      function init(){
+        const params = new URLSearchParams(location.search);
+        const preRoom = params.get('room') || '';
+        const roomEl = document.getElementById('room-input');
+        const serverEl = document.getElementById('server-select');
+        const btn = document.getElementById('start-btn');
+        if (preRoom) roomEl.value = preRoom;
+
+        btn.addEventListener('click', start);
+        if (preRoom) start();
+
+        function start(){
+          const roomName = roomEl.value.trim();
+          if (!roomName) { alert('Enter room name'); return; }
+          if (api) { api.dispose(); api = null; }
+          
+          const domain = serverEl.value;
+          const options = {
+            roomName: roomName,
+            parentNode: document.getElementById('jitsi'),
+            width: '100%',
+            height: '100%',
+            configOverwrite: {
+              disableDeepLinking: true,
+              defaultLanguage: 'en',
+              enableWelcomePage: false,
+              prejoinPageEnabled: false,
+              startWithAudioMuted: false,
+              startWithVideoMuted: false
+            },
+            interfaceConfigOverwrite: {
+              HIDE_INVITE_MORE_HEADER: false,
+              TOOLBAR_BUTTONS: [
+                'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
+                'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',
+                'livestreaming', 'etherpad', 'sharedvideo', 'settings', 'raisehand',
+                'videoquality', 'filmstrip', 'feedback', 'stats', 'shortcuts',
+                'tileview', 'videobackgroundblur', 'download', 'help', 'mute-everyone'
+              ]
+            },
+            userInfo: {
+              displayName: 'Recruiter'
+            }
+          };
+          
+          // Dynamically load the correct external_api.js
+          const scriptSrc = `https://${domain}/external_api.js`;
+          const existingScript = document.querySelector(`script[src*="external_api.js"]`);
+          if (existingScript) existingScript.remove();
+          
+          const script = document.createElement('script');
+          script.src = scriptSrc;
+          script.onload = () => {
+            api = new JitsiMeetExternalAPI(domain, options);
+            
+            // Add event listeners
+            api.addEventListener('videoConferenceJoined', () => {
+              console.log('Joined conference:', roomName);
+            });
+            
+            api.addEventListener('participantJoined', (participant) => {
+              console.log('Participant joined:', participant.displayName);
+            });
+          };
+          document.head.appendChild(script);
+        }
+      }
+    })();
+  </script>
+  <!-- Background visuals handled by auto loader below -->
+    <script src="../assets/js/auto-purple-bg.js"></script>
+  </body>
+</html>
