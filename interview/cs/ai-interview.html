@@ -579,11 +579,11 @@
             <label style="display:flex;align-items:center;gap:6px;">
               <input type="checkbox" id="mock-toggle"> Mock Emotion
             </label>
-            <button id="start-btn" class="btn">Start Interview</button>
-            <button id="answer-btn" class="btn" style="display: none;">Answer</button>
-            <button id="stop-btn" class="btn" style="display: none;">Stop Answering</button>
-            <button id="stop-interview-btn" class="btn" style="display: none; background: #f44336;">Stop Interview</button>
-            <button id="retry-camera-btn" class="btn" type="button">Retry Camera</button>
+            <button id="start-btn" class="btn" onclick="window.handleStartInterview(); return false;">Start Interview</button>
+            <button id="answer-btn" class="btn" style="display: none;" onclick="window.handleAnswer(); return false;">Answer</button>
+            <button id="stop-btn" class="btn" style="display: none;" onclick="window.handleStop(); return false;">Stop Answering</button>
+            <button id="stop-interview-btn" class="btn" style="display: none; background: #f44336;" onclick="window.handleStopInterview(); return false;">Stop Interview</button>
+            <button id="retry-camera-btn" class="btn" type="button" onclick="window.handleRetryCamera(); return false;">Retry Camera</button>
           </div>
         </div>
       </section>
@@ -1568,24 +1568,35 @@
       }
       */
 
-      console.log('🎯 Attaching event listeners to buttons...');
+      console.log('🎯 Setting up global button handlers for direct onclick access...');
       
-      if (!startBtn) {
-        console.error('❌ CRITICAL: startBtn element not found!');
-      } else {
-        console.log('✅ startBtn found, attaching click listener');
-        startBtn.addEventListener('click', async () => {
-          console.log('🚀 START BUTTON CLICKED!');
-          window.__aiStartTime = new Date();
+      // MAKE ALL HANDLERS GLOBAL AND DIRECTLY ACCESSIBLE
+      window.handleStartInterview = async function() {
+        console.log('🚀 START INTERVIEW CLICKED - Direct onclick handler!');
+        const startBtn = document.getElementById('start-btn');
+        const levelSelect = document.getElementById('level-select');
+        const topicSelect = document.getElementById('topic-select');
+        const conversationDiv = document.getElementById('conversation');
+        const userVideo = document.getElementById('user-video');
+        const mockToggle = document.getElementById('mock-toggle');
+        
+        if (!startBtn) {
+          alert('Error: Start button not found!');
+          return;
+        }
+        
+        window.__aiStartTime = new Date();
         
         // Hide start button immediately
         startBtn.style.display = 'none';
         startBtn.disabled = true;
-        levelSelect.disabled = true;
-        topicSelect.disabled = true;
+        if (levelSelect) levelSelect.disabled = true;
+        if (topicSelect) topicSelect.disabled = true;
         
         // Show loading message
-        conversationDiv.innerHTML = '<p><strong>AI:</strong> Initializing interview... Please wait.</p>';
+        if (conversationDiv) {
+          conversationDiv.innerHTML = '<p><strong>AI:</strong> Initializing interview... Please wait.</p>';
+        }
         
         // Setup camera first
         const cameraReady = await setupCamera();
@@ -1594,33 +1605,77 @@
         // Load rules and init emotion detection
         try { await loadEmotionRules(); } catch(_) {}
         
-        if (mockToggle.checked || !cameraReady) {
+        if (mockToggle && (mockToggle.checked || !cameraReady)) {
           mockToggle.checked = true;
           startMockEmotion();
-        } else {
+        } else if (userVideo) {
           // Ensure video is fully ready before starting face detection
           await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second for video to stabilize
           
           // Final check: verify video dimensions
           if (userVideo.videoWidth > 0 && userVideo.videoHeight > 0) {
-            console.log('? Starting face detection with video:', userVideo.videoWidth, 'x', userVideo.videoHeight);
+            console.log('✅ Starting face detection with video:', userVideo.videoWidth, 'x', userVideo.videoHeight);
             await initFaceMesh();
             detectFace();
           } else {
-            console.warn('?? Video not ready after camera setup, switching to mock mode');
-            mockToggle.checked = true;
+            console.warn('⚠️ Video not ready after camera setup, switching to mock mode');
+            if (mockToggle) mockToggle.checked = true;
             startMockEmotion();
           }
         }
         
         // Clear loading message
-        conversationDiv.innerHTML = '<p><strong>AI:</strong> Interview starting now. Good luck! ??</p>';
+        if (conversationDiv) {
+          conversationDiv.innerHTML = '<p><strong>AI:</strong> Interview starting now. Good luck! 🎯</p>';
+        }
         
         // Start interview
         askQuestion();
-        });
-        console.log('✅ startBtn event listener attached successfully');
-      }
+      };
+      
+      window.handleRetryCamera = async function() {
+        console.log('🔄 RETRY CAMERA CLICKED - Direct onclick handler!');
+        cameraRetryAttempts = 0;
+        await setupCamera();
+        await updateDiagnostics();
+      };
+      
+      window.handleAnswer = function() {
+        console.log('💬 ANSWER BUTTON CLICKED - Direct onclick handler!');
+        const answerBtn = document.getElementById('answer-btn');
+        const stopBtn = document.getElementById('stop-btn');
+        const conversationDiv = document.getElementById('conversation');
+        
+        if (answerBtn) answerBtn.style.display = 'none';
+        if (stopBtn) stopBtn.style.display = 'inline-block';
+        if (conversationDiv) {
+          conversationDiv.innerHTML += `<p><strong>AI:</strong> Listening... please begin your answer.</p>`;
+        }
+        startSpeech();
+      };
+      
+      window.handleStop = function() {
+        console.log('⏹️ STOP BUTTON CLICKED - Direct onclick handler!');
+        const stopBtn = document.getElementById('stop-btn');
+        const answerBtn = document.getElementById('answer-btn');
+        const conversationDiv = document.getElementById('conversation');
+        
+        if (stopBtn) stopBtn.style.display = 'none';
+        stopSpeech();
+        if (!isRecognizing && !currentAnswer) {
+          if (conversationDiv) {
+            conversationDiv.innerHTML += `<p><strong>AI:</strong> Stopped listening.</p>`;
+          }
+          if (answerBtn) answerBtn.style.display = 'inline-block';
+        }
+      };
+      
+      window.handleStopInterview = function() {
+        console.log('🛑 STOP INTERVIEW CLICKED - Direct onclick handler!');
+        stopInterview();
+      };
+      
+      console.log('✅ ALL Global button handlers created successfully');
 
       let isFinishing = false; // Guard to prevent multiple calls
       
