@@ -117,7 +117,12 @@
         gap: 15px;
         flex-wrap: wrap;
         justify-content: center;
-        pointer-events: auto !important; /* CRITICAL FIX: Ensure container allows clicks */
+        pointer-events: none !important; /* Container itself should NOT catch clicks */
+      }
+      
+      /* But buttons INSIDE the container SHOULD catch clicks */
+      .controls-container > * {
+        pointer-events: auto !important;
       }
       
       /* Enhanced button styles */
