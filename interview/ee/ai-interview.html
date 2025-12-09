@@ -1718,7 +1718,17 @@
           
           console.log('🔍 Button position:', { x: centerX, y: centerY });
           console.log('🔍 Element at button center:', elementAtPoint);
+          console.log('🔍 Element type:', elementAtPoint ? elementAtPoint.tagName : 'NULL');
+          console.log('🔍 Element class:', elementAtPoint ? elementAtPoint.className : 'NULL');
+          console.log('🔍 Element id:', elementAtPoint ? elementAtPoint.id : 'NULL');
           console.log('🔍 Is it the button itself?', elementAtPoint === startBtn);
+          
+          // CRITICAL: Check if button is actually visible
+          const buttonStyles = window.getComputedStyle(startBtn);
+          console.log('🔍 Button display:', buttonStyles.display);
+          console.log('🔍 Button visibility:', buttonStyles.visibility);
+          console.log('🔍 Button opacity:', buttonStyles.opacity);
+          console.log('🔍 Button position:', buttonStyles.position);
           
           if (elementAtPoint !== startBtn) {
             console.error('❌ BLOCKING ELEMENT FOUND!', elementAtPoint);
@@ -1759,11 +1769,35 @@
               setTimeout(() => {
                 const newElement = document.elementFromPoint(centerX, centerY);
                 console.log('🔍 Element after fix:', newElement);
+                console.log('🔍 Element type after fix:', newElement ? newElement.tagName : 'NULL');
                 console.log('🔍 Is it the button now?', newElement === startBtn);
+                
                 if (newElement === startBtn) {
                   console.log('✅✅✅ FIX SUCCESSFUL! Button is now clickable! ✅✅✅');
                 } else {
                   console.error('❌ Still blocked by:', newElement);
+                  console.error('❌ Blocker type:', newElement ? newElement.tagName : 'NULL');
+                  
+                  // NUCLEAR OPTION: Get ALL elements at this point
+                  const allElements = [];
+                  let testElement = newElement;
+                  let iteration = 0;
+                  while (testElement && iteration < 10) {
+                    allElements.push({ tag: testElement.tagName, class: testElement.className, id: testElement.id });
+                    testElement.style.pointerEvents = 'none';
+                    testElement = document.elementFromPoint(centerX, centerY);
+                    iteration++;
+                  }
+                  console.log('🔍 ALL elements at button position:', allElements);
+                  
+                  // Restore and try direct click
+                  console.log('🔧 EMERGENCY: Trying direct button.click()...');
+                  try {
+                    startBtn.click();
+                    console.log('✅ Direct click() executed!');
+                  } catch (err) {
+                    console.error('❌ Direct click() failed:', err);
+                  }
                 }
               }, 100);
             }
