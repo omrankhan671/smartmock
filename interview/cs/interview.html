@@ -347,7 +347,7 @@
               <option value="advanced">Advanced</option>
             </select>
             
-            <button id="start-quiz-btn" class="btn" style="margin-left: 20px;">Start Quiz</button>
+            <button id="start-quiz-btn" class="btn" style="margin-left: 20px;" onclick="console.log('❗ Inline onclick fired!'); if(window.startQuiz) window.startQuiz(); else alert('startQuiz function not defined!');">Start Quiz</button>
           </div>
           
           <div id="quiz-container" style="display: none; margin-top: 30px;">
@@ -490,7 +490,9 @@
       if (finishBtn) finishBtn.addEventListener('click', showResults);
       if (restartBtn) restartBtn.addEventListener('click', resetQuiz);
       
-      function startQuiz() {
+      // Make functions global for inline onclick fallback
+      window.startQuiz = function() {
+        console.log('📝 startQuiz function called');
         currentTopic = document.getElementById('quiz-topic').value;
         currentLevel = document.getElementById('quiz-level').value;
         currentQuestions = [...quizBank[currentTopic][currentLevel]].sort(() => Math.random() - 0.5);
@@ -506,7 +508,7 @@
         showQuestion();
       }
       
-      function showQuestion() {
+      window.showQuestion = function() {
         const q = currentQuestions[currentQuestionIndex];
         questionCounter.textContent = `Question ${currentQuestionIndex + 1} of ${currentQuestions.length}`;
         questionText.textContent = q.q;
@@ -545,7 +547,7 @@
         });
       }
       
-      function checkAnswer(selected) {
+      window.checkAnswer = function(selected) {
         const q = currentQuestions[currentQuestionIndex];
         const isCorrect = selected === q.correct;
         answers.push({ question: q.q, selected, correct: q.correct, isCorrect });
@@ -580,12 +582,12 @@
         }
       }
       
-      function nextQuestion() {
+      window.nextQuestion = function() {
         currentQuestionIndex++;
         showQuestion();
       }
       
-      function showResults() {
+      window.showResults = function() {
         quizContainer.style.display = 'none';
         resultsContainer.style.display = 'block';
         
@@ -608,7 +610,7 @@
         document.getElementById('performance-summary').innerHTML = summary;
       }
       
-      function resetQuiz() {
+      window.resetQuiz = function() {
         resultsContainer.style.display = 'none';
         document.querySelector('.section-card > p').style.display = 'block';
         document.querySelector('.section-card > div').style.display = 'block';
