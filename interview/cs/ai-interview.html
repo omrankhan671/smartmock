@@ -117,6 +117,7 @@
         gap: 15px;
         flex-wrap: wrap;
         justify-content: center;
+        pointer-events: auto !important; /* CRITICAL FIX: Ensure container allows clicks */
       }
       
       /* Enhanced button styles */
@@ -417,8 +418,12 @@
         box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
       }
       
-      /* EMERGENCY FIX: Ensure buttons are clickable */
-      .btn, button.btn, button {
+      /* EMERGENCY FIX: Ensure buttons and controls are clickable */
+      .controls-container, .controls-container * {
+        pointer-events: auto !important;
+      }
+      
+      .btn, button.btn, button, select, input {
         position: relative !important;
         z-index: 1000 !important;
         pointer-events: auto !important;
