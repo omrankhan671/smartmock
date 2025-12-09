@@ -1841,6 +1841,25 @@
         buttonsReady: !!(startBtn && answerBtn && stopBtn)
       });
     </script>
+    <!-- Ensure controls are clickable immediately -->
+    <script>
+      (function(){
+        function enableControls() {
+          const controls = document.querySelectorAll('.controls-container');
+          controls.forEach(container => {
+            container.style.setProperty('pointer-events','none','important');
+            Array.from(container.children).forEach(ch => {
+              ch.style.setProperty('pointer-events','auto','important');
+            });
+          });
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', enableControls);
+        } else {
+          enableControls();
+        }
+      })();
+    </script>
   
     <!-- Particle Generation Script -->
     <script>
