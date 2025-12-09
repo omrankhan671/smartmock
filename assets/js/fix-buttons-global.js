@@ -50,7 +50,8 @@
       'textarea',
       '[onclick]',
       '[role="button"]',
-      '.controls-container'
+      // intentionally exclude .controls-container to avoid making the container
+      // itself receive pointer events (it should remain non-interactive)
     ];
     
     interactiveSelectors.forEach(selector => {
