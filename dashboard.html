@@ -287,7 +287,8 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
   
-  <!-- CRITICAL FIX: Load button fix FIRST before everything else -->
+  <!-- CRITICAL FIX: Load button fix AFTER Firebase SDK but BEFORE firebase-config -->
+  <script src="assets/js/fix-buttons-global.js"></script>
     
   <!-- App Scripts -->
   <script src="assets/js/firebase-config.js"></script>
