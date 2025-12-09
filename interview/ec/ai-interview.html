@@ -1764,11 +1764,28 @@
           
           if (elementAtPoint !== startBtn) {
             console.error('❌ BLOCKING ELEMENT FOUND!', elementAtPoint);
-            console.error('❌ Blocking element z-index:', window.getComputedStyle(elementAtPoint).zIndex);
-            console.error('❌ Blocking element pointer-events:', window.getComputedStyle(elementAtPoint).pointerEvents);
+            
+            // Check if element is null before getting styles
+            if (elementAtPoint && elementAtPoint.nodeType === 1) {
+              console.error('❌ Blocking element z-index:', window.getComputedStyle(elementAtPoint).zIndex);
+              console.error('❌ Blocking element pointer-events:', window.getComputedStyle(elementAtPoint).pointerEvents);
+            } else {
+              console.error('❌ Element is NULL - button might be off-screen or invisible');
+              console.log('🔧 NULL ELEMENT FIX: Checking button visibility...');
+              console.log('🔍 Button rect:', rect);
+              console.log('🔍 Button in viewport?', rect.top >= 0 && rect.left >= 0 && rect.bottom <= window.innerHeight && rect.right <= window.innerWidth);
+              
+              // If element is null, button might not be rendering - force it to render and be clickable
+              startBtn.style.display = 'inline-block';
+              startBtn.style.visibility = 'visible';
+              startBtn.style.opacity = '1';
+              startBtn.style.position = 'relative';
+              startBtn.style.zIndex = '99999';
+              console.log('✅ Forced button to be visible and positioned');
+            }
             
             // AGGRESSIVE FIX: Remove pointer-events blocking
-            if (elementAtPoint) {
+            if (elementAtPoint && elementAtPoint.nodeType === 1) {
               console.log('🔧 AGGRESSIVE FIX: Removing all pointer-events blocking...');
               
               // Fix 1: Set blocker to none
