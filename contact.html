@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SmartMock – Contact Us</title>
+    <title>SmartMock â€“ Contact Us</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -311,11 +311,11 @@
     <header class="site-header">
       <div class="site-header-inner container">
         <nav class="menu menu-left">
-          <div class="menu-button">☰ Menu</div>
+          <div class="menu-button">â˜° Menu</div>
           <ul class="dropdown">
             <li><a href="home.html">Home</a></li>
             <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="leaderboard.html">🏆 Leaderboard</a></li>
+            <li><a href="leaderboard.html">ðŸ† Leaderboard</a></li>
             <li class="has-submenu"><a href="interview.html">Interview</a>
               <ul class="submenu">
                 <li><a href="interview.html">AI Interview</a></li>
@@ -382,7 +382,7 @@
         <h2>Contact Us</h2>
         <div class="contact-container">
           <div class="contact-info">
-            <h3>📧 Get In Touch</h3>
+            <h3>ðŸ“§ Get In Touch</h3>
             <p>We'd love to hear from you! Send us a message and we'll respond as soon as possible.</p>
             <p><strong>Email:</strong> support@smartmock.com</p>
             <p><strong>Response Time:</strong> Within 24 hours</p>
@@ -421,12 +421,14 @@
       </section>
     </main>
     
-    <footer class="site-footer">© <span id="year"></span> SmartMock.</footer>
+    <footer class="site-footer">Â© <span id="year"></span> SmartMock.</footer>
     
     <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <!-- CRITICAL FIX: Load button fix FIRST -->
+  <script src="assets/js/fix-buttons-global.js"></script>
     <script src="assets/js/firebase-config.js"></script>
     <script src="assets/js/main.js"></script>
     <!-- Three.js + Robot Interviewer -->
@@ -443,8 +445,8 @@
             trackCursor: true
           });
           window.bgRobot.setState('neutral');
-          console.log('✅ Background robot initialized on contact.html');
-        } catch(e){ console.error('❌ Robot init failed (contact.html):', e); }
+          console.log('âœ… Background robot initialized on contact.html');
+        } catch(e){ console.error('âŒ Robot init failed (contact.html):', e); }
       })();
     </script>
     <script>
@@ -495,14 +497,14 @@
           await contactRef.set(contactData);
           
           // Show success message
-          showMessage('✅ Message sent successfully! We\'ll get back to you soon.', 'success');
+          showMessage('âœ… Message sent successfully! We\'ll get back to you soon.', 'success');
           
           // Reset form
           contactForm.reset();
           
         } catch (error) {
           console.error('Error sending message:', error);
-          showMessage('❌ Failed to send message. Please try again later.', 'error');
+          showMessage('âŒ Failed to send message. Please try again later.', 'error');
         } finally {
           // Re-enable button
           submitBtn.disabled = false;
@@ -595,9 +597,9 @@
             trackCursor: true
           });
           window.bgRobot.setState('neutral');
-          console.log('✅ Background robot initialized');
+          console.log('âœ… Background robot initialized');
         } catch (e) {
-          console.error('❌ Failed to init background robot:', e);
+          console.error('âŒ Failed to init background robot:', e);
         }
       })();
       

@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -588,11 +588,13 @@
         </div>
       </section>
     </main>
-    <footer class="site-footer">� <span id="year"></span> SmartMock.</footer>
+    <footer class="site-footer">ï¿½ <span id="year"></span> SmartMock.</footer>
     <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <!-- CRITICAL FIX: Load button fix FIRST -->
+  <script src="../../assets/js/fix-buttons-global.js"></script>
     <script src="../../assets/js/firebase-config.js"></script>
     <script src="../../assets/js/main.js"></script>
     
@@ -1471,7 +1473,7 @@
             "What is a linked list and how does it differ from an array?": "A linked list is a sequence of nodes where each node contains data and a pointer to the next node. Unlike arrays, it allows O(1) insertion/deletion at known positions but O(n) access by index.",
             "What is a stack and what operations does it support?": "A stack is a LIFO (Last-In-First-Out) data structure supporting push (add to top), pop (remove from top), peek (view top), and isEmpty operations, all in O(1) time.",
             "What is a queue and how does it work?": "A queue is a FIFO (First-In-First-Out) data structure supporting enqueue (add to rear), dequeue (remove from front), peek, and isEmpty operations.",
-            "Explain what Big O notation means.": "Big O notation describes the upper bound of time or space complexity as input size grows. It focuses on the dominant term and ignores constants. Common: O(1), O(log n), O(n), O(n log n), O(n�).",
+            "Explain what Big O notation means.": "Big O notation describes the upper bound of time or space complexity as input size grows. It focuses on the dominant term and ignores constants. Common: O(1), O(log n), O(n), O(n log n), O(nï¿½).",
             "What is the difference between a linear and binary search?": "Linear search checks each element sequentially (O(n)). Binary search divides sorted array in half each iteration (O(log n)) but requires sorted data.",
             "What is a hash table?": "A hash table stores key-value pairs using a hash function to compute array indices. Provides O(1) average insert/search/delete. Handles collisions via chaining or open addressing.",
             "Explain what recursion is.": "Recursion is when a function calls itself to solve smaller instances of the same problem. Must have: base case (termination) and recursive case (problem reduction).",
@@ -1568,14 +1570,14 @@
       }
       */
 
-      console.log('🎯 Attaching event listeners to buttons...');
+      console.log('ðŸŽ¯ Attaching event listeners to buttons...');
       
       if (!startBtn) {
-        console.error('❌ CRITICAL: startBtn element not found!');
+        console.error('âŒ CRITICAL: startBtn element not found!');
       } else {
-        console.log('✅ startBtn found, attaching click listener');
+        console.log('âœ… startBtn found, attaching click listener');
         startBtn.addEventListener('click', async () => {
-          console.log('🚀 START BUTTON CLICKED!');
+          console.log('ðŸš€ START BUTTON CLICKED!');
           window.__aiStartTime = new Date();
         
         // Hide start button immediately
@@ -1619,7 +1621,7 @@
         // Start interview
         askQuestion();
         });
-        console.log('✅ startBtn event listener attached successfully');
+        console.log('âœ… startBtn event listener attached successfully');
       }
 
       let isFinishing = false; // Guard to prevent multiple calls
@@ -1772,7 +1774,7 @@
         }
       }
       
-      console.log('✅ All event listeners setup complete');
+      console.log('âœ… All event listeners setup complete');
       
       // Note: startBtn event listener is attached around line 1584
 

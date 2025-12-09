@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SmartMock – Sign in or Create account</title>
+    <title>SmartMock â€“ Sign in or Create account</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -236,7 +236,7 @@
             </div>
             <div class="field">
               <label for="login-password">Password</label>
-              <input id="login-password" name="password" type="password" placeholder="••••••••" required />
+              <input id="login-password" name="password" type="password" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" required />
             </div>
             <div class="actions">
               <button class="btn primary" type="submit">Continue</button>
@@ -326,6 +326,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     
+    <!-- CRITICAL FIX: Load button fix FIRST -->
+  <script src="assets/js/fix-buttons-global.js"></script>
     <script src="assets/js/firebase-config.js"></script>
     <script src="assets/js/main.js"></script>
     <!-- Three.js + Robot Interviewer -->
@@ -342,8 +344,8 @@
             trackCursor: true
           });
           window.bgRobot.setState('neutral');
-          console.log('✅ Background robot initialized on index.html');
-        } catch(e){ console.error('❌ Robot init failed (index.html):', e); }
+          console.log('âœ… Background robot initialized on index.html');
+        } catch(e){ console.error('âŒ Robot init failed (index.html):', e); }
       })();
     </script>
 
@@ -923,9 +925,9 @@
             trackCursor: true
           });
           window.bgRobot.setState('neutral');
-          console.log('✅ Background robot initialized');
+          console.log('âœ… Background robot initialized');
         } catch (e) {
-          console.error('❌ Failed to init background robot:', e);
+          console.error('âŒ Failed to init background robot:', e);
         }
       })();
       

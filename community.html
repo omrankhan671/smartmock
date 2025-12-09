@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SmartMock – Community</title>
+    <title>SmartMock â€“ Community</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -652,11 +652,11 @@
     <header class="site-header">
       <div class="site-header-inner container">
         <nav class="menu menu-left">
-          <div class="menu-button">☰ Menu</div>
+          <div class="menu-button">â˜° Menu</div>
           <ul class="dropdown">
             <li><a href="home.html">Home</a></li>
             <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="leaderboard.html">🏆 Leaderboard</a></li>
+            <li><a href="leaderboard.html">ðŸ† Leaderboard</a></li>
             <li class="has-submenu"><a href="interview.html">Interview</a>
               <ul class="submenu">
                 <li><a href="interview.html">AI Interview</a></li>
@@ -720,37 +720,37 @@
 
     <main class="container">
       <section>
-        <h2>🌐 SmartMock Community</h2>
+        <h2>ðŸŒ SmartMock Community</h2>
         <p style="color: #7f8c8d; margin-bottom: 20px;">Connect with peers, share experiences, ask doubts, and collaborate on interview preparation</p>
         
         <div class="community-container">
           <!-- Left Sidebar - Categories -->
           <div class="sidebar">
-            <h3>📂 Categories</h3>
+            <h3>ðŸ“‚ Categories</h3>
             <ul class="category-list">
               <li class="category-item active" data-category="all">
-                <span>🌟 All Posts</span>
+                <span>ðŸŒŸ All Posts</span>
                 <span class="category-count" id="count-all">0</span>
               </li>
               <li class="category-item" data-category="doubt">
-                <span>❓ Doubts</span>
+                <span>â“ Doubts</span>
                 <span class="category-count" id="count-doubt">0</span>
               </li>
               <li class="category-item" data-category="discussion">
-                <span>💬 Discussions</span>
+                <span>ðŸ’¬ Discussions</span>
                 <span class="category-count" id="count-discussion">0</span>
               </li>
               <li class="category-item" data-category="experience">
-                <span>📖 Experiences</span>
+                <span>ðŸ“– Experiences</span>
                 <span class="category-count" id="count-experience">0</span>
               </li>
               <li class="category-item" data-category="question">
-                <span>🎯 Questions</span>
+                <span>ðŸŽ¯ Questions</span>
                 <span class="category-count" id="count-question">0</span>
               </li>
             </ul>
 
-            <h3 style="margin-top: 30px;">🏷️ Popular Tags</h3>
+            <h3 style="margin-top: 30px;">ðŸ·ï¸ Popular Tags</h3>
             <div id="popular-tags" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
           </div>
 
@@ -762,7 +762,7 @@
                 <button class="tab-btn" data-tab="trending">Trending</button>
                 <button class="tab-btn" data-tab="unanswered">Unanswered</button>
               </div>
-              <button class="new-post-btn" id="new-post-btn">✍️ Create Post</button>
+              <button class="new-post-btn" id="new-post-btn">âœï¸ Create Post</button>
             </div>
 
             <!-- New Post Form -->
@@ -772,10 +772,10 @@
                 <div class="form-group">
                   <label>Type</label>
                   <select id="post-type" required>
-                    <option value="doubt">❓ Doubt/Question</option>
-                    <option value="discussion">💬 Discussion</option>
-                    <option value="experience">📖 Interview Experience</option>
-                    <option value="question">🎯 Practice Question</option>
+                    <option value="doubt">â“ Doubt/Question</option>
+                    <option value="discussion">ðŸ’¬ Discussion</option>
+                    <option value="experience">ðŸ“– Interview Experience</option>
+                    <option value="question">ðŸŽ¯ Practice Question</option>
                   </select>
                 </div>
                 <div class="form-group">
@@ -799,7 +799,7 @@
 
             <!-- Posts Feed -->
             <div id="posts-feed">
-              <div class="loading">🔄 Loading community posts...</div>
+              <div class="loading">ðŸ”„ Loading community posts...</div>
             </div>
           </div>
 
@@ -807,7 +807,7 @@
           <div class="activity-sidebar">
             <!-- Community Stats -->
             <div class="activity-card">
-              <h3>📊 Community Stats</h3>
+              <h3>ðŸ“Š Community Stats</h3>
               <div class="stats-grid">
                 <div class="stat-item">
                   <div class="stat-number" id="total-posts">0</div>
@@ -830,7 +830,7 @@
 
             <!-- Top Contributors -->
             <div class="activity-card">
-              <h3>🏆 Top Contributors</h3>
+              <h3>ðŸ† Top Contributors</h3>
               <div id="top-contributors">
                 <div class="loading" style="padding: 20px; font-size: 0.9em;">Loading...</div>
               </div>
@@ -838,7 +838,7 @@
 
             <!-- Recent Activity -->
             <div class="activity-card">
-              <h3>⚡ Recent Activity</h3>
+              <h3>âš¡ Recent Activity</h3>
               <div id="recent-activity" style="font-size: 0.9em; color: #555;">
                 <div class="loading" style="padding: 20px; font-size: 0.9em;">Loading...</div>
               </div>
@@ -847,12 +847,14 @@
         </div>
       </section>
     </main>
-    <footer class="site-footer">© <span id="year"></span> SmartMock.</footer>
+    <footer class="site-footer">Â© <span id="year"></span> SmartMock.</footer>
     <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <script src="assets/js/firebase-config.js"></script>
+  <!-- CRITICAL FIX: Load button fix FIRST -->
+  <script src="assets/js/fix-buttons-global.js"></script>
+    <script src="assets/js/firebase-config.js"></script>
   <script src="assets/js/main.js"></script>
   <!-- Three.js + Robot Interviewer -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -868,8 +870,8 @@
           trackCursor: true
         });
         window.bgRobot.setState('neutral');
-        console.log('✅ Background robot initialized on community.html');
-      } catch(e){ console.error('❌ Robot init failed (community.html):', e); }
+        console.log('âœ… Background robot initialized on community.html');
+      } catch(e){ console.error('âŒ Robot init failed (community.html):', e); }
     })();
   </script>
   <script>
@@ -886,7 +888,7 @@
       } else {
         document.getElementById('posts-feed').innerHTML = `
           <div style="text-align: center; padding: 60px; background: #f8f9fa; border-radius: 12px;">
-            <h3>🔒 Sign in to join the community</h3>
+            <h3>ðŸ”’ Sign in to join the community</h3>
             <p style="color: #7f8c8d;">Connect with peers and share your experiences</p>
             <a href="index.html" class="btn" style="margin-top: 15px;">Sign In</a>
           </div>
@@ -913,7 +915,7 @@
           } else {
             document.getElementById('posts-feed').innerHTML = `
               <div style="text-align: center; padding: 60px; background: #f8f9fa; border-radius: 12px;">
-                <h3>🌱 Be the first to post!</h3>
+                <h3>ðŸŒ± Be the first to post!</h3>
                 <p style="color: #7f8c8d;">Start a discussion or share your experience</p>
               </div>
             `;
@@ -960,10 +962,10 @@
       const timeAgo = getTimeAgo(post.timestamp);
       const badgeClass = `badge-${post.type}`;
       const typeEmoji = {
-        'doubt': '❓',
-        'discussion': '💬',
-        'experience': '📖',
-        'question': '🎯'
+        'doubt': 'â“',
+        'discussion': 'ðŸ’¬',
+        'experience': 'ðŸ“–',
+        'question': 'ðŸŽ¯'
       };
 
       const isLiked = post.likedBy && post.likedBy[currentUser.uid];
@@ -980,7 +982,7 @@
               <h4>${post.authorName || 'Anonymous'}</h4>
               <div class="post-meta">
                 <span>${timeAgo}</span>
-                <span>•</span>
+                <span>â€¢</span>
                 <span class="post-badge ${badgeClass}">${typeEmoji[post.type]} ${post.type.charAt(0).toUpperCase() + post.type.slice(1)}</span>
               </div>
             </div>
@@ -993,13 +995,13 @@
           
           <div class="post-actions">
             <button class="action-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${post.id}')">
-              ${isLiked ? '❤️' : '🤍'} <span>${likes}</span>
+              ${isLiked ? 'â¤ï¸' : 'ðŸ¤'} <span>${likes}</span>
             </button>
             <button class="action-btn" onclick="toggleComments('${post.id}')">
-              💬 <span>${commentsCount} ${commentsCount === 1 ? 'Comment' : 'Comments'}</span>
+              ðŸ’¬ <span>${commentsCount} ${commentsCount === 1 ? 'Comment' : 'Comments'}</span>
             </button>
             <button class="action-btn" onclick="sharePost('${post.id}')">
-              🔗 Share
+              ðŸ”— Share
             </button>
           </div>
 
@@ -1228,7 +1230,7 @@
           <div class="contributor-avatar">${(data.name || 'U')[0].toUpperCase()}</div>
           <div class="contributor-info">
             <div class="contributor-name">${data.name}</div>
-            <div class="contributor-posts">${data.posts} posts • ${data.likes} likes</div>
+            <div class="contributor-posts">${data.posts} posts â€¢ ${data.likes} likes</div>
           </div>
         </div>
       `).join('');
@@ -1376,9 +1378,9 @@
             trackCursor: true
           });
           window.bgRobot.setState('neutral');
-          console.log('✅ Background robot initialized');
+          console.log('âœ… Background robot initialized');
         } catch (e) {
-          console.error('❌ Failed to init background robot:', e);
+          console.error('âŒ Failed to init background robot:', e);
         }
       })();
       

@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SmartMock – Verify Certificate</title>
+    <title>SmartMock â€“ Verify Certificate</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -447,7 +447,7 @@
     <div id="bg-robot-container"><canvas id="bg-robot-canvas"></canvas></div>
     <div class="verify-container">
       <div class="verify-header">
-        <h1>🔍 Verify Certificate</h1>
+        <h1>ðŸ” Verify Certificate</h1>
         <p>Enter the certificate ID to verify its authenticity</p>
       </div>
 
@@ -477,7 +477,7 @@
           Use your device's camera to scan the QR code on the certificate
         </p>
         <div class="scanner-placeholder">
-          📷 QR Scanner Coming Soon
+          ðŸ“· QR Scanner Coming Soon
         </div>
       </div>
 
@@ -489,6 +489,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <!-- CRITICAL FIX: Load button fix FIRST -->
+  <script src="assets/js/fix-buttons-global.js"></script>
     <script src="assets/js/firebase-config.js"></script>
     <!-- Three.js + Robot Interviewer -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -504,8 +506,8 @@
             trackCursor: true
           });
           window.bgRobot.setState('neutral');
-          console.log('✅ Background robot initialized on verify-certificate.html');
-        } catch(e){ console.error('❌ Robot init failed (verify-certificate.html):', e); }
+          console.log('âœ… Background robot initialized on verify-certificate.html');
+        } catch(e){ console.error('âŒ Robot init failed (verify-certificate.html):', e); }
       })();
     </script>
     
@@ -517,7 +519,7 @@
       let zkSystem = null;
       if (typeof ZKVerification !== 'undefined') {
         zkSystem = ZKVerification.init();
-        console.log('✅ Zero-Knowledge Verification System loaded');
+        console.log('âœ… Zero-Knowledge Verification System loaded');
       }
       
       // Check if certId is in URL (from QR code scan)
@@ -552,9 +554,9 @@
             const zkResult = zkSystem.quickVerify(certId, quickCode);
             
             if (zkResult.isValid) {
-              console.log('✅ Zero-Knowledge quick verification passed');
+              console.log('âœ… Zero-Knowledge quick verification passed');
             } else {
-              console.warn('⚠️ Zero-Knowledge quick verification inconclusive');
+              console.warn('âš ï¸ Zero-Knowledge quick verification inconclusive');
             }
           } catch (error) {
             console.error('ZK Verification error:', error);
@@ -582,7 +584,7 @@
         resultSection.innerHTML = `
           <div class="result-card result-success">
             <div class="result-header">
-              <div class="status-icon success">✓</div>
+              <div class="status-icon success">âœ“</div>
               <h2 class="result-title success">Certificate Verified!</h2>
             </div>
             <div class="cert-details">
@@ -608,7 +610,7 @@
               </div>
               <div class="detail-row">
                 <div class="detail-label">Status:</div>
-                <div class="detail-value" style="color: #28a745; font-weight: 600;">✓ Valid & Authentic</div>
+                <div class="detail-value" style="color: #28a745; font-weight: 600;">âœ“ Valid & Authentic</div>
               </div>
             </div>
           </div>
@@ -621,7 +623,7 @@
         resultSection.innerHTML = `
           <div class="result-card result-error">
             <div class="result-header">
-              <div class="status-icon error">✗</div>
+              <div class="status-icon error">âœ—</div>
               <h2 class="result-title error">Certificate Not Found</h2>
             </div>
             <div class="cert-details">
@@ -629,9 +631,9 @@
                 The certificate ID <strong>${certId}</strong> could not be found in our records.
                 <br><br>
                 Possible reasons:
-                <br>• The certificate ID may be incorrect
-                <br>• The certificate may not have been issued yet
-                <br>• The certificate may have been revoked
+                <br>â€¢ The certificate ID may be incorrect
+                <br>â€¢ The certificate may not have been issued yet
+                <br>â€¢ The certificate may have been revoked
                 <br><br>
                 Please verify the certificate ID and try again.
               </p>
@@ -748,9 +750,9 @@
             trackCursor: true
           });
           window.bgRobot.setState('neutral');
-          console.log('✅ Background robot initialized');
+          console.log('âœ… Background robot initialized');
         } catch (e) {
-          console.error('❌ Failed to init background robot:', e);
+          console.error('âŒ Failed to init background robot:', e);
         }
       })();
       

@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Recruiter – Login</title>
+  <title>Recruiter â€“ Login</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/styles.css" />
   <link rel="stylesheet" href="../assets/css/recruiter.css" />
@@ -233,7 +233,9 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <script src="../assets/js/firebase-config.js"></script>
+  <!-- CRITICAL FIX: Load button fix FIRST -->
+  <script src="../assets/js/fix-buttons-global.js"></script>
+    <script src="../assets/js/firebase-config.js"></script>
   <script src="../assets/js/recruiter/login.js"></script>
   <!-- Background visuals handled by auto loader below -->
     <script src="../assets/js/auto-purple-bg.js"></script>

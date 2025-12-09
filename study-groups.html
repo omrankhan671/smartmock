@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -423,13 +423,13 @@
 
     <div class="groups-container">
         <div class="page-header">
-            <h1>👥 Study Groups</h1>
+            <h1>ðŸ‘¥ Study Groups</h1>
             <p>Collaborative interview preparation with peers</p>
         </div>
 
         <!-- Filters -->
         <div class="filter-section">
-            <label>🔍 Filter:</label>
+            <label>ðŸ” Filter:</label>
             <select id="departmentFilter">
                 <option value="all">All Departments</option>
                 <option value="cs">Computer Science</option>
@@ -453,8 +453,8 @@
             <div class="group-card" data-department="cs" data-level="advanced">
                 <div class="group-header">
                     <div class="group-info">
-                        <h3>🚀 FAANG Interview Prep</h3>
-                        <div class="meta">Computer Science • Advanced</div>
+                        <h3>ðŸš€ FAANG Interview Prep</h3>
+                        <div class="meta">Computer Science â€¢ Advanced</div>
                     </div>
                     <div class="group-badge">Active</div>
                 </div>
@@ -494,8 +494,8 @@
             <div class="group-card" data-department="cs" data-level="intermediate">
                 <div class="group-header">
                     <div class="group-info">
-                        <h3>💻 Full Stack Developers</h3>
-                        <div class="meta">Computer Science • Intermediate</div>
+                        <h3>ðŸ’» Full Stack Developers</h3>
+                        <div class="meta">Computer Science â€¢ Intermediate</div>
                     </div>
                     <div class="group-badge">Active</div>
                 </div>
@@ -534,8 +534,8 @@
             <div class="group-card" data-department="ee" data-level="intermediate">
                 <div class="group-header">
                     <div class="group-info">
-                        <h3>⚡ EE Interview Warriors</h3>
-                        <div class="meta">Electrical Engineering • Intermediate</div>
+                        <h3>âš¡ EE Interview Warriors</h3>
+                        <div class="meta">Electrical Engineering â€¢ Intermediate</div>
                     </div>
                     <div class="group-badge">Active</div>
                 </div>
@@ -574,8 +574,8 @@
             <div class="group-card" data-department="cs" data-level="beginner">
                 <div class="group-header">
                     <div class="group-info">
-                        <h3>🌱 Beginner's Circle</h3>
-                        <div class="meta">All Departments • Beginner</div>
+                        <h3>ðŸŒ± Beginner's Circle</h3>
+                        <div class="meta">All Departments â€¢ Beginner</div>
                     </div>
                     <div class="group-badge">Welcoming</div>
                 </div>
@@ -615,8 +615,8 @@
             <div class="group-card" data-department="me" data-level="intermediate">
                 <div class="group-header">
                     <div class="group-info">
-                        <h3>⚙️ Mechanical Masters</h3>
-                        <div class="meta">Mechanical Engineering • Intermediate</div>
+                        <h3>âš™ï¸ Mechanical Masters</h3>
+                        <div class="meta">Mechanical Engineering â€¢ Intermediate</div>
                     </div>
                     <div class="group-badge">Active</div>
                 </div>
@@ -655,8 +655,8 @@
             <div class="group-card" data-department="cs" data-level="advanced">
                 <div class="group-header">
                     <div class="group-info">
-                        <h3>🏗️ System Design Pro</h3>
-                        <div class="meta">Computer Science • Advanced</div>
+                        <h3>ðŸ—ï¸ System Design Pro</h3>
+                        <div class="meta">Computer Science â€¢ Advanced</div>
                     </div>
                     <div class="group-badge">Expert</div>
                 </div>
@@ -701,7 +701,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Create New Study Group</h2>
-                <button class="close-btn" onclick="closeCreateModal()">×</button>
+                <button class="close-btn" onclick="closeCreateModal()">Ã—</button>
             </div>
             <form id="createGroupForm">
                 <div class="form-group">
@@ -754,6 +754,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <!-- CRITICAL FIX: Load button fix FIRST -->
+  <script src="assets/js/fix-buttons-global.js"></script>
     <script src="assets/js/firebase-config.js"></script>
     <script src="assets/js/advanced-features-api.js"></script>
     <script src="assets/js/main.js"></script>
@@ -767,14 +769,14 @@
 
         // Mock data for demo when Firebase isn't available
         const MOCK_GROUPS = [
-            { id: '1', name: 'CS Interview Prep 2025', icon: '💻', department: 'cs', level: 'advanced', description: 'Preparing for FAANG interviews. Daily DSA practice and mock interviews.', memberCount: 24, sessions: 15, rating: 4.8, ownerName: 'Alex', status: 'Active' },
-            { id: '2', name: 'Full Stack Developers', icon: '🚀', department: 'cs', level: 'intermediate', description: 'Building real-world projects. React, Node.js, MongoDB stack.', memberCount: 18, sessions: 10, rating: 4.6, ownerName: 'Sam', status: 'Active' },
-            { id: '3', name: 'Machine Learning Study Group', icon: '🤖', department: 'cs', level: 'advanced', description: 'Deep Learning, NLP, Computer Vision. Working on Kaggle competitions.', memberCount: 15, sessions: 8, rating: 4.9, ownerName: 'Maya', status: 'Active' },
-            { id: '4', name: 'Beginner Python Coders', icon: '🐍', department: 'cs', level: 'beginner', description: 'Learning Python fundamentals. Daily coding challenges and peer support.', memberCount: 32, sessions: 20, rating: 4.5, ownerName: 'John', status: 'Active' },
-            { id: '5', name: 'Civil Engineering Prep', icon: '🏗️', department: 'ce', level: 'intermediate', description: 'Structural analysis, AutoCAD, and project management discussions.', memberCount: 12, sessions: 6, rating: 4.7, ownerName: 'Priya', status: 'Active' },
-            { id: '6', name: 'Electronics Projects', icon: '⚡', department: 'ec', level: 'intermediate', description: 'Arduino, Raspberry Pi, and embedded systems projects.', memberCount: 16, sessions: 9, rating: 4.6, ownerName: 'Rahul', status: 'Active' },
-            { id: '7', name: 'Power Systems Study', icon: '🔌', department: 'ee', level: 'advanced', description: 'Smart grids, renewable energy, and power electronics.', memberCount: 10, sessions: 5, rating: 4.8, ownerName: 'Sarah', status: 'Active' },
-            { id: '8', name: 'CAD & Design Workshop', icon: '⚙️', department: 'me', level: 'beginner', description: 'SolidWorks, CAD modeling, and mechanical design basics.', memberCount: 20, sessions: 12, rating: 4.4, ownerName: 'Mike', status: 'Active' }
+            { id: '1', name: 'CS Interview Prep 2025', icon: 'ðŸ’»', department: 'cs', level: 'advanced', description: 'Preparing for FAANG interviews. Daily DSA practice and mock interviews.', memberCount: 24, sessions: 15, rating: 4.8, ownerName: 'Alex', status: 'Active' },
+            { id: '2', name: 'Full Stack Developers', icon: 'ðŸš€', department: 'cs', level: 'intermediate', description: 'Building real-world projects. React, Node.js, MongoDB stack.', memberCount: 18, sessions: 10, rating: 4.6, ownerName: 'Sam', status: 'Active' },
+            { id: '3', name: 'Machine Learning Study Group', icon: 'ðŸ¤–', department: 'cs', level: 'advanced', description: 'Deep Learning, NLP, Computer Vision. Working on Kaggle competitions.', memberCount: 15, sessions: 8, rating: 4.9, ownerName: 'Maya', status: 'Active' },
+            { id: '4', name: 'Beginner Python Coders', icon: 'ðŸ', department: 'cs', level: 'beginner', description: 'Learning Python fundamentals. Daily coding challenges and peer support.', memberCount: 32, sessions: 20, rating: 4.5, ownerName: 'John', status: 'Active' },
+            { id: '5', name: 'Civil Engineering Prep', icon: 'ðŸ—ï¸', department: 'ce', level: 'intermediate', description: 'Structural analysis, AutoCAD, and project management discussions.', memberCount: 12, sessions: 6, rating: 4.7, ownerName: 'Priya', status: 'Active' },
+            { id: '6', name: 'Electronics Projects', icon: 'âš¡', department: 'ec', level: 'intermediate', description: 'Arduino, Raspberry Pi, and embedded systems projects.', memberCount: 16, sessions: 9, rating: 4.6, ownerName: 'Rahul', status: 'Active' },
+            { id: '7', name: 'Power Systems Study', icon: 'ðŸ”Œ', department: 'ee', level: 'advanced', description: 'Smart grids, renewable energy, and power electronics.', memberCount: 10, sessions: 5, rating: 4.8, ownerName: 'Sarah', status: 'Active' },
+            { id: '8', name: 'CAD & Design Workshop', icon: 'âš™ï¸', department: 'me', level: 'beginner', description: 'SolidWorks, CAD modeling, and mechanical design basics.', memberCount: 20, sessions: 12, rating: 4.4, ownerName: 'Mike', status: 'Active' }
         ];
 
         async function refreshGroups(){
@@ -788,13 +790,13 @@
             if (typeof StudyGroupsAPI !== 'undefined') {
                 try {
                     groups = await StudyGroupsAPI.getGroups({ department: dept, level, searchTerm });
-                    console.log('✅ Loaded groups from Firebase');
+                    console.log('âœ… Loaded groups from Firebase');
                 } catch(e) {
-                    console.warn('⚠️ Firebase not available, using mock data:', e);
+                    console.warn('âš ï¸ Firebase not available, using mock data:', e);
                     groups = MOCK_GROUPS;
                 }
             } else {
-                console.warn('⚠️ StudyGroupsAPI not available, using mock data');
+                console.warn('âš ï¸ StudyGroupsAPI not available, using mock data');
                 groups = MOCK_GROUPS;
             }
             
@@ -823,8 +825,8 @@
                 el.innerHTML = `
                     <div class="group-header">
                         <div class="group-info">
-                            <h3>${g.icon || '👥'} ${g.name}</h3>
-                            <div class="meta">${(g.department||'All').toUpperCase()} • ${capitalize(g.level||'Beginner')}</div>
+                            <h3>${g.icon || 'ðŸ‘¥'} ${g.name}</h3>
+                            <div class="meta">${(g.department||'All').toUpperCase()} â€¢ ${capitalize(g.level||'Beginner')}</div>
                         </div>
                         <div class="group-badge">${g.status || 'Active'}</div>
                     </div>
@@ -880,7 +882,7 @@
             // Check if user is logged in
             const user = getCurrentUser();
             if (!user) {
-                showNotification('❌ Please login to join groups', 'error');
+                showNotification('âŒ Please login to join groups', 'error');
                 return;
             }
             
@@ -888,16 +890,16 @@
             if (typeof StudyGroupsAPI !== 'undefined') {
                 try { 
                     await StudyGroupsAPI.joinGroup(groupId); 
-                    showNotification('✅ Joined group successfully!', 'success'); 
+                    showNotification('âœ… Joined group successfully!', 'success'); 
                     await refreshGroups(); 
                 } catch(e){ 
                     console.error(e); 
                     // Fallback to mock join
-                    showNotification('✅ Joined group (Demo mode)', 'success'); 
+                    showNotification('âœ… Joined group (Demo mode)', 'success'); 
                 }
             } else {
                 // Mock join - just show success
-                showNotification('✅ Joined group (Demo mode)', 'success');
+                showNotification('âœ… Joined group (Demo mode)', 'success');
             }
         }
         
@@ -910,13 +912,13 @@
         }
 
         function viewGroup(groupId) {
-            alert(`Opening ${groupId} group details...\n\n• Weekly schedule\n• Member list\n• Shared resources\n• Discussion forum\n• Upcoming mock interviews`);
+            alert(`Opening ${groupId} group details...\n\nâ€¢ Weekly schedule\nâ€¢ Member list\nâ€¢ Shared resources\nâ€¢ Discussion forum\nâ€¢ Upcoming mock interviews`);
         }
 
         // Create group form
         document.getElementById('createGroupForm')?.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!isUserAuthenticated()) return showNotification('❌ Please login to create group', 'error');
+            if (!isUserAuthenticated()) return showNotification('âŒ Please login to create group', 'error');
             try {
                 const form = e.currentTarget;
                 const [nameEl, deptEl, levelEl, descEl, schedEl] = form.querySelectorAll('input, select, textarea');
@@ -928,12 +930,12 @@
                     schedule: schedEl.value.trim()
                 };
                 const res = await StudyGroupsAPI.createGroup(groupData);
-                showNotification('✅ Study group created!', 'success');
+                showNotification('âœ… Study group created!', 'success');
                 closeCreateModal();
                 await refreshGroups();
             } catch (err) {
                 console.error(err);
-                showNotification('❌ Failed to create group', 'error');
+                showNotification('âŒ Failed to create group', 'error');
             }
         });
 

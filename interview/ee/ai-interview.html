@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -593,11 +593,13 @@
         </div>
       </section>
     </main>
-    <footer class="site-footer">� <span id="year"></span> SmartMock.</footer>
+    <footer class="site-footer">ï¿½ <span id="year"></span> SmartMock.</footer>
     <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <!-- CRITICAL FIX: Load button fix FIRST -->
+  <script src="../../assets/js/fix-buttons-global.js"></script>
     <script src="../../assets/js/firebase-config.js"></script>
     <script src="../../assets/js/main.js"></script>
     
@@ -622,7 +624,7 @@
   
     <script>
       // DEBUG: Test if script loads
-      console.log('✅✅✅ SCRIPT LOADED SUCCESSFULLY ✅✅✅');
+      console.log('âœ…âœ…âœ… SCRIPT LOADED SUCCESSFULLY âœ…âœ…âœ…');
       console.log('?? Interview page script starting...');
       
       // Initialize v2.0 features
@@ -1209,11 +1211,29 @@
           return;
         }
         try {
-          recognition.start();
-          console.log('?? recognition.start() called.');
+          // Stop any existing recognition first
+          try {
+            recognition.stop();
+          } catch (_) {
+            // Ignore errors when stopping
+          }
+          
+          // Wait a brief moment then start
+          setTimeout(() => {
+            try {
+              recognition.start();
+              console.log('?? recognition.start() called.');
+            } catch (e) {
+              console.error('? Error calling recognition.start():', e);
+              if (e.message.includes('already started')) {
+                console.log('? Recognition already started, ignoring error');
+              } else {
+                conversationDiv.innerHTML += `<p><strong>AI:</strong> Error starting speech recognition. Please check microphone permissions.</p>`;
+              }
+            }
+          }, 100);
         } catch (e) {
-          console.error('? Error calling recognition.start():', e);
-          conversationDiv.innerHTML += `<p><strong>AI:</strong> Error starting speech recognition. Please check microphone permissions.</p>`;
+          console.error('? Error in startSpeech():', e);
         }
       }
 
@@ -1477,7 +1497,7 @@
             "What is a linked list and how does it differ from an array?": "A linked list is a sequence of nodes where each node contains data and a pointer to the next node. Unlike arrays, it allows O(1) insertion/deletion at known positions but O(n) access by index.",
             "What is a stack and what operations does it support?": "A stack is a LIFO (Last-In-First-Out) data structure supporting push (add to top), pop (remove from top), peek (view top), and isEmpty operations, all in O(1) time.",
             "What is a queue and how does it work?": "A queue is a FIFO (First-In-First-Out) data structure supporting enqueue (add to rear), dequeue (remove from front), peek, and isEmpty operations.",
-            "Explain what Big O notation means.": "Big O notation describes the upper bound of time or space complexity as input size grows. It focuses on the dominant term and ignores constants. Common: O(1), O(log n), O(n), O(n log n), O(n�).",
+            "Explain what Big O notation means.": "Big O notation describes the upper bound of time or space complexity as input size grows. It focuses on the dominant term and ignores constants. Common: O(1), O(log n), O(n), O(n log n), O(nï¿½).",
             "What is the difference between a linear and binary search?": "Linear search checks each element sequentially (O(n)). Binary search divides sorted array in half each iteration (O(log n)) but requires sorted data.",
             "What is a hash table?": "A hash table stores key-value pairs using a hash function to compute array indices. Provides O(1) average insert/search/delete. Handles collisions via chaining or open addressing.",
             "Explain what recursion is.": "Recursion is when a function calls itself to solve smaller instances of the same problem. Must have: base case (termination) and recursive case (problem reduction).",
@@ -1574,13 +1594,13 @@
       }
       */
 
-      console.log('🎯 Setting up global button handlers for direct onclick access...');
+      console.log('ðŸŽ¯ Setting up global button handlers for direct onclick access...');
       
       // MAKE ALL HANDLERS GLOBAL AND DIRECTLY ACCESSIBLE - IMMEDIATELY!
       // These are created BEFORE DOMContentLoaded to ensure they exist when onclick fires
       window.handleStartInterview = async function() {
-        console.log('🚀 START INTERVIEW CLICKED - Direct onclick handler!');
-        alert('✅ BUTTON CLICKED! Function is working!');
+        console.log('ðŸš€ START INTERVIEW CLICKED - Direct onclick handler!');
+        alert('âœ… BUTTON CLICKED! Function is working!');
         const startBtn = document.getElementById('start-btn');
         const levelSelect = document.getElementById('level-select');
         const topicSelect = document.getElementById('topic-select');
@@ -1622,11 +1642,11 @@
           
           // Final check: verify video dimensions
           if (userVideo.videoWidth > 0 && userVideo.videoHeight > 0) {
-            console.log('✅ Starting face detection with video:', userVideo.videoWidth, 'x', userVideo.videoHeight);
+            console.log('âœ… Starting face detection with video:', userVideo.videoWidth, 'x', userVideo.videoHeight);
             await initFaceMesh();
             detectFace();
           } else {
-            console.warn('⚠️ Video not ready after camera setup, switching to mock mode');
+            console.warn('âš ï¸ Video not ready after camera setup, switching to mock mode');
             if (mockToggle) mockToggle.checked = true;
             startMockEmotion();
           }
@@ -1634,7 +1654,7 @@
         
         // Clear loading message
         if (conversationDiv) {
-          conversationDiv.innerHTML = '<p><strong>AI:</strong> Interview starting now. Good luck! 🎯</p>';
+          conversationDiv.innerHTML = '<p><strong>AI:</strong> Interview starting now. Good luck! ðŸŽ¯</p>';
         }
         
         // Start interview
@@ -1642,14 +1662,14 @@
       };
       
       window.handleRetryCamera = async function() {
-        console.log('🔄 RETRY CAMERA CLICKED - Direct onclick handler!');
+        console.log('ðŸ”„ RETRY CAMERA CLICKED - Direct onclick handler!');
         cameraRetryAttempts = 0;
         await setupCamera();
         await updateDiagnostics();
       };
       
       window.handleAnswer = function() {
-        console.log('💬 ANSWER BUTTON CLICKED - Direct onclick handler!');
+        console.log('ðŸ’¬ ANSWER BUTTON CLICKED - Direct onclick handler!');
         const answerBtn = document.getElementById('answer-btn');
         const stopBtn = document.getElementById('stop-btn');
         const conversationDiv = document.getElementById('conversation');
@@ -1663,7 +1683,7 @@
       };
       
       window.handleStop = function() {
-        console.log('⏹️ STOP BUTTON CLICKED - Direct onclick handler!');
+        console.log('â¹ï¸ STOP BUTTON CLICKED - Direct onclick handler!');
         const stopBtn = document.getElementById('stop-btn');
         const answerBtn = document.getElementById('answer-btn');
         const conversationDiv = document.getElementById('conversation');
@@ -1679,25 +1699,25 @@
       };
       
       window.handleStopInterview = function() {
-        console.log('🛑 STOP INTERVIEW CLICKED - Direct onclick handler!');
+        console.log('ðŸ›‘ STOP INTERVIEW CLICKED - Direct onclick handler!');
         stopInterview();
       };
       
-      console.log('✅✅✅ ALL Global button handlers created successfully ✅✅✅');
-      console.log('🔍 window.handleStartInterview defined:', typeof window.handleStartInterview);
-      console.log('🔍 window.handleAnswer defined:', typeof window.handleAnswer);
-      console.log('🔍 window.handleStop defined:', typeof window.handleStop);
-      console.log('🔍 window.handleRetryCamera defined:', typeof window.handleRetryCamera);
-      console.log('🔍 window.handleStopInterview defined:', typeof window.handleStopInterview);
+      console.log('âœ…âœ…âœ… ALL Global button handlers created successfully âœ…âœ…âœ…');
+      console.log('ðŸ” window.handleStartInterview defined:', typeof window.handleStartInterview);
+      console.log('ðŸ” window.handleAnswer defined:', typeof window.handleAnswer);
+      console.log('ðŸ” window.handleStop defined:', typeof window.handleStop);
+      console.log('ðŸ” window.handleRetryCamera defined:', typeof window.handleRetryCamera);
+      console.log('ðŸ” window.handleStopInterview defined:', typeof window.handleStopInterview);
 
       // TEST: Flash the start button to confirm it's clickable
       setTimeout(() => {
         const startBtn = document.getElementById('start-btn');
         if (startBtn) {
-          console.log('✅ Start button found! Element:', startBtn);
-          console.log('✅ Button onclick attribute:', startBtn.getAttribute('onclick'));
-          console.log('✅ Button style.pointerEvents:', startBtn.style.pointerEvents);
-          console.log('✅ Button style.zIndex:', startBtn.style.zIndex);
+          console.log('âœ… Start button found! Element:', startBtn);
+          console.log('âœ… Button onclick attribute:', startBtn.getAttribute('onclick'));
+          console.log('âœ… Button style.pointerEvents:', startBtn.style.pointerEvents);
+          console.log('âœ… Button style.zIndex:', startBtn.style.zIndex);
           
           // Flash the button green to show it's ready
           startBtn.style.transition = 'all 0.3s';
@@ -1708,15 +1728,15 @@
             startBtn.style.transform = '';
           }, 500);
           
-          console.log('✅ Button is ready! Try clicking it now.');
+          console.log('âœ… Button is ready! Try clicking it now.');
           
           // ULTIMATE FIX: Remove pointer-events from EVERYTHING that might block
-          console.log('🔧 ULTIMATE FIX: Removing ALL pointer-events blocking...');
+          console.log('ðŸ”§ ULTIMATE FIX: Removing ALL pointer-events blocking...');
           document.querySelectorAll('*').forEach(el => {
             const computed = window.getComputedStyle(el);
             if (computed.pointerEvents === 'none' && !el.classList.contains('particles-container') && el.id !== 'particlesContainer' && el.id !== 'bg-robot-container') {
               el.style.pointerEvents = 'auto';
-              console.log('🔧 Fixed element:', el.tagName, el.className, el.id);
+              console.log('ðŸ”§ Fixed element:', el.tagName, el.className, el.id);
             }
           });
           
@@ -1724,10 +1744,10 @@
           const controlsContainer = document.querySelector('.controls-container');
           if (controlsContainer) {
             controlsContainer.style.setProperty('pointer-events', 'auto', 'important');
-            console.log('✅ Controls container forced to auto');
+            console.log('âœ… Controls container forced to auto');
           }
           
-          console.log('✅✅✅ ALL BLOCKING REMOVED ✅✅✅');
+          console.log('âœ…âœ…âœ… ALL BLOCKING REMOVED âœ…âœ…âœ…');
           
           // KEYBOARD SHORTCUTS FOR ALL BUTTONS
           document.addEventListener('keydown', function(e) {
@@ -1736,7 +1756,7 @@
             // S = Start Interview
             if (key === 'S') {
               if (startBtn && startBtn.style.display !== 'none') {
-                console.log('⌨️ KEYBOARD SHORTCUT: S = Start Interview');
+                console.log('âŒ¨ï¸ KEYBOARD SHORTCUT: S = Start Interview');
                 if (window.handleStartInterview) {
                   window.handleStartInterview();
                 }
@@ -1746,7 +1766,7 @@
             // A = Answer
             if (key === 'A') {
               if (answerBtn && answerBtn.style.display !== 'none') {
-                console.log('⌨️ KEYBOARD SHORTCUT: A = Answer');
+                console.log('âŒ¨ï¸ KEYBOARD SHORTCUT: A = Answer');
                 answerBtn.click();
               }
             }
@@ -1754,7 +1774,7 @@
             // X = Stop Answering
             if (key === 'X') {
               if (stopBtn && stopBtn.style.display !== 'none') {
-                console.log('⌨️ KEYBOARD SHORTCUT: X = Stop Answering');
+                console.log('âŒ¨ï¸ KEYBOARD SHORTCUT: X = Stop Answering');
                 stopBtn.click();
               }
             }
@@ -1762,7 +1782,7 @@
             // R = Retry Camera
             if (key === 'R') {
               if (retryCameraBtn && retryCameraBtn.style.display !== 'none') {
-                console.log('⌨️ KEYBOARD SHORTCUT: R = Retry Camera');
+                console.log('âŒ¨ï¸ KEYBOARD SHORTCUT: R = Retry Camera');
                 retryCameraBtn.click();
               }
             }
@@ -1771,13 +1791,13 @@
             if (key === 'Q') {
               const stopInterviewBtn = document.getElementById('stop-interview-btn');
               if (stopInterviewBtn && stopInterviewBtn.style.display !== 'none') {
-                console.log('⌨️ KEYBOARD SHORTCUT: Q = Quit Interview');
+                console.log('âŒ¨ï¸ KEYBOARD SHORTCUT: Q = Quit Interview');
                 stopInterview();
               }
             }
           });
           
-          console.log('⌨️ KEYBOARD SHORTCUTS ENABLED:');
+          console.log('âŒ¨ï¸ KEYBOARD SHORTCUTS ENABLED:');
           console.log('   S = Start Interview');
           console.log('   A = Answer');
           console.log('   X = Stop Answering');
@@ -1789,7 +1809,7 @@
           helpPanel.id = 'keyboard-help';
           helpPanel.innerHTML = `
             <div style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.9); color: white; padding: 15px; border-radius: 10px; font-family: monospace; font-size: 12px; z-index: 999999; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
-              <div style="font-weight: bold; margin-bottom: 10px; color: #4CAF50;">⌨️ KEYBOARD SHORTCUTS</div>
+              <div style="font-weight: bold; margin-bottom: 10px; color: #4CAF50;">âŒ¨ï¸ KEYBOARD SHORTCUTS</div>
               <div><kbd style="background: #333; padding: 2px 6px; border-radius: 3px;">S</kbd> = Start Interview</div>
               <div><kbd style="background: #333; padding: 2px 6px; border-radius: 3px;">A</kbd> = Answer</div>
               <div><kbd style="background: #333; padding: 2px 6px; border-radius: 3px;">X</kbd> = Stop Answering</div>
@@ -1812,22 +1832,22 @@
           
           // DIAGNOSTIC: Log ALL mouse events on the button
           startBtn.addEventListener('mousedown', function(e) {
-            console.log('🖱️ MOUSEDOWN detected on button!', e);
+            console.log('ðŸ–±ï¸ MOUSEDOWN detected on button!', e);
           }, true);
           
           startBtn.addEventListener('mouseup', function(e) {
-            console.log('🖱️ MOUSEUP detected on button!', e);
+            console.log('ðŸ–±ï¸ MOUSEUP detected on button!', e);
           }, true);
           
           startBtn.addEventListener('click', function(e) {
-            console.log('🖱️ CLICK detected on button!', e);
+            console.log('ðŸ–±ï¸ CLICK detected on button!', e);
           }, true);
           
           startBtn.addEventListener('pointerdown', function(e) {
-            console.log('👆 POINTERDOWN detected on button!', e);
+            console.log('ðŸ‘† POINTERDOWN detected on button!', e);
           }, true);
           
-          console.log('🔍 Mouse event listeners added to button');
+          console.log('ðŸ” Mouse event listeners added to button');
           
           // DIAGNOSTIC: Check what element is actually at the button's position
           const rect = startBtn.getBoundingClientRect();
@@ -1835,32 +1855,32 @@
           const centerY = rect.top + rect.height / 2;
           const elementAtPoint = document.elementFromPoint(centerX, centerY);
           
-          console.log('🔍 Button position:', { x: centerX, y: centerY });
-          console.log('🔍 Element at button center:', elementAtPoint);
-          console.log('🔍 Element type:', elementAtPoint ? elementAtPoint.tagName : 'NULL');
-          console.log('🔍 Element class:', elementAtPoint ? elementAtPoint.className : 'NULL');
-          console.log('🔍 Element id:', elementAtPoint ? elementAtPoint.id : 'NULL');
-          console.log('🔍 Is it the button itself?', elementAtPoint === startBtn);
+          console.log('ðŸ” Button position:', { x: centerX, y: centerY });
+          console.log('ðŸ” Element at button center:', elementAtPoint);
+          console.log('ðŸ” Element type:', elementAtPoint ? elementAtPoint.tagName : 'NULL');
+          console.log('ðŸ” Element class:', elementAtPoint ? elementAtPoint.className : 'NULL');
+          console.log('ðŸ” Element id:', elementAtPoint ? elementAtPoint.id : 'NULL');
+          console.log('ðŸ” Is it the button itself?', elementAtPoint === startBtn);
           
           // CRITICAL: Check if button is actually visible
           const buttonStyles = window.getComputedStyle(startBtn);
-          console.log('🔍 Button display:', buttonStyles.display);
-          console.log('🔍 Button visibility:', buttonStyles.visibility);
-          console.log('🔍 Button opacity:', buttonStyles.opacity);
-          console.log('🔍 Button position:', buttonStyles.position);
+          console.log('ðŸ” Button display:', buttonStyles.display);
+          console.log('ðŸ” Button visibility:', buttonStyles.visibility);
+          console.log('ðŸ” Button opacity:', buttonStyles.opacity);
+          console.log('ðŸ” Button position:', buttonStyles.position);
           
           if (elementAtPoint !== startBtn) {
-            console.error('❌ BLOCKING ELEMENT FOUND!', elementAtPoint);
+            console.error('âŒ BLOCKING ELEMENT FOUND!', elementAtPoint);
             
             // Check if element is null before getting styles
             if (elementAtPoint && elementAtPoint.nodeType === 1) {
-              console.error('❌ Blocking element z-index:', window.getComputedStyle(elementAtPoint).zIndex);
-              console.error('❌ Blocking element pointer-events:', window.getComputedStyle(elementAtPoint).pointerEvents);
+              console.error('âŒ Blocking element z-index:', window.getComputedStyle(elementAtPoint).zIndex);
+              console.error('âŒ Blocking element pointer-events:', window.getComputedStyle(elementAtPoint).pointerEvents);
             } else {
-              console.error('❌ Element is NULL - button might be off-screen or invisible');
-              console.log('🔧 NULL ELEMENT FIX: Checking button visibility...');
-              console.log('🔍 Button rect:', rect);
-              console.log('🔍 Button in viewport?', rect.top >= 0 && rect.left >= 0 && rect.bottom <= window.innerHeight && rect.right <= window.innerWidth);
+              console.error('âŒ Element is NULL - button might be off-screen or invisible');
+              console.log('ðŸ”§ NULL ELEMENT FIX: Checking button visibility...');
+              console.log('ðŸ” Button rect:', rect);
+              console.log('ðŸ” Button in viewport?', rect.top >= 0 && rect.left >= 0 && rect.bottom <= window.innerHeight && rect.right <= window.innerWidth);
               
               // If element is null, button might not be rendering - force it to render and be clickable
               startBtn.style.display = 'inline-block';
@@ -1868,12 +1888,12 @@
               startBtn.style.opacity = '1';
               startBtn.style.position = 'relative';
               startBtn.style.zIndex = '99999';
-              console.log('✅ Forced button to be visible and positioned');
+              console.log('âœ… Forced button to be visible and positioned');
             }
             
             // AGGRESSIVE FIX: Remove pointer-events blocking
             if (elementAtPoint && elementAtPoint.nodeType === 1) {
-              console.log('🔧 AGGRESSIVE FIX: Removing all pointer-events blocking...');
+              console.log('ðŸ”§ AGGRESSIVE FIX: Removing all pointer-events blocking...');
               
               // Fix 1: Set blocker to none
               elementAtPoint.style.pointerEvents = 'none';
@@ -1893,7 +1913,7 @@
               
               // Fix 3: Add direct click listener as backup
               startBtn.addEventListener('click', function(e) {
-                console.log('🎯 DIRECT CLICK LISTENER FIRED!');
+                console.log('ðŸŽ¯ DIRECT CLICK LISTENER FIRED!');
                 e.stopPropagation();
                 e.preventDefault();
                 if (window.handleStartInterview) {
@@ -1904,15 +1924,15 @@
               // Check again
               setTimeout(() => {
                 const newElement = document.elementFromPoint(centerX, centerY);
-                console.log('🔍 Element after fix:', newElement);
-                console.log('🔍 Element type after fix:', newElement ? newElement.tagName : 'NULL');
-                console.log('🔍 Is it the button now?', newElement === startBtn);
+                console.log('ðŸ” Element after fix:', newElement);
+                console.log('ðŸ” Element type after fix:', newElement ? newElement.tagName : 'NULL');
+                console.log('ðŸ” Is it the button now?', newElement === startBtn);
                 
                 if (newElement === startBtn) {
-                  console.log('✅✅✅ FIX SUCCESSFUL! Button is now clickable! ✅✅✅');
+                  console.log('âœ…âœ…âœ… FIX SUCCESSFUL! Button is now clickable! âœ…âœ…âœ…');
                 } else {
-                  console.error('❌ Still blocked by:', newElement);
-                  console.error('❌ Blocker type:', newElement ? newElement.tagName : 'NULL');
+                  console.error('âŒ Still blocked by:', newElement);
+                  console.error('âŒ Blocker type:', newElement ? newElement.tagName : 'NULL');
                   
                   // NUCLEAR OPTION: Get ALL elements at this point
                   const allElements = [];
@@ -1924,22 +1944,22 @@
                     testElement = document.elementFromPoint(centerX, centerY);
                     iteration++;
                   }
-                  console.log('🔍 ALL elements at button position:', allElements);
+                  console.log('ðŸ” ALL elements at button position:', allElements);
                   
                   // Restore and try direct click
-                  console.log('🔧 EMERGENCY: Trying direct button.click()...');
+                  console.log('ðŸ”§ EMERGENCY: Trying direct button.click()...');
                   try {
                     startBtn.click();
-                    console.log('✅ Direct click() executed!');
+                    console.log('âœ… Direct click() executed!');
                   } catch (err) {
-                    console.error('❌ Direct click() failed:', err);
+                    console.error('âŒ Direct click() failed:', err);
                   }
                 }
               }, 100);
             }
           }
         } else {
-          console.error('❌ Start button NOT FOUND in DOM!');
+          console.error('âŒ Start button NOT FOUND in DOM!');
         }
       }, 1000);
 
@@ -2093,7 +2113,7 @@
         }
       }
       
-      console.log('✅ All event listeners setup complete');
+      console.log('âœ… All event listeners setup complete');
       
       // Note: startBtn event listener is attached around line 1584
 
@@ -2133,7 +2153,7 @@
       
       // CRITICAL FIX: Add emergency direct click() for ALL buttons after they appear
       setTimeout(() => {
-        console.log('🔧 APPLYING EMERGENCY FIX TO ALL BUTTONS...');
+        console.log('ðŸ”§ APPLYING EMERGENCY FIX TO ALL BUTTONS...');
         
         [answerBtn, stopBtn, retryCameraBtn, stopInterviewBtn].forEach(btn => {
           if (btn) {
@@ -2145,18 +2165,18 @@
             
             // Add emergency click detection
             btn.addEventListener('mousedown', function(e) {
-              console.log(`🖱️ MOUSEDOWN on ${btn.id}`, e);
+              console.log(`ðŸ–±ï¸ MOUSEDOWN on ${btn.id}`, e);
             }, true);
             
             btn.addEventListener('click', function(e) {
-              console.log(`🖱️ CLICK detected on ${btn.id}!`, e);
+              console.log(`ðŸ–±ï¸ CLICK detected on ${btn.id}!`, e);
             }, true);
             
-            console.log(`✅ Fixed button: ${btn.id}`);
+            console.log(`âœ… Fixed button: ${btn.id}`);
           }
         });
         
-        console.log('✅ ALL BUTTONS FIXED AND CLICKABLE');
+        console.log('âœ… ALL BUTTONS FIXED AND CLICKABLE');
       }, 2000); // Wait 2 seconds for buttons to appear
 
       // Camera selection change -> reopen stream and persist preference

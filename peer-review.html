@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -365,7 +365,7 @@
 
     <div class="peer-review-container">
         <div class="page-header">
-            <h1>⭐ Peer Review System</h1>
+            <h1>â­ Peer Review System</h1>
             <p>Get feedback from the community on your interview performance</p>
         </div>
 
@@ -401,7 +401,7 @@
             <div class="reviews-grid">
                 <!-- Request New Review Card -->
                 <div class="request-review-card" onclick="requestNewReview()">
-                    <div style="font-size: 3rem;">📹</div>
+                    <div style="font-size: 3rem;">ðŸ“¹</div>
                     <h3>Request New Review</h3>
                     <p style="color: rgba(255,255,255,0.7);">Upload your interview recording and get feedback from peers</p>
                 </div>
@@ -601,7 +601,7 @@
                         </div>
                     </div>
                     <div class="rating-display">
-                        <div class="stars">★★★★☆</div>
+                        <div class="stars">â˜…â˜…â˜…â˜…â˜†</div>
                         <span class="rating-score">4.0/5.0</span>
                     </div>
                     <div class="feedback-preview">
@@ -632,7 +632,7 @@
                         </div>
                     </div>
                     <div class="rating-display">
-                        <div class="stars">★★★★★</div>
+                        <div class="stars">â˜…â˜…â˜…â˜…â˜…</div>
                         <span class="rating-score">5.0/5.0</span>
                     </div>
                     <div class="feedback-preview">
@@ -656,6 +656,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <!-- CRITICAL FIX: Load button fix FIRST -->
+  <script src="assets/js/fix-buttons-global.js"></script>
     <script src="assets/js/firebase-config.js"></script>
     <script src="assets/js/advanced-features-api.js"></script>
     <script src="assets/js/main.js"></script>
@@ -755,7 +757,7 @@
 
         async function requestNewReview() {
             if (!isUserAuthenticated()) {
-                showNotification('❌ Please login to request a review', 'error');
+                showNotification('âŒ Please login to request a review', 'error');
                 return;
             }
             // Create temporary file input for upload
@@ -766,7 +768,7 @@
                 const file = input.files[0];
                 if (!file) return;
                 try {
-                    showNotification('⏳ Uploading recording...', 'info');
+                    showNotification('â³ Uploading recording...', 'info');
                     const path = `recordings/${getCurrentUser().uid}/${Date.now()}_${file.name}`;
                     const upload = await uploadFile(file, path);
                     const title = prompt('Interview title (e.g., Full Stack Interview)') || 'Interview Recording';
@@ -776,11 +778,11 @@
                     const result = await PeerReviewAPI.requestReview({
                         title, duration, topics, recordingUrl: upload.downloadURL, storagePath: upload.path
                     });
-                    showNotification('✅ Review request created! -50 points', 'success');
+                    showNotification('âœ… Review request created! -50 points', 'success');
                     // Reload available reviews for others (optional)
                 } catch (e) {
                     console.error(e);
-                    showNotification(e.message || '❌ Failed to request review', 'error');
+                    showNotification(e.message || 'âŒ Failed to request review', 'error');
                 }
             };
             input.click();
@@ -788,7 +790,7 @@
 
         async function startReview(requestId) {
             if (!isUserAuthenticated()) {
-                showNotification('❌ Please login to review', 'error');
+                showNotification('âŒ Please login to review', 'error');
                 return;
             }
             try {
@@ -800,15 +802,15 @@
                 const feedback = prompt('Write your feedback:') || 'Great job!';
                 const ratings = { technical: tech, communication: comm, problemSolving: problem, codeQuality: quality };
                 await PeerReviewAPI.submitReview(requestId, ratings, feedback);
-                showNotification('🎁 +25 points earned! Review submitted.', 'success');
+                showNotification('ðŸŽ +25 points earned! Review submitted.', 'success');
             } catch (e) {
                 console.error(e);
-                showNotification(e.message || '❌ Failed to submit review', 'error');
+                showNotification(e.message || 'âŒ Failed to submit review', 'error');
             }
         }
 
         function viewRecording(recId) {
-            alert('📹 Opening interview recording player...\n\nFeatures:\n• Playback controls\n• Add timestamps for feedback\n• Take notes during review\n• Rate specific sections');
+            alert('ðŸ“¹ Opening interview recording player...\n\nFeatures:\nâ€¢ Playback controls\nâ€¢ Add timestamps for feedback\nâ€¢ Take notes during review\nâ€¢ Rate specific sections');
         }
 
         async function viewFeedback(reqId) {
@@ -820,19 +822,19 @@
                 }
                 const avg = (reviews.reduce((a,r)=>a+(r.average||0),0)/reviews.length).toFixed(1);
                 const body = reviews.map((r,i)=>`#${i+1} (${r.average?.toFixed?.(1) || 'N/A'}/5)\n${r.feedback}` ).join('\n\n');
-                alert(`📝 Feedback Summary\n\nAverage: ${avg}/5\n\n${body}`);
+                alert(`ðŸ“ Feedback Summary\n\nAverage: ${avg}/5\n\n${body}`);
             } catch (e) {
                 console.error(e);
-                showNotification('❌ Failed to load feedback', 'error');
+                showNotification('âŒ Failed to load feedback', 'error');
             }
         }
 
         function viewFullReview(compId) {
-            alert('⭐ Full Review Details\n\nTechnical Skills: 5/5\nCommunication: 4/5\nProblem Solving: 5/5\nCode Quality: 4/5\n\nDetailed Feedback:\n"Your technical knowledge was impressive. The code structure was clean and well-commented. Consider explaining your thought process more clearly during the interview. Overall excellent performance!"\n\nReviewer Tips:\n• Practice explaining while coding\n• Use more descriptive variable names\n• Great job handling edge cases');
+            alert('â­ Full Review Details\n\nTechnical Skills: 5/5\nCommunication: 4/5\nProblem Solving: 5/5\nCode Quality: 4/5\n\nDetailed Feedback:\n"Your technical knowledge was impressive. The code structure was clean and well-commented. Consider explaining your thought process more clearly during the interview. Overall excellent performance!"\n\nReviewer Tips:\nâ€¢ Practice explaining while coding\nâ€¢ Use more descriptive variable names\nâ€¢ Great job handling edge cases');
         }
 
         function cancelRequest(reqId) {
-            showNotification('⏳ Cancel request is not available yet', 'info');
+            showNotification('â³ Cancel request is not available yet', 'info');
         }
 
         function previewInterview(revId) {

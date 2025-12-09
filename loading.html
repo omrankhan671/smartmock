@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SmartMock – Preparing your experience…</title>
+    <title>SmartMock â€“ Preparing your experienceâ€¦</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -233,13 +233,15 @@
         <div class="loader">
           <div class="loader-center"><span>SMARTMOCK</span></div>
         </div>
-        <p class="muted" style="text-align:center; margin-top:12px;">Optimizing your personalized dashboard…</p>
+        <p class="muted" style="text-align:center; margin-top:12px;">Optimizing your personalized dashboardâ€¦</p>
       </div>
     </div>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <script src="assets/js/firebase-config.js"></script>
+  <!-- CRITICAL FIX: Load button fix FIRST -->
+  <script src="assets/js/fix-buttons-global.js"></script>
+    <script src="assets/js/firebase-config.js"></script>
   <script src="assets/js/main.js"></script>
   <!-- Three.js + Robot Interviewer -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -255,8 +257,8 @@
           trackCursor: true
         });
         window.bgRobot.setState('neutral');
-        console.log('✅ Background robot initialized on loading.html');
-      } catch(e){ console.error('❌ Robot init failed (loading.html):', e); }
+        console.log('âœ… Background robot initialized on loading.html');
+      } catch(e){ console.error('âŒ Robot init failed (loading.html):', e); }
     })();
   </script>
   
@@ -344,9 +346,9 @@
             trackCursor: true
           });
           window.bgRobot.setState('neutral');
-          console.log('✅ Background robot initialized');
+          console.log('âœ… Background robot initialized');
         } catch (e) {
-          console.error('❌ Failed to init background robot:', e);
+          console.error('âŒ Failed to init background robot:', e);
         }
       })();
       

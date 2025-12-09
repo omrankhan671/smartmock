@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SmartMock – Reports</title>
+    <title>SmartMock â€“ Reports</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -414,11 +414,11 @@
     <header class="site-header">
       <div class="site-header-inner container">
         <nav class="menu menu-left">
-          <div class="menu-button">☰ Menu</div>
+          <div class="menu-button">â˜° Menu</div>
           <ul class="dropdown">
             <li><a href="home.html">Home</a></li>
             <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="leaderboard.html">🏆 Leaderboard</a></li>
+            <li><a href="leaderboard.html">ðŸ† Leaderboard</a></li>
             <li class="has-submenu"><a href="interview.html">Interview</a>
               <ul class="submenu">
                 <li><a href="interview/cs/ai-interview.html">AI Interview (CS)</a></li>
@@ -431,7 +431,7 @@
             <li><a href="about.html">About</a></li>
             <li><a href="report.html">Report</a></li>
             <li><a href="community.html">Community</a></li>
-            <li><a href="verify-certificate.html">🔍 Verify Certificate</a></li>
+            <li><a href="verify-certificate.html">ðŸ” Verify Certificate</a></li>
             <li><a href="certificate.html">Certificate</a></li>
             <li><a href="contact.html">Contact Us</a></li>
             <li><a href="recruiter/dashboard.html">Recruiter Dashboard</a></li>
@@ -447,7 +447,7 @@
 
     <main class="container">
       <section>
-        <h2>📊 Your Interview Reports</h2>
+        <h2>ðŸ“Š Your Interview Reports</h2>
         
         <!-- Stats Overview -->
         <div class="stats-overview" id="stats-overview">
@@ -485,7 +485,7 @@
             <option value="highest">Highest Score</option>
             <option value="lowest">Lowest Score</option>
           </select>
-          <button class="btn" onclick="exportAllReports()">📥 Export All Reports</button>
+          <button class="btn" onclick="exportAllReports()">ðŸ“¥ Export All Reports</button>
         </div>
 
         <!-- Performance Chart -->
@@ -496,13 +496,15 @@
 
         <!-- Reports Grid -->
         <div id="reports-container">
-          <div class="loading">🔄 Loading your reports...</div>
+          <div class="loading">ðŸ”„ Loading your reports...</div>
         </div>
       </section>
     </main>
-    <footer class="site-footer">© <span id="year"></span> SmartMock.</footer>
+    <footer class="site-footer">Â© <span id="year"></span> SmartMock.</footer>
     <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
-  <script src="assets/js/firebase-config.js"></script>
+  <!-- CRITICAL FIX: Load button fix FIRST -->
+  <script src="assets/js/fix-buttons-global.js"></script>
+    <script src="assets/js/firebase-config.js"></script>
   <script src="assets/js/main.js"></script>
   <script src="assets/js/auth-check.js"></script>
     <script>
@@ -521,7 +523,7 @@
           const user = firebase.auth().currentUser;
           if (!user) {
             reportsContainer.innerHTML = `<div class="empty-state">
-              <h3>🔒 Please Sign In</h3>
+              <h3>ðŸ”’ Please Sign In</h3>
               <p>Sign in to view your interview reports</p>
               <a href="index.html" class="btn">Sign In</a>
             </div>`;
@@ -534,7 +536,7 @@
 
           if (!data || Object.keys(data).length === 0) {
             reportsContainer.innerHTML = `<div class="empty-state">
-              <h3>📋 No Reports Yet</h3>
+              <h3>ðŸ“‹ No Reports Yet</h3>
               <p>Complete an AI interview to see your reports here</p>
               <a href="interview/cs/ai-interview.html" class="btn">Start Your First Interview</a>
             </div>`;
@@ -561,7 +563,7 @@
         } catch (error) {
           console.error('Error loading reports:', error);
           reportsContainer.innerHTML = `<div class="empty-state">
-            <h3>❌ Error Loading Reports</h3>
+            <h3>âŒ Error Loading Reports</h3>
             <p>${error.message}</p>
           </div>`;
         }
@@ -586,7 +588,7 @@
         
         if (reports.length === 0) {
           reportsContainer.innerHTML = `<div class="empty-state">
-            <h3>🔍 No Reports Found</h3>
+            <h3>ðŸ” No Reports Found</h3>
             <p>Try adjusting your filters</p>
           </div>`;
           return;
@@ -602,7 +604,7 @@
       function createReportCard(report) {
         const score = Math.round((report.overallScore || 0) * 100);
         const scoreColor = score >= 90 ? '#43e97b' : score >= 80 ? '#4facfe' : score >= 70 ? '#f093fb' : '#f5576c';
-        const status = report.completed ? '✅ Completed' : '⏸️ Incomplete';
+        const status = report.completed ? 'âœ… Completed' : 'â¸ï¸ Incomplete';
         const statusColor = report.completed ? '#43e97b' : '#f5576c';
         
         const dateObj = new Date(report.timestamp);
@@ -622,7 +624,7 @@
         let starsHTML = '<div class="stars-display" style="display: inline-flex; gap: 3px; font-size: 1.2em;">';
         for (let i = 0; i < 5; i++) {
           const color = i < stars ? '#FFD700' : '#E0E0E0';
-          starsHTML += `<span style="color: ${color};">★</span>`;
+          starsHTML += `<span style="color: ${color};">â˜…</span>`;
         }
         starsHTML += '</div>';
 
@@ -641,37 +643,37 @@
             
             <div class="report-details">
               <div class="report-detail-item" style="border-bottom: 1px solid rgba(102, 126, 234, 0.1); padding-bottom: 8px; margin-bottom: 8px;">
-                <span class="report-detail-label">⭐ Rating:</span>
+                <span class="report-detail-label">â­ Rating:</span>
                 <span class="report-detail-value">${starsHTML} ${report.grade || 'N/A'}</span>
               </div>
               <div class="report-detail-item">
-                <span class="report-detail-label">📚 Topic:</span>
+                <span class="report-detail-label">ðŸ“š Topic:</span>
                 <span class="report-detail-value">${report.topic || 'General'}</span>
               </div>
               <div class="report-detail-item">
-                <span class="report-detail-label">📊 Level:</span>
+                <span class="report-detail-label">ðŸ“Š Level:</span>
                 <span class="report-detail-value">${report.level || 'Intermediate'}</span>
               </div>
               <div class="report-detail-item">
-                <span class="report-detail-label">❓ Questions:</span>
+                <span class="report-detail-label">â“ Questions:</span>
                 <span class="report-detail-value">${report.questionsAsked || 0}/${report.totalQuestions || 5}</span>
               </div>
               <div class="report-detail-item">
-                <span class="report-detail-label">💬 Avg WPM:</span>
+                <span class="report-detail-label">ðŸ’¬ Avg WPM:</span>
                 <span class="report-detail-value">${Math.round(report.avgWPM || 0)}</span>
               </div>
               <div class="report-detail-item">
-                <span class="report-detail-label">😊 Emotion:</span>
+                <span class="report-detail-label">ðŸ˜Š Emotion:</span>
                 <span class="report-detail-value">${report.dominantEmotion || 'neutral'}</span>
               </div>
             </div>
             
             <div class="report-actions" onclick="event.stopPropagation();">
               <button class="btn" onclick="window.location.href='interview/${deptLower}/ai-report.html?sessionId=${report.id}'">
-                📄 View Report
+                ðŸ“„ View Report
               </button>
               <button class="btn" style="background: transparent; border: 2px solid #667eea; color: #667eea;" onclick="downloadSingleReport('${report.id}')">
-                📥 Export
+                ðŸ“¥ Export
               </button>
             </div>
           </div>
@@ -680,13 +682,13 @@
 
       function getDepartmentName(dept) {
         const names = {
-          'CS': '💻 Computer Science',
-          'EE': '⚡ Electrical Engineering',
-          'ME': '⚙️ Mechanical Engineering',
-          'CE': '🏗️ Civil Engineering',
-          'EC': '📡 Electronic Communication'
+          'CS': 'ðŸ’» Computer Science',
+          'EE': 'âš¡ Electrical Engineering',
+          'ME': 'âš™ï¸ Mechanical Engineering',
+          'CE': 'ðŸ—ï¸ Civil Engineering',
+          'EC': 'ðŸ“¡ Electronic Communication'
         };
-        return names[dept?.toUpperCase()] || '🎯 Interview';
+        return names[dept?.toUpperCase()] || 'ðŸŽ¯ Interview';
       }
 
       function createPerformanceChart(reports) {
@@ -927,7 +929,7 @@
           if(!window.bgRobotGlobal){
             window.bgRobotGlobal = new window.RobotInterviewer('bg-robot-container', THREE, { canvasId:'bg-robot-canvas', trackCursor:true });
             window.bgRobotGlobal.setState('neutral');
-            console.log('✅ Background robot initialized (report)');
+            console.log('âœ… Background robot initialized (report)');
           }
         } catch(e){ console.error('Robot init failed', e); }
       })();
@@ -993,9 +995,9 @@
             trackCursor: true
           });
           window.bgRobot.setState('neutral');
-          console.log('✅ Background robot initialized');
+          console.log('âœ… Background robot initialized');
         } catch (e) {
-          console.error('❌ Failed to init background robot:', e);
+          console.error('âŒ Failed to init background robot:', e);
         }
       })();
       

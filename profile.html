@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SmartMock – Profile</title>
+    <title>SmartMock â€“ Profile</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -237,11 +237,11 @@
     <header class="site-header">
       <div class="site-header-inner container">
         <nav class="menu menu-left">
-          <div class="menu-button">☰ Menu</div>
+          <div class="menu-button">â˜° Menu</div>
           <ul class="dropdown">
             <li><a href="home.html">Home</a></li>
             <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="leaderboard.html">🏆 Leaderboard</a></li>
+            <li><a href="leaderboard.html">ðŸ† Leaderboard</a></li>
             <li class="has-submenu"><a href="interview.html">Interview</a>
               <ul class="submenu">
                 <li class="has-submenu"><a href="interview/cs/courses.html">Computer Science</a>
@@ -294,7 +294,7 @@
             <li><a href="about.html">About</a></li>
             <li><a href="report.html">Report</a></li>
             <li><a href="community.html">Community</a></li>
-            <li><a href="verify-certificate.html">🔍 Verify Certificate</a></li>
+            <li><a href="verify-certificate.html">ðŸ” Verify Certificate</a></li>
             <li><a href="certificate.html">Certificate</a></li>
             <li><a href="contact.html">Contact Us</a></li>
             <li><a href="recruiter/dashboard.html">Recruiter</a></li>
@@ -318,7 +318,7 @@
               <img id="avatar-image" src="" alt="Profile" style="display:none;">
             </div>
             <button class="avatar-edit-btn" id="upload-avatar-btn" title="Change Photo">
-              📷
+              ðŸ“·
             </button>
             <!-- Hidden file inputs -->
             <input type="file" id="avatar-file-input" accept="image/*" style="display:none;">
@@ -333,8 +333,8 @@
             </div>
           </div>
           <div class="profile-actions">
-            <button class="btn" id="edit-profile-btn">✏️ Edit Profile</button>
-            <button class="btn" id="change-password-btn">🔒 Change Password</button>
+            <button class="btn" id="edit-profile-btn">âœï¸ Edit Profile</button>
+            <button class="btn" id="change-password-btn">ðŸ”’ Change Password</button>
           </div>
         </div>
 
@@ -342,19 +342,19 @@
         <div id="photo-modal" class="modal" style="display:none;">
           <div class="modal-content" style="max-width: 400px;">
             <div class="modal-header">
-              <h2>📷 Change Profile Photo</h2>
+              <h2>ðŸ“· Change Profile Photo</h2>
               <span class="close-modal" onclick="closePhotoModal()">&times;</span>
             </div>
             <div class="modal-body">
               <div style="display: flex; flex-direction: column; gap: 15px;">
                 <button class="btn primary" onclick="openCamera()" style="width: 100%; padding: 15px;">
-                  📸 Take Photo with Camera
+                  ðŸ“¸ Take Photo with Camera
                 </button>
                 <button class="btn" onclick="openGallery()" style="width: 100%; padding: 15px;">
-                  🖼️ Choose from Gallery
+                  ðŸ–¼ï¸ Choose from Gallery
                 </button>
                 <button class="btn" onclick="removePhoto()" style="width: 100%; padding: 15px; background: var(--danger);">
-                  🗑️ Remove Photo
+                  ðŸ—‘ï¸ Remove Photo
                 </button>
               </div>
             </div>
@@ -364,22 +364,22 @@
         <!-- Profile Stats Grid -->
         <div class="stats-grid">
           <div class="stat-card">
-            <div class="stat-icon">🎯</div>
+            <div class="stat-icon">ðŸŽ¯</div>
             <div class="stat-value" id="total-interviews">0</div>
             <div class="stat-label">Interviews</div>
           </div>
           <div class="stat-card">
-            <div class="stat-icon">📊</div>
+            <div class="stat-icon">ðŸ“Š</div>
             <div class="stat-value" id="avg-score">0%</div>
             <div class="stat-label">Avg Score</div>
           </div>
           <div class="stat-card">
-            <div class="stat-icon">🏆</div>
+            <div class="stat-icon">ðŸ†</div>
             <div class="stat-value" id="total-certificates">0</div>
             <div class="stat-label">Certificates</div>
           </div>
           <div class="stat-card">
-            <div class="stat-icon">📚</div>
+            <div class="stat-icon">ðŸ“š</div>
             <div class="stat-value" id="courses-completed">0</div>
             <div class="stat-label">Courses</div>
           </div>
@@ -389,7 +389,7 @@
         <div class="profile-details-grid">
           <!-- Personal Information Card -->
           <div class="profile-card">
-            <h2>👤 Personal Information</h2>
+            <h2>ðŸ‘¤ Personal Information</h2>
             <form id="profile-form">
               <div class="form-group">
                 <label for="name">Full Name</label>
@@ -409,10 +409,10 @@
               </div>
               <div class="form-actions" style="display:none;">
                 <button type="submit" class="btn primary">
-                  💾 Save Changes
+                  ðŸ’¾ Save Changes
                 </button>
                 <button type="button" id="cancel-edit" class="btn">
-                  ❌ Cancel
+                  âŒ Cancel
                 </button>
               </div>
             </form>
@@ -420,11 +420,11 @@
 
           <!-- Account Settings Card -->
           <div class="profile-card">
-            <h2>⚙️ Account Settings</h2>
+            <h2>âš™ï¸ Account Settings</h2>
             <div class="settings-list">
               <div class="setting-item">
                 <div class="setting-info">
-                  <div class="setting-title">🔔 Email Notifications</div>
+                  <div class="setting-title">ðŸ”” Email Notifications</div>
                   <div class="setting-desc">Receive updates about your progress</div>
                 </div>
                 <label class="toggle-switch">
@@ -434,7 +434,7 @@
               </div>
               <div class="setting-item">
                 <div class="setting-info">
-                  <div class="setting-title">🎯 Performance Tracking</div>
+                  <div class="setting-title">ðŸŽ¯ Performance Tracking</div>
                   <div class="setting-desc">Track and analyze interview performance</div>
                 </div>
                 <label class="toggle-switch">
@@ -444,7 +444,7 @@
               </div>
               <div class="setting-item">
                 <div class="setting-info">
-                  <div class="setting-title">👥 Community Posts</div>
+                  <div class="setting-title">ðŸ‘¥ Community Posts</div>
                   <div class="setting-desc">Show your posts in community feed</div>
                 </div>
                 <label class="toggle-switch">
@@ -454,7 +454,7 @@
               </div>
               <div class="setting-item">
                 <div class="setting-info">
-                  <div class="setting-title">🌙 Dark Mode</div>
+                  <div class="setting-title">ðŸŒ™ Dark Mode</div>
                   <div class="setting-desc">Already enabled by default</div>
                 </div>
                 <label class="toggle-switch">
@@ -464,18 +464,18 @@
               </div>
             </div>
             <div class="danger-zone">
-              <h3>⚠️ Danger Zone</h3>
-              <button class="btn danger" id="delete-account-btn">🗑️ Delete Account</button>
+              <h3>âš ï¸ Danger Zone</h3>
+              <button class="btn danger" id="delete-account-btn">ðŸ—‘ï¸ Delete Account</button>
             </div>
           </div>
         </div>
 
         <!-- Linked Accounts Section -->
         <div class="profile-card">
-          <h2>🔗 Linked Accounts</h2>
+          <h2>ðŸ”— Linked Accounts</h2>
           <div class="linked-accounts-grid">
             <div class="linked-account-card" id="google-account">
-              <div class="account-icon">🔵</div>
+              <div class="account-icon">ðŸ”µ</div>
               <div class="account-info">
                 <div class="account-name">Google</div>
                 <div class="account-status" id="google-status">Not linked</div>
@@ -483,7 +483,7 @@
               <button class="btn small" id="link-google-btn">Link</button>
             </div>
             <div class="linked-account-card" id="phone-account">
-              <div class="account-icon">📱</div>
+              <div class="account-icon">ðŸ“±</div>
               <div class="account-info">
                 <div class="account-name">Phone Number</div>
                 <div class="account-status" id="phone-status">Not linked</div>
@@ -496,9 +496,9 @@
         <!-- Certificates Section -->
         <div class="certificates-card">
           <div class="section-header">
-            <h2>🎓 My Certificates</h2>
+            <h2>ðŸŽ“ My Certificates</h2>
             <button class="btn small" onclick="window.location.href='interview.html'">
-              ➕ Earn More
+              âž• Earn More
             </button>
           </div>
           <div id="certificates-list" class="certificates-grid"></div>
@@ -506,14 +506,14 @@
 
         <!-- Recent Activity -->
         <div class="profile-card">
-          <h2>📈 Recent Activity</h2>
+          <h2>ðŸ“ˆ Recent Activity</h2>
           <div id="recent-activity-list" class="activity-list"></div>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
-      © <span id="year"></span> SmartMock. All rights reserved.
+      Â© <span id="year"></span> SmartMock. All rights reserved.
     </footer>
 
     <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
@@ -524,6 +524,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     
     <!-- App Scripts -->
+    <!-- CRITICAL FIX: Load button fix FIRST -->
+  <script src="assets/js/fix-buttons-global.js"></script>
     <script src="assets/js/firebase-config.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/auth-check.js"></script>
@@ -589,7 +591,7 @@
           if(!window.bgRobotGlobal){
             window.bgRobotGlobal = new window.RobotInterviewer('bg-robot-container', THREE, { canvasId:'bg-robot-canvas', trackCursor:true });
             window.bgRobotGlobal.setState('neutral');
-            console.log('✅ Background robot initialized (profile)');
+            console.log('âœ… Background robot initialized (profile)');
           }
         } catch(e){ console.error('Robot init failed', e); }
       })();
@@ -655,9 +657,9 @@
             trackCursor: true
           });
           window.bgRobot.setState('neutral');
-          console.log('✅ Background robot initialized');
+          console.log('âœ… Background robot initialized');
         } catch (e) {
-          console.error('❌ Failed to init background robot:', e);
+          console.error('âŒ Failed to init background robot:', e);
         }
       })();
       

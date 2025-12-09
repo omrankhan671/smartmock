@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SmartMock – Certificate of Completion</title>
+    <title>SmartMock â€“ Certificate of Completion</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -298,6 +298,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <!-- CRITICAL FIX: Load button fix FIRST -->
+  <script src="assets/js/fix-buttons-global.js"></script>
     <script src="assets/js/firebase-config.js"></script>
     
     <!-- SmartMock v2.0 - Zero-Knowledge Verification -->
@@ -319,15 +321,15 @@
             trackCursor: true
           });
           window.bgRobot.setState('neutral');
-          console.log('✅ Background robot initialized on certificate.html');
-        } catch(e){ console.error('❌ Robot init failed (certificate.html):', e); }
+          console.log('âœ… Background robot initialized on certificate.html');
+        } catch(e){ console.error('âŒ Robot init failed (certificate.html):', e); }
       })();
     </script>
     <script>
       // Initialize Zero-Knowledge Verification
       if (typeof ZKVerification !== 'undefined') {
         ZKVerification.init();
-        console.log('✅ Zero-Knowledge Verification enabled for certificates');
+        console.log('âœ… Zero-Knowledge Verification enabled for certificates');
       }
       
       document.getElementById('download-btn').addEventListener('click', () => {
@@ -438,9 +440,9 @@
             trackCursor: true
           });
           window.bgRobot.setState('neutral');
-          console.log('✅ Background robot initialized');
+          console.log('âœ… Background robot initialized');
         } catch (e) {
-          console.error('❌ Failed to init background robot:', e);
+          console.error('âŒ Failed to init background robot:', e);
         }
       })();
       
