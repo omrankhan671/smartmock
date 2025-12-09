@@ -1742,6 +1742,25 @@
           });
           console.log('⌨️ Keyboard shortcut registered: Press "S" to start interview');
           
+          // DIAGNOSTIC: Log ALL mouse events on the button
+          startBtn.addEventListener('mousedown', function(e) {
+            console.log('🖱️ MOUSEDOWN detected on button!', e);
+          }, true);
+          
+          startBtn.addEventListener('mouseup', function(e) {
+            console.log('🖱️ MOUSEUP detected on button!', e);
+          }, true);
+          
+          startBtn.addEventListener('click', function(e) {
+            console.log('🖱️ CLICK detected on button!', e);
+          }, true);
+          
+          startBtn.addEventListener('pointerdown', function(e) {
+            console.log('👆 POINTERDOWN detected on button!', e);
+          }, true);
+          
+          console.log('🔍 Mouse event listeners added to button');
+          
           // DIAGNOSTIC: Check what element is actually at the button's position
           const rect = startBtn.getBoundingClientRect();
           const centerX = rect.left + rect.width / 2;
@@ -2043,6 +2062,34 @@
       if (stopInterviewBtn) {
         stopInterviewBtn.addEventListener('click', stopInterview);
       }
+      
+      // CRITICAL FIX: Add emergency direct click() for ALL buttons after they appear
+      setTimeout(() => {
+        console.log('🔧 APPLYING EMERGENCY FIX TO ALL BUTTONS...');
+        
+        [answerBtn, stopBtn, retryCameraBtn, stopInterviewBtn].forEach(btn => {
+          if (btn) {
+            // Force clickable
+            btn.style.pointerEvents = 'auto';
+            btn.style.setProperty('pointer-events', 'auto', 'important');
+            btn.style.zIndex = '99999';
+            btn.style.position = 'relative';
+            
+            // Add emergency click detection
+            btn.addEventListener('mousedown', function(e) {
+              console.log(`🖱️ MOUSEDOWN on ${btn.id}`, e);
+            }, true);
+            
+            btn.addEventListener('click', function(e) {
+              console.log(`🖱️ CLICK detected on ${btn.id}!`, e);
+            }, true);
+            
+            console.log(`✅ Fixed button: ${btn.id}`);
+          }
+        });
+        
+        console.log('✅ ALL BUTTONS FIXED AND CLICKABLE');
+      }, 2000); // Wait 2 seconds for buttons to appear
 
       // Camera selection change -> reopen stream and persist preference
       cameraSelect.addEventListener('change', async () => {
