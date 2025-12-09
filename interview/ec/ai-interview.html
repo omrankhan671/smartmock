@@ -1747,11 +1747,16 @@
             }
           });
           
-          // Force controls-container specifically
+          // Force controls-container specifically: make container non-interactive
+          // and ensure its children keep pointer events so buttons remain clickable.
           const controlsContainer = document.querySelector('.controls-container');
           if (controlsContainer) {
-            controlsContainer.style.setProperty('pointer-events', 'auto', 'important');
-            console.log('âœ… Controls container forced to auto');
+            controlsContainer.style.setProperty('pointer-events', 'none', 'important');
+            // Enable pointer events for immediate child elements (buttons/selects)
+            Array.from(controlsContainer.children).forEach(ch => {
+              ch.style.setProperty('pointer-events', 'auto', 'important');
+            });
+            console.log('✅ Controls container set to none; children enabled');
           }
           
           console.log('âœ…âœ…âœ… ALL BLOCKING REMOVED âœ…âœ…âœ…');
