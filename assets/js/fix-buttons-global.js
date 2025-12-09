@@ -74,9 +74,19 @@
     // Add diagnostic on ANY button click
     document.addEventListener('click', function(e) {
       const target = e.target;
+      console.log('🖱️ CLICK DETECTED on:', target.tagName, target.id, target.className, 'at', e.clientX, e.clientY);
       if (target.tagName === 'BUTTON' || target.classList.contains('btn') || target.hasAttribute('onclick')) {
-        console.log('🖱️ Button clicked:', target.textContent?.trim(), target.id, target.className);
+        console.log('✅ BUTTON CLICK CONFIRMED:', target.textContent?.trim(), target.id, target.className);
       }
+    }, true);
+    
+    // Add mousedown/mouseup detection
+    document.addEventListener('mousedown', function(e) {
+      console.log('🖱️ MOUSEDOWN at:', e.clientX, e.clientY, 'target:', e.target.tagName, e.target.id);
+    }, true);
+    
+    document.addEventListener('mouseup', function(e) {
+      console.log('🖱️ MOUSEUP at:', e.clientX, e.clientY, 'target:', e.target.tagName, e.target.id);
     }, true);
     
     // Test if elementFromPoint works
@@ -85,6 +95,35 @@
       const centerY = window.innerHeight / 2;
       const elementAtCenter = document.elementFromPoint(centerX, centerY);
       console.log('🎯 Element at center of screen:', elementAtCenter?.tagName, elementAtCenter?.className, elementAtCenter?.id);
+      
+      // Check for invisible overlays
+      const body = document.body;
+      const allFixed = document.querySelectorAll('[style*="fixed"]');
+      const allAbsolute = document.querySelectorAll('[style*="absolute"]');
+      console.log('🔍 Found', allFixed.length, 'fixed elements and', allAbsolute.length, 'absolute elements');
+      
+      // Force remove any full-screen overlays that might be blocking
+      document.querySelectorAll('*').forEach(el => {
+        const style = window.getComputedStyle(el);
+        if (style.position === 'fixed' || style.position === 'absolute') {
+          const width = parseFloat(style.width);
+          const height = parseFloat(style.height);
+          const windowWidth = window.innerWidth;
+          const windowHeight = window.innerHeight;
+          
+          // If element covers most/all of screen
+          if (width >= windowWidth * 0.8 && height >= windowHeight * 0.8) {
+            const zIndex = parseInt(style.zIndex) || 0;
+            // Only flag it if it has high z-index and pointer events
+            if (zIndex > 100 && style.pointerEvents !== 'none') {
+              console.warn('⚠️ FOUND POTENTIAL OVERLAY BLOCKER:', el.tagName, el.className, el.id, 'z-index:', zIndex);
+              // Force it to not block
+              el.style.pointerEvents = 'none';
+              console.log('✅ Disabled pointer events on overlay');
+            }
+          }
+        }
+      });
     }, 1000);
     
     console.log('🎉 GLOBAL BUTTON FIX COMPLETE - All buttons should now work!');
