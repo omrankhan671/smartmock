@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Diagnostic Tool</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .subtitle {
+            text-align: center;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        .test-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        .test-title {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        .test-description {
+            margin-bottom: 15px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: 2px solid white;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+            display: inline-block;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+        }
+        .btn:active {
+            transform: translateY(0);
+        }
+        .log {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-left: 3px solid #4CAF50;
+            padding-left: 10px;
+        }
+        .log-entry.error {
+            border-left-color: #f44336;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            margin-left: 10px;
+        }
+        .status.passed {
+            background: #4CAF50;
+        }
+        .status.failed {
+            background: #f44336;
+        }
+        .status.pending {
+            background: #ff9800;
+        }
+        #overlay-test {
+            position: relative;
+        }
+        #overlay-blocker {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 0, 0, 0.1);
+            z-index: 10;
+            pointer-events: auto;
+        }
+        #overlay-button {
+            position: relative;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Button Diagnostic Tool</h1>
+        <p class="subtitle">Test various button scenarios to identify click issues</p>
+
+        <!-- Test 1: Basic Inline onclick -->
+        <div class="test-section">
+            <div class="test-title">
+                Test 1: Basic Inline onclick
+                <span id="test1-status" class="status pending">Pending</span>
+            </div>
+            <p class="test-description">
+                Simple button with inline onclick attribute. This should always work.
+            </p>
+            <button class="btn" onclick="logTest(1, 'Inline onclick works!'); this.nextElementSibling.className = 'status passed'; this.nextElementSibling.textContent = 'PASSED';">
+                Click Me (Inline onclick)
+            </button>
+            <span id="test1-result" class="status pending">Not Tested</span>
+        </div>
+
+        <!-- Test 2: addEventListener -->
+        <div class="test-section">
+            <div class="test-title">
+                Test 2: addEventListener
+                <span id="test2-status" class="status pending">Pending</span>
+            </div>
+            <p class="test-description">
+                Button using addEventListener attached at page load.
+            </p>
+            <button id="test2-btn" class="btn">Click Me (addEventListener)</button>
+            <span id="test2-result" class="status pending">Not Tested</span>
+        </div>
+
+        <!-- Test 3: Z-Index Overlay -->
+        <div class="test-section" id="overlay-test">
+            <div class="test-title">
+                Test 3: Z-Index Overlay (Should Fail)
+                <span id="test3-status" class="status pending">Pending</span>
+            </div>
+            <p class="test-description">
+                Button with an invisible overlay blocking clicks. This should FAIL.
+            </p>
+            <div id="overlay-blocker"></div>
+            <button id="overlay-button" class="btn" onclick="logTest(3, 'Overlay test - This should NOT fire!'); document.getElementById('test3-result').className = 'status failed'; document.getElementById('test3-result').textContent = 'BLOCKED (Expected)';">
+                Click Me (Blocked by Overlay)
+            </button>
+            <span id="test3-result" class="status pending">Not Tested</span>
+        </div>
+
+        <!-- Test 4: Disabled Button -->
+        <div class="test-section">
+            <div class="test-title">
+                Test 4: Disabled Button (Should Not Click)
+                <span id="test4-status" class="status pending">Pending</span>
+            </div>
+            <p class="test-description">
+                Disabled button - should not respond to clicks.
+            </p>
+            <button class="btn" disabled onclick="logTest(4, 'Disabled button clicked - This should NOT happen!');">
+                Click Me (Disabled)
+            </button>
+            <span id="test4-result" class="status pending">Not Tested</span>
+        </div>
+
+        <!-- Test 5: DOMContentLoaded addEventListener -->
+        <div class="test-section">
+            <div class="test-title">
+                Test 5: DOMContentLoaded addEventListener
+                <span id="test5-status" class="status pending">Pending</span>
+            </div>
+            <p class="test-description">
+                Button using addEventListener attached after DOMContentLoaded.
+            </p>
+            <button id="test5-btn" class="btn">Click Me (DOMContentLoaded)</button>
+            <span id="test5-result" class="status pending">Not Tested</span>
+        </div>
+
+        <!-- Test 6: Forced Z-Index -->
+        <div class="test-section">
+            <div class="test-title">
+                Test 6: Forced Z-Index (z-index: 9999)
+                <span id="test6-status" class="status pending">Pending</span>
+            </div>
+            <p class="test-description">
+                Button with extremely high z-index and pointer-events forced.
+            </p>
+            <button id="test6-btn" class="btn" style="position: relative; z-index: 9999 !important; pointer-events: auto !important;">
+                Click Me (Force Z-Index)
+            </button>
+            <span id="test6-result" class="status pending">Not Tested</span>
+        </div>
+
+        <!-- Diagnostic Log -->
+        <div class="test-section">
+            <div class="test-title">📋 Diagnostic Log</div>
+            <div id="diagnostic-log" class="log">
+                <div class="log-entry">🟢 Diagnostic tool loaded successfully</div>
+                <div class="log-entry">🟢 JavaScript is working</div>
+                <div class="log-entry">🟡 Click any button above to test functionality</div>
+            </div>
+        </div>
+
+        <!-- Browser Info -->
+        <div class="test-section">
+            <div class="test-title">🌐 Browser Information</div>
+            <div id="browser-info" style="font-family: monospace; font-size: 0.9em; line-height: 1.8;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Test logging function
+        function logTest(testNumber, message) {
+            console.log(`Test ${testNumber}: ${message}`);
+            const log = document.getElementById('diagnostic-log');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.textContent = `✅ Test ${testNumber}: ${message}`;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        // Test 2: addEventListener (immediate)
+        const test2Btn = document.getElementById('test2-btn');
+        test2Btn.addEventListener('click', () => {
+            logTest(2, 'addEventListener works!');
+            document.getElementById('test2-result').className = 'status passed';
+            document.getElementById('test2-result').textContent = 'PASSED';
+        });
+        logTest('Init', 'Test 2 addEventListener attached (immediate)');
+
+        // Test 5: DOMContentLoaded addEventListener
+        document.addEventListener('DOMContentLoaded', () => {
+            logTest('Init', 'DOMContentLoaded fired');
+            const test5Btn = document.getElementById('test5-btn');
+            if (test5Btn) {
+                test5Btn.addEventListener('click', () => {
+                    logTest(5, 'DOMContentLoaded addEventListener works!');
+                    document.getElementById('test5-result').className = 'status passed';
+                    document.getElementById('test5-result').textContent = 'PASSED';
+                });
+                logTest('Init', 'Test 5 addEventListener attached (DOMContentLoaded)');
+            } else {
+                logTest('Error', 'Test 5 button not found in DOMContentLoaded!');
+            }
+        });
+
+        // Test 6: Forced Z-Index
+        const test6Btn = document.getElementById('test6-btn');
+        test6Btn.addEventListener('click', () => {
+            logTest(6, 'Forced z-index button works!');
+            document.getElementById('test6-result').className = 'status passed';
+            document.getElementById('test6-result').textContent = 'PASSED';
+        });
+        logTest('Init', 'Test 6 addEventListener attached (forced z-index)');
+
+        // Browser Info
+        const browserInfo = document.getElementById('browser-info');
+        browserInfo.innerHTML = `
+            <strong>User Agent:</strong> ${navigator.userAgent}<br>
+            <strong>Platform:</strong> ${navigator.platform}<br>
+            <strong>Screen Resolution:</strong> ${window.screen.width} x ${window.screen.height}<br>
+            <strong>Window Size:</strong> ${window.innerWidth} x ${window.innerHeight}<br>
+            <strong>Cookies Enabled:</strong> ${navigator.cookieEnabled}<br>
+            <strong>Language:</strong> ${navigator.language}
+        `;
+
+        // Log all clicks anywhere on the page
+        document.addEventListener('click', (e) => {
+            const log = document.getElementById('diagnostic-log');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.textContent = `🖱️ Click detected at (${e.clientX}, ${e.clientY}) on element: ${e.target.tagName}${e.target.id ? '#' + e.target.id : ''}${e.target.className ? '.' + e.target.className.split(' ')[0] : ''}`;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+        });
+
+        logTest('Init', 'Global click listener attached');
+        logTest('Init', 'All tests ready. Start clicking buttons!');
+    </script>
+</body>
+</html>
