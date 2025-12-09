@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="Content-Security-Policy" content="
       default-src 'self';
-      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://cdn.jsdelivr.net https://fonts.googleapis.com https://www.google.com https://www.recaptcha.net https://cdnjs.cloudflare.com;
-      script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://cdn.jsdelivr.net https://fonts.googleapis.com https://www.google.com https://www.recaptcha.net https://cdnjs.cloudflare.com;
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com https://apis.google.com https://www.google.com https://www.recaptcha.net https://cdn.jsdelivr.net/npm/@mediapipe/;
+      script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com https://apis.google.com https://www.google.com https://www.recaptcha.net https://cdn.jsdelivr.net/npm/@mediapipe/;
       style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
       font-src 'self' https://fonts.gstatic.com;
       img-src 'self' data: https:;
-      connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://*.firebasedatabase.app https://www.gstatic.com wss://*.firebaseio.com http://localhost:5000;
+      connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://*.firebasedatabase.app https://www.gstatic.com wss://*.firebaseio.com http://localhost:5000 https://cdn.jsdelivr.net;
       frame-src 'self' https://www.google.com https://www.recaptcha.net;
       media-src 'self' blob:;
       worker-src 'self' blob:;
     ">
-    <title>SmartMock – EC AI Interview</title>
+    <title>SmartMock ï¿½ EC AI Interview</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23007bff'/%3E%3Ctext x='32' y='39' font-size='28' text-anchor='middle' fill='white' font-family='Arial'%3ES%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -616,7 +616,7 @@
 
     <main class="container">
       <section>
-        <h2>Electronics & Communication – AI Interview</h2>
+        <h2>Electronics & Communication ï¿½ AI Interview</h2>
         <div class="ai-interview-container">
           <div class="video-container">
             <video id="user-video" autoplay muted playsinline></video>
@@ -658,7 +658,7 @@
         </div>
       </section>
     </main>
-    <footer class="site-footer">© <span id="year"></span> SmartMock.</footer>
+    <footer class="site-footer">ï¿½ <span id="year"></span> SmartMock.</footer>
     <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -1480,7 +1480,7 @@
             "What is a linked list and how does it differ from an array?": "A linked list is a sequence of nodes where each node contains data and a pointer to the next node. Unlike arrays, it allows O(1) insertion/deletion at known positions but O(n) access by index.",
             "What is a stack and what operations does it support?": "A stack is a LIFO (Last-In-First-Out) data structure supporting push (add to top), pop (remove from top), peek (view top), and isEmpty operations, all in O(1) time.",
             "What is a queue and how does it work?": "A queue is a FIFO (First-In-First-Out) data structure supporting enqueue (add to rear), dequeue (remove from front), peek, and isEmpty operations.",
-            "Explain what Big O notation means.": "Big O notation describes the upper bound of time or space complexity as input size grows. It focuses on the dominant term and ignores constants. Common: O(1), O(log n), O(n), O(n log n), O(n²).",
+            "Explain what Big O notation means.": "Big O notation describes the upper bound of time or space complexity as input size grows. It focuses on the dominant term and ignores constants. Common: O(1), O(log n), O(n), O(n log n), O(nï¿½).",
             "What is the difference between a linear and binary search?": "Linear search checks each element sequentially (O(n)). Binary search divides sorted array in half each iteration (O(log n)) but requires sorted data.",
             "What is a hash table?": "A hash table stores key-value pairs using a hash function to compute array indices. Provides O(1) average insert/search/delete. Handles collisions via chaining or open addressing.",
             "Explain what recursion is.": "Recursion is when a function calls itself to solve smaller instances of the same problem. Must have: base case (termination) and recursive case (problem reduction).",
