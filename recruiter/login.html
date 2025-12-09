@@ -233,9 +233,11 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <!-- CRITICAL FIX: Load button fix FIRST -->
+  
+  <!-- CRITICAL FIX: Load button fix AFTER Firebase SDK but BEFORE firebase-config -->
   <script src="../assets/js/fix-buttons-global.js"></script>
-    <script src="../assets/js/firebase-config.js"></script>
+  
+  <script src="../assets/js/firebase-config.js"></script>
   <script src="../assets/js/recruiter/login.js"></script>
   <!-- Background visuals handled by auto loader below -->
     <script src="../assets/js/auto-purple-bg.js"></script>

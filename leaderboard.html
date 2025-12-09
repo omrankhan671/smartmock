@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -235,11 +235,11 @@
     <header class="site-header">
       <div class="site-header-inner container">
         <nav class="menu menu-left">
-          <div class="menu-button">☰ Menu</div>
+          <div class="menu-button">â˜° Menu</div>
           <ul class="dropdown">
             <li><a href="home.html">Home</a></li>
             <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="leaderboard.html">🏆 Leaderboard</a></li>
+            <li><a href="leaderboard.html">ðŸ† Leaderboard</a></li>
             <li class="has-submenu"><a href="interview.html">Interview</a>
               <ul class="submenu">
                 <li><a href="interview/cs/ai-interview.html">AI Interview (CS)</a></li>
@@ -252,7 +252,7 @@
             <li><a href="about.html">About</a></li>
             <li><a href="report.html">Report</a></li>
             <li><a href="community.html">Community</a></li>
-            <li><a href="verify-certificate.html">🔍 Verify Certificate</a></li>
+            <li><a href="verify-certificate.html">ðŸ” Verify Certificate</a></li>
             <li><a href="certificate.html">Certificate</a></li>
             <li><a href="contact.html">Contact Us</a></li>
             <li><a href="recruiter/dashboard.html">Recruiter Dashboard</a></li>
@@ -270,35 +270,35 @@
     <div class="leaderboard-container">
         <!-- Header Section -->
         <div class="leaderboard-header">
-            <h1 class="page-title">🏆 Global Leaderboard</h1>
+            <h1 class="page-title">ðŸ† Global Leaderboard</h1>
             <p class="page-subtitle">Compete with thousands of engineering students worldwide</p>
         </div>
 
         <!-- Stats Overview -->
         <div class="stats-overview">
             <div class="stat-card">
-                <div class="stat-icon">👥</div>
+                <div class="stat-icon">ðŸ‘¥</div>
                 <div class="stat-content">
                     <h3 id="total-users">0</h3>
                     <p>Total Users</p>
                 </div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon">🎯</div>
+                <div class="stat-icon">ðŸŽ¯</div>
                 <div class="stat-content">
                     <h3 id="total-interviews">0</h3>
                     <p>Interviews Completed</p>
                 </div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon">⭐</div>
+                <div class="stat-icon">â­</div>
                 <div class="stat-content">
                     <h3 id="avg-score">0</h3>
                     <p>Average Score</p>
                 </div>
             </div>
             <div class="stat-card highlight">
-                <div class="stat-icon">🥇</div>
+                <div class="stat-icon">ðŸ¥‡</div>
                 <div class="stat-content">
                     <h3 id="user-rank">--</h3>
                     <p>Your Rank</p>
@@ -328,7 +328,7 @@
                     <option value="today">Today</option>
                 </select>
             </div>
-            <button id="refresh-btn" class="refresh-btn">🔄 Refresh</button>
+            <button id="refresh-btn" class="refresh-btn">ðŸ”„ Refresh</button>
         </div>
 
         <!-- Top 3 Podium -->
@@ -345,7 +345,7 @@
                 <h2>Full Rankings</h2>
                 <div class="search-box">
                     <input type="text" id="search-input" placeholder="Search by name..." />
-                    <span class="search-icon">🔍</span>
+                    <span class="search-icon">ðŸ”</span>
                 </div>
             </div>
             <div class="table-wrapper">
@@ -373,9 +373,9 @@
                 </table>
             </div>
             <div class="pagination">
-                <button id="prev-btn" class="page-btn" disabled>← Previous</button>
+                <button id="prev-btn" class="page-btn" disabled>â† Previous</button>
                 <span id="page-info">Page 1 of 1</span>
-                <button id="next-btn" class="page-btn" disabled>Next →</button>
+                <button id="next-btn" class="page-btn" disabled>Next â†’</button>
             </div>
         </div>
 
@@ -383,7 +383,7 @@
         <div class="user-performance-card" id="user-performance-card" style="display: none;">
             <div class="performance-header">
                 <h3>Your Performance</h3>
-                <button class="close-btn" id="close-performance">×</button>
+                <button class="close-btn" id="close-performance">Ã—</button>
             </div>
             <div class="performance-content">
                 <div class="performance-stat">
@@ -421,8 +421,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     
     <!-- CRITICAL FIX: Load button fix FIRST -->
-    <script src="assets/js/fix-buttons-global.js"></script>
-    
+        
     <script src="assets/js/firebase-config.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/auth-check.js"></script>
@@ -475,7 +474,7 @@
           if(!window.bgRobotGlobal){
             window.bgRobotGlobal = new window.RobotInterviewer('bg-robot-container', THREE, { canvasId:'bg-robot-canvas', trackCursor:true });
             window.bgRobotGlobal.setState('neutral');
-            console.log('✅ Background robot initialized (leaderboard)');
+            console.log('âœ… Background robot initialized (leaderboard)');
           }
         } catch(e){ console.error('Robot init failed', e); }
       })();
@@ -541,9 +540,9 @@
             trackCursor: true
           });
           window.bgRobot.setState('neutral');
-          console.log('✅ Background robot initialized');
+          console.log('âœ… Background robot initialized');
         } catch (e) {
-          console.error('❌ Failed to init background robot:', e);
+          console.error('âŒ Failed to init background robot:', e);
         }
       })();
       

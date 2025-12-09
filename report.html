@@ -502,11 +502,17 @@
     </main>
     <footer class="site-footer">Â© <span id="year"></span> SmartMock.</footer>
     <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
-  <!-- CRITICAL FIX: Load button fix FIRST -->
-  <script src="assets/js/fix-buttons-global.js"></script>
+    
+    <!-- Firebase SDK (must load FIRST) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    
+    <!-- CRITICAL FIX: Load button fix AFTER Firebase SDK but BEFORE firebase-config -->
+        
     <script src="assets/js/firebase-config.js"></script>
-  <script src="assets/js/main.js"></script>
-  <script src="assets/js/auth-check.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/auth-check.js"></script>
     <script>
       let allReports = [];
       let filteredReports = [];
