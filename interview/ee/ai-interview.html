@@ -589,11 +589,15 @@
             <label style="display:flex;align-items:center;gap:6px;">
               <input type="checkbox" id="mock-toggle"> Mock Emotion
             </label>
-            <button id="start-btn" class="btn" onclick="window.handleStartInterview(); return false;">Start Interview</button>
-            <button id="answer-btn" class="btn" style="display: none;" onclick="window.handleAnswer(); return false;">Answer</button>
-            <button id="stop-btn" class="btn" style="display: none;" onclick="window.handleStop(); return false;">Stop Answering</button>
-            <button id="stop-interview-btn" class="btn" style="display: none; background: #f44336;" onclick="window.handleStopInterview(); return false;">Stop Interview</button>
-            <button id="retry-camera-btn" class="btn" type="button" onclick="window.handleRetryCamera(); return false;">Retry Camera</button>
+
+            <!-- New button group (IDs preserved so JS keeps working) -->
+            <div class="controls-buttons" role="group" aria-label="Interview controls">
+              <button id="start-btn" class="btn primary" onclick="window.handleStartInterview(); return false;">Start Interview</button>
+              <button id="answer-btn" class="btn" style="display: none;" onclick="window.handleAnswer(); return false;">Answer</button>
+              <button id="stop-btn" class="btn danger" style="display: none;" onclick="window.handleStop(); return false;">Stop Answering</button>
+              <button id="stop-interview-btn" class="btn danger-outline" style="display: none;" onclick="window.handleStopInterview(); return false;">Stop Interview</button>
+              <button id="retry-camera-btn" class="btn ghost" type="button" onclick="window.handleRetryCamera(); return false;">Retry Camera</button>
+            </div>
           </div>
         </div>
       </section>

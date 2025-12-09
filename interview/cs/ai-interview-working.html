@@ -551,18 +551,6 @@
         </div>
         
         <div class="ai-interview-container">
-          <div class="video-container">
-            <video id="user-video" autoplay muted playsinline></video>
-            <div id="emotion-display">Emotion: ...</div>
-          </div>
-          <div id="camera-diag" style="width:100%;max-width:600px;color:#bbb;font-size:0.9em;">
-            <!-- diagnostics populated at runtime -->
-          </div>
-          <div class="ai-avatar-container" id="robot-container">
-            <canvas id="robot-interviewer-canvas"></canvas>
-            <div class="avatar-status" id="avatar-status"></div>
-          </div>
-          <div class="conversation-container" id="conversation"></div>
           <div class="controls-container">
             <select id="level-select">
               <option value="beginner">Beginner</option>
@@ -573,6 +561,22 @@
               <!-- Department-specific topics will be used from AdaptiveInterview -->
               <option value="cs">Computer Science</option>
             </select>
+            <select id="camera-select" title="Camera">
+              <option value="">Auto Camera</option>
+            </select>
+            <label style="display:flex;align-items:center;gap:6px;">
+              <input type="checkbox" id="mock-toggle"> Mock Emotion
+            </label>
+
+            <!-- New button group (IDs preserved so JS keeps working) -->
+            <div class="controls-buttons" role="group" aria-label="Interview controls">
+              <button id="start-btn" class="btn primary" onclick="window.handleStartInterview(); return false;">Start Interview</button>
+              <button id="answer-btn" class="btn" style="display: none;" onclick="window.handleAnswer(); return false;">Answer</button>
+              <button id="stop-btn" class="btn danger" style="display: none;" onclick="window.handleStop(); return false;">Stop Answering</button>
+              <button id="stop-interview-btn" class="btn danger-outline" style="display: none;" onclick="window.handleStopInterview(); return false;">Stop Interview</button>
+              <button id="retry-camera-btn" class="btn ghost" type="button" onclick="window.handleRetryCamera(); return false;">Retry Camera</button>
+            </div>
+          </div>
             <select id="camera-select" title="Camera">
               <option value="">Auto Camera</option>
             </select>
