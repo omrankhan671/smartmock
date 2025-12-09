@@ -427,6 +427,14 @@
         border: 1px solid rgba(168, 85, 247, 0.3);
         box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
       }
+      
+      /* EMERGENCY FIX: Ensure buttons are clickable */
+      .btn, button.btn, button {
+        position: relative !important;
+        z-index: 1000 !important;
+        pointer-events: auto !important;
+        cursor: pointer !important;
+      }
     </style>
   </head>
   <body>
@@ -582,11 +590,11 @@
             <label style="display:flex;align-items:center;gap:6px;">
               <input type="checkbox" id="mock-toggle"> Mock Emotion
             </label>
-            <button id="start-btn" class="btn">Start Interview</button>
+            <button id="start-btn" class="btn" onclick="console.log('❗ INLINE ONCLICK FIRED!'); alert('Button clicked! Check console.');">Start Interview</button>
             <button id="answer-btn" class="btn" style="display: none;">Answer</button>
             <button id="stop-btn" class="btn" style="display: none;">Stop Answering</button>
             <button id="stop-interview-btn" class="btn" style="display: none; background: #f44336;">Stop Interview</button>
-            <button id="retry-camera-btn" class="btn" type="button">Retry Camera</button>
+            <button id="retry-camera-btn" class="btn" type="button" onclick="console.log('❗ RETRY CAMERA INLINE ONCLICK!'); alert('Retry camera clicked!');">Retry Camera</button>
           </div>
         </div>
       </section>
