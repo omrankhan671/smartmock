@@ -1725,17 +1725,47 @@
             console.error('❌ Blocking element z-index:', window.getComputedStyle(elementAtPoint).zIndex);
             console.error('❌ Blocking element pointer-events:', window.getComputedStyle(elementAtPoint).pointerEvents);
             
-            // Try to fix it by setting the blocker to pointer-events: none
+            // AGGRESSIVE FIX: Remove pointer-events blocking
             if (elementAtPoint) {
-              console.log('🔧 Attempting to fix by setting blocking element to pointer-events: none...');
+              console.log('🔧 AGGRESSIVE FIX: Removing all pointer-events blocking...');
+              
+              // Fix 1: Set blocker to none
               elementAtPoint.style.pointerEvents = 'none';
+              elementAtPoint.style.setProperty('pointer-events', 'none', 'important');
+              
+              // Fix 2: Force button and all ancestors to be clickable
+              startBtn.style.pointerEvents = 'auto';
+              startBtn.style.setProperty('pointer-events', 'auto', 'important');
+              startBtn.style.zIndex = '99999';
+              
+              let parent = startBtn.parentElement;
+              while (parent && parent !== document.body) {
+                parent.style.pointerEvents = 'auto';
+                parent.style.setProperty('pointer-events', 'auto', 'important');
+                parent = parent.parentElement;
+              }
+              
+              // Fix 3: Add direct click listener as backup
+              startBtn.addEventListener('click', function(e) {
+                console.log('🎯 DIRECT CLICK LISTENER FIRED!');
+                e.stopPropagation();
+                e.preventDefault();
+                if (window.handleStartInterview) {
+                  window.handleStartInterview();
+                }
+              }, true); // Use capture phase
               
               // Check again
-              const newElement = document.elementFromPoint(centerX, centerY);
-              console.log('🔍 Element after fix:', newElement);
-              if (newElement === startBtn) {
-                console.log('✅ FIX SUCCESSFUL! Button is now clickable!');
-              }
+              setTimeout(() => {
+                const newElement = document.elementFromPoint(centerX, centerY);
+                console.log('🔍 Element after fix:', newElement);
+                console.log('🔍 Is it the button now?', newElement === startBtn);
+                if (newElement === startBtn) {
+                  console.log('✅✅✅ FIX SUCCESSFUL! Button is now clickable! ✅✅✅');
+                } else {
+                  console.error('❌ Still blocked by:', newElement);
+                }
+              }, 100);
             }
           }
         } else {
