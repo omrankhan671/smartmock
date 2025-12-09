@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Test - Simple</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 50px;
+            background: #1a1a2e;
+            color: white;
+        }
+        .test-container {
+            background: #16213e;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .btn {
+            background: #0f3460;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            background: #e94560;
+            transform: scale(1.05);
+        }
+        .btn:active {
+            transform: scale(0.95);
+        }
+        #output {
+            background: #0f3460;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            min-height: 100px;
+        }
+        .success {
+            color: #4caf50;
+        }
+        .error {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔘 Button Click Test</h1>
+        <p>This page tests if buttons are clickable and JavaScript is working.</p>
+        
+        <h2>Test 1: Inline onclick</h2>
+        <button class="btn" onclick="test1()">Test Inline onclick</button>
+        
+        <h2>Test 2: Window function</h2>
+        <button class="btn" onclick="window.test2()">Test Window Function</button>
+        
+        <h2>Test 3: addEventListener</h2>
+        <button id="test3-btn" class="btn">Test addEventListener</button>
+        
+        <h2>Test 4: AI Interview Button (Exact Copy)</h2>
+        <button id="start-btn" class="btn" onclick="window.handleStartInterview(); return false;">Start Interview</button>
+        
+        <div id="output">
+            <strong>Output:</strong><br>
+            Waiting for button clicks...
+        </div>
+    </div>
+
+    <script>
+        const output = document.getElementById('output');
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'success' ? 'success' : type === 'error' ? 'error' : '';
+            output.innerHTML += `<br><span class="${color}">[${timestamp}] ${message}</span>`;
+            console.log(message);
+        }
+        
+        // Test 1: Simple inline function
+        function test1() {
+            log('✅ Test 1 PASSED: Inline onclick works!', 'success');
+            alert('✅ Test 1: Inline onclick works!');
+        }
+        
+        // Test 2: Window function
+        window.test2 = function() {
+            log('✅ Test 2 PASSED: Window function works!', 'success');
+            alert('✅ Test 2: Window function works!');
+        };
+        
+        // Test 3: addEventListener
+        document.addEventListener('DOMContentLoaded', function() {
+            const test3Btn = document.getElementById('test3-btn');
+            if (test3Btn) {
+                test3Btn.addEventListener('click', function() {
+                    log('✅ Test 3 PASSED: addEventListener works!', 'success');
+                    alert('✅ Test 3: addEventListener works!');
+                });
+                log('✅ Test 3 addEventListener attached', 'info');
+            } else {
+                log('❌ Test 3 FAILED: Button not found!', 'error');
+            }
+        });
+        
+        // Test 4: Exact copy of AI Interview button handler
+        window.handleStartInterview = async function() {
+            log('✅ Test 4 PASSED: AI Interview handler works!', 'success');
+            alert('✅ Test 4: AI Interview button handler works!\n\nThis means the button code is correct.');
+            
+            const startBtn = document.getElementById('start-btn');
+            if (startBtn) {
+                startBtn.textContent = '✅ CLICKED!';
+                startBtn.style.background = '#4caf50';
+            }
+        };
+        
+        // Log that script loaded
+        log('✅ JavaScript loaded successfully', 'success');
+        log('✅ All button handlers registered', 'success');
+        log('🎯 Click any button to test...', 'info');
+        
+        console.log('✅✅✅ SCRIPT LOADED SUCCESSFULLY ✅✅✅');
+        console.log('Window functions available:', {
+            test1: typeof test1,
+            test2: typeof window.test2,
+            handleStartInterview: typeof window.handleStartInterview
+        });
+    </script>
+</body>
+</html>

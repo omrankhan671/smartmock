@@ -1571,10 +1571,11 @@
 
       console.log('🎯 Setting up global button handlers for direct onclick access...');
       
-      // MAKE ALL HANDLERS GLOBAL AND DIRECTLY ACCESSIBLE
+      // MAKE ALL HANDLERS GLOBAL AND DIRECTLY ACCESSIBLE - IMMEDIATELY!
+      // These are created BEFORE DOMContentLoaded to ensure they exist when onclick fires
       window.handleStartInterview = async function() {
-        alert('✅ BUTTON CLICKED! Function is working!');
         console.log('🚀 START INTERVIEW CLICKED - Direct onclick handler!');
+        alert('✅ BUTTON CLICKED! Function is working!');
         const startBtn = document.getElementById('start-btn');
         const levelSelect = document.getElementById('level-select');
         const topicSelect = document.getElementById('topic-select');
@@ -1683,6 +1684,30 @@
       console.log('🔍 window.handleStop defined:', typeof window.handleStop);
       console.log('🔍 window.handleRetryCamera defined:', typeof window.handleRetryCamera);
       console.log('🔍 window.handleStopInterview defined:', typeof window.handleStopInterview);
+
+      // TEST: Flash the start button to confirm it's clickable
+      setTimeout(() => {
+        const startBtn = document.getElementById('start-btn');
+        if (startBtn) {
+          console.log('✅ Start button found! Element:', startBtn);
+          console.log('✅ Button onclick attribute:', startBtn.getAttribute('onclick'));
+          console.log('✅ Button style.pointerEvents:', startBtn.style.pointerEvents);
+          console.log('✅ Button style.zIndex:', startBtn.style.zIndex);
+          
+          // Flash the button green to show it's ready
+          startBtn.style.transition = 'all 0.3s';
+          startBtn.style.background = '#4caf50';
+          startBtn.style.transform = 'scale(1.1)';
+          setTimeout(() => {
+            startBtn.style.background = '';
+            startBtn.style.transform = '';
+          }, 500);
+          
+          console.log('✅ Button is ready! Try clicking it now.');
+        } else {
+          console.error('❌ Start button NOT FOUND in DOM!');
+        }
+      }, 1000);
 
       let isFinishing = false; // Guard to prevent multiple calls
       
