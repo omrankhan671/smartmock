@@ -1742,6 +1742,25 @@
           });
           console.log('⌨️ Keyboard shortcut registered: Press "S" to start interview');
           
+          // DIAGNOSTIC: Log ALL mouse events on the button
+          startBtn.addEventListener('mousedown', function(e) {
+            console.log('🖱️ MOUSEDOWN detected on button!', e);
+          }, true);
+          
+          startBtn.addEventListener('mouseup', function(e) {
+            console.log('🖱️ MOUSEUP detected on button!', e);
+          }, true);
+          
+          startBtn.addEventListener('click', function(e) {
+            console.log('🖱️ CLICK detected on button!', e);
+          }, true);
+          
+          startBtn.addEventListener('pointerdown', function(e) {
+            console.log('👆 POINTERDOWN detected on button!', e);
+          }, true);
+          
+          console.log('🔍 Mouse event listeners added to button');
+          
           // DIAGNOSTIC: Check what element is actually at the button's position
           const rect = startBtn.getBoundingClientRect();
           const centerX = rect.left + rect.width / 2;

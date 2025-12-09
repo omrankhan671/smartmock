@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ULTRA SIMPLE BUTTON TEST</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 50px;
+            background: #1a1a2e;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .test-btn {
+            background: #e94560;
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 10px;
+            margin: 20px;
+            display: block;
+        }
+        .test-btn:hover {
+            background: #ff5c7c;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <h1>🔘 ULTRA SIMPLE BUTTON TEST</h1>
+    <p>If these buttons don't work, it's a browser/security issue.</p>
+    
+    <button class="test-btn" onclick="alert('✅ TEST 1: Inline onclick works!')">
+        TEST 1: Click Me (Inline onclick)
+    </button>
+    
+    <button id="test2" class="test-btn">
+        TEST 2: Click Me (addEventListener)
+    </button>
+    
+    <button id="test3" class="test-btn">
+        TEST 3: Click Me (window function)
+    </button>
+    
+    <div id="output" style="margin: 20px; padding: 20px; background: #0f3460; border-radius: 10px;">
+        <strong>Console Output:</strong><br>
+        Waiting for clicks...
+    </div>
+
+    <script>
+        const output = document.getElementById('output');
+        
+        function log(msg) {
+            output.innerHTML += '<br>' + msg;
+            console.log(msg);
+        }
+        
+        // Test 2: addEventListener
+        document.getElementById('test2').addEventListener('click', function() {
+            alert('✅ TEST 2: addEventListener works!');
+            log('✅ TEST 2: addEventListener fired');
+        });
+        
+        // Test 3: Window function
+        window.testFunc = function() {
+            alert('✅ TEST 3: Window function works!');
+            log('✅ TEST 3: Window function fired');
+        };
+        
+        document.getElementById('test3').onclick = window.testFunc;
+        
+        log('✅ Page loaded, all handlers registered');
+        log('✅ Click any button above');
+    </script>
+</body>
+</html>
