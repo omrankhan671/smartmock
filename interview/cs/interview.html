@@ -474,10 +474,10 @@
       const finishBtn = document.getElementById('finish-quiz-btn');
       const restartBtn = document.getElementById('restart-quiz-btn');
       
-      startQuizBtn.addEventListener('click', startQuiz);
-      nextBtn.addEventListener('click', nextQuestion);
-      finishBtn.addEventListener('click', showResults);
-      restartBtn.addEventListener('click', resetQuiz);
+      if (startQuizBtn) startQuizBtn.addEventListener('click', startQuiz);
+      if (nextBtn) nextBtn.addEventListener('click', nextQuestion);
+      if (finishBtn) finishBtn.addEventListener('click', showResults);
+      if (restartBtn) restartBtn.addEventListener('click', resetQuiz);
       
       function startQuiz() {
         currentTopic = document.getElementById('quiz-topic').value;
