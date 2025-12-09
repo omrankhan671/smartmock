@@ -28,9 +28,14 @@ function initializeFirebase() {
     
     // Connect to Firebase Emulators (for local development)
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      console.log("🔧 Connecting to Firebase Emulators...");
-      firebase.functions().useEmulator('127.0.0.1', 5001);
-      console.log("✅ Connected to Functions Emulator at http://127.0.0.1:5001");
+      // Only connect to Functions emulator if Functions SDK is loaded
+      if (typeof firebase.functions === 'function') {
+        console.log("🔧 Connecting to Firebase Emulators...");
+        firebase.functions().useEmulator('127.0.0.1', 5001);
+        console.log("✅ Connected to Functions Emulator at http://127.0.0.1:5001");
+      } else {
+        console.log("ℹ️ Firebase Functions SDK not loaded (not needed for this page)");
+      }
     }
     
     // Initialize Firebase services
