@@ -1704,6 +1704,35 @@
           }, 500);
           
           console.log('✅ Button is ready! Try clicking it now.');
+          
+          // DIAGNOSTIC: Check what element is actually at the button's position
+          const rect = startBtn.getBoundingClientRect();
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          const elementAtPoint = document.elementFromPoint(centerX, centerY);
+          
+          console.log('🔍 Button position:', { x: centerX, y: centerY });
+          console.log('🔍 Element at button center:', elementAtPoint);
+          console.log('🔍 Is it the button itself?', elementAtPoint === startBtn);
+          
+          if (elementAtPoint !== startBtn) {
+            console.error('❌ BLOCKING ELEMENT FOUND!', elementAtPoint);
+            console.error('❌ Blocking element z-index:', window.getComputedStyle(elementAtPoint).zIndex);
+            console.error('❌ Blocking element pointer-events:', window.getComputedStyle(elementAtPoint).pointerEvents);
+            
+            // Try to fix it by setting the blocker to pointer-events: none
+            if (elementAtPoint) {
+              console.log('🔧 Attempting to fix by setting blocking element to pointer-events: none...');
+              elementAtPoint.style.pointerEvents = 'none';
+              
+              // Check again
+              const newElement = document.elementFromPoint(centerX, centerY);
+              console.log('🔍 Element after fix:', newElement);
+              if (newElement === startBtn) {
+                console.log('✅ FIX SUCCESSFUL! Button is now clickable!');
+              }
+            }
+          }
         } else {
           console.error('❌ Start button NOT FOUND in DOM!');
         }
