@@ -1729,18 +1729,86 @@
           
           console.log('✅✅✅ ALL BLOCKING REMOVED ✅✅✅');
           
-          // KEYBOARD SHORTCUT BACKUP: Press 'S' to start interview
+          // KEYBOARD SHORTCUTS FOR ALL BUTTONS
           document.addEventListener('keydown', function(e) {
-            if (e.key === 's' || e.key === 'S') {
+            const key = e.key.toUpperCase();
+            
+            // S = Start Interview
+            if (key === 'S') {
               if (startBtn && startBtn.style.display !== 'none') {
-                console.log('⌨️ KEYBOARD SHORTCUT: S pressed, starting interview...');
+                console.log('⌨️ KEYBOARD SHORTCUT: S = Start Interview');
                 if (window.handleStartInterview) {
                   window.handleStartInterview();
                 }
               }
             }
+            
+            // A = Answer
+            if (key === 'A') {
+              if (answerBtn && answerBtn.style.display !== 'none') {
+                console.log('⌨️ KEYBOARD SHORTCUT: A = Answer');
+                answerBtn.click();
+              }
+            }
+            
+            // X = Stop Answering
+            if (key === 'X') {
+              if (stopBtn && stopBtn.style.display !== 'none') {
+                console.log('⌨️ KEYBOARD SHORTCUT: X = Stop Answering');
+                stopBtn.click();
+              }
+            }
+            
+            // R = Retry Camera
+            if (key === 'R') {
+              if (retryCameraBtn && retryCameraBtn.style.display !== 'none') {
+                console.log('⌨️ KEYBOARD SHORTCUT: R = Retry Camera');
+                retryCameraBtn.click();
+              }
+            }
+            
+            // Q = Quit/Stop Interview
+            if (key === 'Q') {
+              const stopInterviewBtn = document.getElementById('stop-interview-btn');
+              if (stopInterviewBtn && stopInterviewBtn.style.display !== 'none') {
+                console.log('⌨️ KEYBOARD SHORTCUT: Q = Quit Interview');
+                stopInterview();
+              }
+            }
           });
-          console.log('⌨️ Keyboard shortcut registered: Press "S" to start interview');
+          
+          console.log('⌨️ KEYBOARD SHORTCUTS ENABLED:');
+          console.log('   S = Start Interview');
+          console.log('   A = Answer');
+          console.log('   X = Stop Answering');
+          console.log('   R = Retry Camera');
+          console.log('   Q = Quit Interview');
+          
+          // Add visual keyboard shortcuts help panel
+          const helpPanel = document.createElement('div');
+          helpPanel.id = 'keyboard-help';
+          helpPanel.innerHTML = `
+            <div style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.9); color: white; padding: 15px; border-radius: 10px; font-family: monospace; font-size: 12px; z-index: 999999; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+              <div style="font-weight: bold; margin-bottom: 10px; color: #4CAF50;">⌨️ KEYBOARD SHORTCUTS</div>
+              <div><kbd style="background: #333; padding: 2px 6px; border-radius: 3px;">S</kbd> = Start Interview</div>
+              <div><kbd style="background: #333; padding: 2px 6px; border-radius: 3px;">A</kbd> = Answer</div>
+              <div><kbd style="background: #333; padding: 2px 6px; border-radius: 3px;">X</kbd> = Stop Answering</div>
+              <div><kbd style="background: #333; padding: 2px 6px; border-radius: 3px;">R</kbd> = Retry Camera</div>
+              <div><kbd style="background: #333; padding: 2px 6px; border-radius: 3px;">Q</kbd> = Quit Interview</div>
+              <div style="margin-top: 10px; font-size: 10px; opacity: 0.7;">Press H to hide</div>
+            </div>
+          `;
+          document.body.appendChild(helpPanel);
+          
+          // Press H to hide help panel
+          document.addEventListener('keydown', function(e) {
+            if (e.key === 'h' || e.key === 'H') {
+              const panel = document.getElementById('keyboard-help');
+              if (panel) {
+                panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+              }
+            }
+          });
           
           // DIAGNOSTIC: Log ALL mouse events on the button
           startBtn.addEventListener('mousedown', function(e) {
