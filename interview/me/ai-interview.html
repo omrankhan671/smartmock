@@ -4,12 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- CSP Temporarily Disabled - Will re-enable once all features are stable -->
-    <title>SmartMock - AI Interview (Mechanical Engineering)</title>
+    <title>SmartMock - AI Interview</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23007bff'/%3E%3Ctext x='32' y='39' font-size='28' text-anchor='middle' fill='white' font-family='Arial'%3ES%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/styles.css" />
+    <link rel="stylesheet" href="../../assets/css/robot-interviewer.css" />
     <style>
       /* Dark Theme for AI Interview */
       body {
@@ -60,119 +61,10 @@
         border: 1px solid rgba(102, 126, 234, 0.3);
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
       }
-      .ai-avatar-container {
-        width: 100%;
-        max-width: 600px;
-        height: 220px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 15px 0;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
-      }
-      .ai-avatar {
-        width: 120px;
-        height: 120px;
-        background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
-        border-radius: 50%;
-        position: relative;
-        transition: transform 0.3s ease;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      }
-      .ai-avatar.speaking {
-        animation: speaking 0.5s ease-in-out infinite;
-      }
-      .ai-avatar.happy {
-        animation: bounce 0.6s ease;
-      }
-      .ai-avatar.sad {
-        animation: shake 0.5s ease;
-      }
-      @keyframes speaking {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-      }
-      @keyframes bounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
-      }
-      @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        25% { transform: translateX(-5px); }
-        75% { transform: translateX(5px); }
-      }
-      /* Avatar Eyes */
-      .ai-avatar::before,
-      .ai-avatar::after {
-        content: '';
-        position: absolute;
-        width: 18px;
-        height: 18px;
-        background: #333;
-        border-radius: 50%;
-        top: 35px;
-        transition: all 0.3s ease;
-      }
-      .ai-avatar::before {
-        left: 30px;
-      }
-      .ai-avatar::after {
-        right: 30px;
-      }
-      /* Winking eyes when happy */
-      .ai-avatar.happy::before {
-        height: 3px;
-        border-radius: 0;
-      }
-      /* Sad eyes */
-      .ai-avatar.sad::before,
-      .ai-avatar.sad::after {
-        top: 40px;
-      }
-      .ai-mouth {
-        width: 50px;
-        height: 8px;
-        background: #333;
-        border-radius: 0 0 25px 25px;
-        position: absolute;
-        bottom: 30px;
-        left: 35px;
-        transition: all 0.3s ease;
-      }
-      /* Speaking mouth animation */
-      .ai-avatar.speaking .ai-mouth {
-        animation: mouthMove 0.3s ease-in-out infinite;
-        border-radius: 25px;
-      }
-      @keyframes mouthMove {
-        0%, 100% { 
-          height: 8px; 
-          bottom: 30px;
-        }
-        50% { 
-          height: 20px; 
-          bottom: 25px;
-        }
-      }
-      /* Happy smile */
-      .ai-avatar.happy .ai-mouth {
-        border-radius: 0 0 30px 30px;
-        height: 15px;
-        bottom: 28px;
-        background: #4CAF50;
-      }
-      /* Sad frown */
-      .ai-avatar.sad .ai-mouth {
-        border-radius: 30px 30px 0 0;
-        height: 12px;
-        bottom: 22px;
-        background: #f44336;
-      }
-      /* Avatar status text */
+      
+      /* 3D Robot Interviewer styles are loaded from robot-interviewer.css */
+      
+      /* Avatar status text (keep for robot) */
       .avatar-status {
         position: absolute;
         bottom: 15px;
@@ -225,6 +117,7 @@
         gap: 15px;
         flex-wrap: wrap;
         justify-content: center;
+        pointer-events: auto !important; /* CRITICAL FIX: Ensure container allows clicks */
       }
       
       /* Enhanced button styles */
@@ -524,15 +417,57 @@
         border: 1px solid rgba(168, 85, 247, 0.3);
         box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
       }
+      
+      /* EMERGENCY FIX: Ensure buttons and controls are clickable */
+      .controls-container, .controls-container * {
+        pointer-events: auto !important;
+      }
+      
+      .btn, button.btn, button, select, input {
+        position: relative !important;
+        z-index: 1000 !important;
+        pointer-events: auto !important;
+        cursor: pointer !important;
+      }
     </style>
   </head>
   <body>
+
+    <!-- Floating Particles -->
+    <div class="particles-container" id="particlesContainer"></div>
+    <!-- Fullscreen Background Robot with Parallax Depth -->
     <style>
-      #bg-robot-container { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
-      #bg-robot-container canvas { width: 100%; height: 100%; display: block; }
-      .particles-container { z-index: 0; }
+      #bg-robot-container { 
+        position: fixed; 
+        inset: 0; 
+        z-index: -1; 
+        pointer-events: none;
+        will-change: transform;
+        transform-style: preserve-3d;
+        perspective: 2000px;
+      }
+      #bg-robot-container canvas { 
+        width: 100%; 
+        height: 100%; 
+        display: block; 
+      }
+      
+      /* Full-screen 3D rotation animation */
+      @keyframes rotate3D {
+        0% { transform: perspective(2000px) rotateX(0deg) rotateY(0deg); }
+        25% { transform: perspective(2000px) rotateX(3deg) rotateY(90deg); }
+        50% { transform: perspective(2000px) rotateX(0deg) rotateY(180deg); }
+        75% { transform: perspective(2000px) rotateX(-3deg) rotateY(270deg); }
+        100% { transform: perspective(2000px) rotateX(0deg) rotateY(360deg); }
+      }
+      
+      #bg-robot-container {
+        animation: none !important;
+      }
     </style>
-    <div id="bg-robot-container"><canvas id="bg-robot-canvas"></canvas></div>
+    <div id="bg-robot-container">
+      <canvas id="bg-robot-canvas"></canvas>
+    </div>
     <header class="site-header">
       <div class="site-header-inner container">
         <nav class="menu menu-left">
@@ -605,7 +540,21 @@
 
     <main class="container">
       <section>
-        <h2>Mechanical Engineering � AI Interview</h2>
+        <h2>AI Interview</h2>
+        
+        <!-- Camera Troubleshooting Alert -->
+        <div id="camera-alert" style="display: none; max-width: 640px; margin: 0 auto 20px; padding: 15px 20px; background: linear-gradient(135deg, #f5576c 0%, #f093fb 50%); border-radius: 12px; color: white; box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);">
+          <h4 style="margin: 0 0 10px 0; color: white;">?? Camera Troubleshooting</h4>
+          <p style="margin: 5px 0; font-size: 0.9em;">If camera is not working:</p>
+          <ul style="margin: 10px 0; padding-left: 20px; font-size: 0.85em;">
+            <li><strong>Close other apps:</strong> Zoom, Teams, Meet, Skype might be using your camera</li>
+            <li><strong>Allow permission:</strong> Click the lock/camera icon in address bar</li>
+            <li><strong>Check Windows settings:</strong> Settings ? Privacy ? Camera</li>
+            <li><strong>Interview works without camera:</strong> Mock mode will activate automatically</li>
+          </ul>
+          <button onclick="this.parentElement.style.display='none'" style="margin-top: 10px; padding: 5px 15px; background: white; color: #f5576c; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Got it!</button>
+        </div>
+        
         <div class="ai-interview-container">
           <div class="video-container">
             <video id="user-video" autoplay muted playsinline></video>
@@ -614,10 +563,8 @@
           <div id="camera-diag" style="width:100%;max-width:600px;color:#bbb;font-size:0.9em;">
             <!-- diagnostics populated at runtime -->
           </div>
-          <div class="ai-avatar-container">
-            <div class="ai-avatar" id="ai-avatar">
-              <div class="ai-mouth"></div>
-            </div>
+          <div class="ai-avatar-container" id="robot-container">
+            <canvas id="robot-interviewer-canvas"></canvas>
             <div class="avatar-status" id="avatar-status"></div>
           </div>
           <div class="conversation-container" id="conversation"></div>
@@ -627,10 +574,9 @@
               <option value="intermediate">Intermediate</option>
               <option value="advanced">Advanced</option>
             </select>
-            <select id="topic-select">
-              <option value="thermodynamics">Thermodynamics</option>
-              <option value="fluid_mechanics">Fluid Mechanics</option>
-              <option value="materials">Materials</option>
+            <select id="topic-select" style="display:none;">
+              <!-- Department-specific topics will be used from AdaptiveInterview -->
+              <option value="cs">Computer Science</option>
             </select>
             <select id="camera-select" title="Camera">
               <option value="">Auto Camera</option>
@@ -638,11 +584,11 @@
             <label style="display:flex;align-items:center;gap:6px;">
               <input type="checkbox" id="mock-toggle"> Mock Emotion
             </label>
-            <button id="start-btn" class="btn">Start Interview</button>
-            <button id="answer-btn" class="btn" style="display: none;">Answer</button>
-            <button id="stop-btn" class="btn" style="display: none;">Stop Answering</button>
-            <button id="stop-interview-btn" class="btn" style="display: none; background: #f44336;">Stop Interview</button>
-            <button id="retry-camera-btn" class="btn" type="button">Retry Camera</button>
+            <button id="start-btn" class="btn" onclick="window.handleStartInterview(); return false;">Start Interview</button>
+            <button id="answer-btn" class="btn" style="display: none;" onclick="window.handleAnswer(); return false;">Answer</button>
+            <button id="stop-btn" class="btn" style="display: none;" onclick="window.handleStop(); return false;">Stop Answering</button>
+            <button id="stop-interview-btn" class="btn" style="display: none; background: #f44336;" onclick="window.handleStopInterview(); return false;">Stop Interview</button>
+            <button id="retry-camera-btn" class="btn" type="button" onclick="window.handleRetryCamera(); return false;">Retry Camera</button>
           </div>
         </div>
       </section>
@@ -654,7 +600,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <script src="../../assets/js/firebase-config.js"></script>
     <script src="../../assets/js/main.js"></script>
-
+    
     <!-- SmartMock v2.0 Advanced Features -->
     <script src="../../assets/js/advanced-features.js"></script>
     <script src="../../assets/js/adaptive-interview.js"></script>
@@ -667,26 +613,51 @@
     <script src="../../assets/js/leaderboard.js?v=2.0.1"></script>
     <script src="../../assets/js/interview-postprocess.js"></script>
     
-
   <!-- MediaPipe FaceMesh (no TFJS required) -->
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/face_mesh.js" crossorigin="anonymous"></script>
+  
+  <!-- Three.js for 3D Robot -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="../../assets/js/robot-interviewer.js"></script>
+  
     <script>
-
+      // DEBUG: Test if script loads
+      console.log('✅✅✅ SCRIPT LOADED SUCCESSFULLY ✅✅✅');
+      console.log('?? Interview page script starting...');
+      
       // Initialize v2.0 features
       if (typeof SmartMockI18n !== 'undefined') SmartMockI18n.init();
       if (typeof SmartMockA11y !== 'undefined') SmartMockA11y.init();
       if (typeof IntegrityMonitor !== 'undefined') IntegrityMonitor.init({ strict: false });
-      if (typeof AITutor !== 'undefined') AITutor.init('me');
+      if (typeof AITutor !== 'undefined') AITutor.init('cs');
       
-      // Initialize AdaptiveInterview system
-      if (typeof AdaptiveInterview !== 'undefined') {
-        console.log('Initializing AdaptiveInterview for ME department...');
-        AdaptiveInterview.init({ department: 'me' });
-      } else {
-        console.error('AdaptiveInterview script not loaded!');
+      // Initialize 3D Robot Interviewer
+      let robotInterviewer = null;
+      
+      // Wait for THREE.js and RobotInterviewer to be available
+      function initRobot() {
+        if (typeof THREE !== 'undefined' && typeof RobotInterviewer !== 'undefined') {
+          try {
+            robotInterviewer = new RobotInterviewer('robot-container', THREE);
+            console.log('? 3D Robot Interviewer initialized');
+          } catch (error) {
+            console.error('? Failed to initialize robot:', error);
+          }
+        } else {
+          console.log('? Waiting for THREE.js and RobotInterviewer...');
+          setTimeout(initRobot, 100);
+        }
       }
       
-
+      // Initialize robot when page loads
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initRobot);
+      } else {
+        initRobot();
+      }
+      
+      console.log('?? Getting DOM elements...');
+      
       const userVideo = document.getElementById('user-video');
       const startBtn = document.getElementById('start-btn');
       const answerBtn = document.getElementById('answer-btn');
@@ -695,7 +666,6 @@
       const topicSelect = document.getElementById('topic-select');
   const conversationDiv = document.getElementById('conversation');
       const emotionDisplay = document.getElementById('emotion-display');
-      const aiAvatar = document.getElementById('ai-avatar');
       const avatarStatus = document.getElementById('avatar-status');
   const EMOTION_RULES_URL = '../../assets/js/emotion-rules.json';
   const API_BASE = (location.origin && location.origin.includes(':5000')) ? '' : 'http://localhost:5000';
@@ -704,14 +674,27 @@
   const retryCameraBtn = document.getElementById('retry-camera-btn');
   const cameraDiag = document.getElementById('camera-diag');
 
-      // Avatar control functions
+      console.log('? DOM elements retrieved');
+      console.log('?? Elements status:', {
+        userVideo: !!userVideo,
+        startBtn: !!startBtn,
+        answerBtn: !!answerBtn,
+        stopBtn: !!stopBtn,
+        conversationDiv: !!conversationDiv
+      });
+
+      // Avatar control functions (now using 3D Robot)
       function setAvatarState(state, message = '') {
-        // Remove all state classes
-        aiAvatar.classList.remove('speaking', 'happy', 'sad');
-        
-        // Add new state class
-        if (state) {
-          aiAvatar.classList.add(state);
+        console.log('?? setAvatarState:', state, message);
+        // Use robot if available
+        if (robotInterviewer) {
+          try {
+            robotInterviewer.setState(state);
+          } catch (error) {
+            console.error('? Robot setState error:', error);
+          }
+        } else {
+          console.warn('?? Robot not initialized yet');
         }
         
         // Update status message
@@ -737,8 +720,19 @@
       }
 
       function avatarNeutral() {
-        setAvatarState('', '');
+        setAvatarState('neutral', '');
       }
+      
+      console.log('? Avatar functions defined');
+
+
+      // Hide legacy topic selector - department-specific pools are used instead
+      try {
+        if (topicSelect) {
+          topicSelect.style.display = 'none';
+          topicSelect.disabled = true;
+        }
+      } catch (_) {}
 
       // No external API keys required. On-device face landmark detection
       // is used to derive a simple emotion estimate (happy/surprised/neutral).
@@ -929,8 +923,9 @@
           
           // Graceful fallback: enable mock mode and continue
           console.warn('?? No working camera found, switching to mock mode');
-          emotionDisplay.textContent = 'Camera not found. Switching to Mock Emotion mode.';
+          emotionDisplay.innerHTML = '<span style="color: #f5576c;">?? Camera unavailable</span> - Using Mock Emotion Mode (interview will still work)';
           if (mockToggle) { mockToggle.checked = true; }
+          startMockEmotion(); // Ensure mock mode starts
           return null;
         } catch (err) {
           console.error('? Camera error:', err);
@@ -941,9 +936,14 @@
             case 'SecurityError':
               hint = 'Permission denied. Click the lock icon in the address bar and allow Camera, then retry.'; break;
             case 'NotFoundError':
-              hint = 'No camera detected. Connect a webcam or enable it in Windows Privacy settings.'; break;
+              hint = 'No camera detected. Connect a webcam or enable it in Windows Privacy settings.';
+              document.getElementById('camera-alert').style.display = 'block';
+              break;
             case 'NotReadableError':
-              hint = 'Camera is in use by another app (Zoom/Teams/Meet). Close other apps and retry.'; break;
+              hint = 'Camera is in use by another app (Zoom/Teams/Meet). Close other apps and retry.';
+              // Show camera troubleshooting alert
+              document.getElementById('camera-alert').style.display = 'block';
+              break;
             case 'OverconstrainedError':
               hint = 'Selected camera not available. Choose a different camera or clear selection.'; break;
             default:
@@ -1244,70 +1244,91 @@
       let currentQuestion = '';
       let currentQuestionIndex = -1;
 
-      async function getQuestion(_, level) {
-        // Always hide topic selector since we're using department-specific questions
-        topicSelect.style.display = 'none';
-
-        // Ensure AdaptiveInterview is available
-        if (typeof AdaptiveInterview === 'undefined') {
-          console.error('AdaptiveInterview not loaded! Check script inclusion.');
-          return 'Error: Interview system not properly initialized. Please refresh the page.';
-        }
-
-        // Common HR/behavioral questions for first phase
-        const commonQuestions = [
-          "Tell me about yourself and your background.",
-          "Why should we hire you for this position?",
-          "Where do you see yourself in 5 years?",
-          "Tell me about a challenging project you worked on.",
-          "How do you handle stress and pressure?"
-        ];
-
-        // Select question based on count
+      async function getQuestion(topic, level) {
+        // Map beginner/intermediate/advanced to difficulty 1/2/3
+        const difficultyMap = {
+          'beginner': 1,
+          'intermediate': 2,
+          'advanced': 3
+        };
+        
+        const difficulty = difficultyMap[level] || 1;
+        const department = 'cs'; // This is the CS department page
+        
+        // First 2 questions are common HR questions
         const currentCount = question_list.length;
-
-        // First COMMON_QUESTIONS_COUNT questions are common HR questions
+        const COMMON_QUESTIONS_COUNT = 2;
+        
+        // Common HR/behavioral questions (asked first)
+        const commonQuestions = [
+          "Tell me about yourself and your educational background.",
+          "Why did you choose Computer Science as your field of study?",
+          "What are your strengths and weaknesses?",
+          "Describe a challenging project you worked on.",
+          "Why do you want this job?",
+          "Where do you see yourself in 5 years?",
+          "How do you handle stress and pressure?",
+          "Describe a time when you had to work in a team."
+        ];
+        
         if (currentCount < COMMON_QUESTIONS_COUNT) {
+          // Shuffle and pick unseen question
           const shuffledCommon = commonQuestions.slice().sort(() => Math.random() - 0.5);
           const unseenCommon = shuffledCommon.filter(q => !question_list.includes(q));
           return unseenCommon[0] || shuffledCommon[0];
         }
-
-        // Map UI level to AdaptiveInterview difficulty and use department-specific questions
-        const difficultyMap = { beginner: 1, intermediate: 2, advanced: 3 };
-        const difficulty = difficultyMap[level] || 1;
-        const department = 'me'; // Mechanical Engineering department code
-
-        // Get next question from AdaptiveInterview
-        try {
-          const result = await AdaptiveInterview.getNextQuestion(department, difficulty);
-          if (result && result.text) {
-            return result.text;
+        
+        // Use AdaptiveInterview system for technical questions
+        if (typeof AdaptiveInterview !== 'undefined' && AdaptiveInterview.questionPools) {
+          const pool = AdaptiveInterview.questionPools[department];
+          if (pool && pool[difficulty]) {
+            const questions = pool[difficulty];
+            const shuffled = questions.slice().sort(() => Math.random() - 0.5);
+            const unseen = shuffled.filter(q => !question_list.includes(q.text));
+            const questionObj = unseen[0] || shuffled[0];
+            
+            if (questionObj && questionObj.text) {
+              console.log(`?? Using department-specific question (${department}, difficulty: ${difficulty}):`, questionObj.text);
+              return questionObj.text;
+            }
           }
-        } catch (err) {
-          console.error('Error getting question from AdaptiveInterview:', err);
         }
-
-        // Fallback pool if AdaptiveInterview fails
-        const fallback = {
-          1: ["What is Newton's Second Law of Motion?", "Explain the difference between stress and strain.", "What is the First Law of Thermodynamics?"],
-          2: ["Explain how a four-stroke engine works.", "What is the difference between laminar and turbulent flow?", "Describe the working of a centrifugal pump."],
-          3: ["How do you calculate the critical speed of a rotating shaft?", "Explain the Carnot cycle and its efficiency.", "What factors affect the strength of a welded joint?"]
+        
+        // Fallback to basic CS questions if AdaptiveInterview not loaded
+        const fallbackQuestions = {
+          1: [
+            "What is a variable in programming?",
+            "Explain what an if-else statement does.",
+            "What is the difference between = and == in programming?"
+          ],
+          2: [
+            "Explain the difference between a stack and a queue.",
+            "What is the time complexity of binary search?",
+            "Describe how a hash table works."
+          ],
+          3: [
+            "How would you detect a cycle in a linked list?",
+            "Explain the difference between SQL and NoSQL databases.",
+            "What are the different types of joins in SQL?"
+          ]
         };
-        const poolTexts = fallback[difficulty] || fallback[1];
-
-        // Shuffle and pick an unseen technical question
-        const shuffled = poolTexts.slice().sort(() => Math.random() - 0.5);
+        
+        const pool = fallbackQuestions[difficulty] || fallbackQuestions[1];
+        const shuffled = pool.slice().sort(() => Math.random() - 0.5);
         const unseen = shuffled.filter(q => !question_list.includes(q));
-        return unseen.length > 0 ? unseen[0] : shuffled[Math.floor(Math.random() * shuffled.length)] || poolTexts[0];
+        return unseen[0] || shuffled[0];
       }
 
       async function askQuestion() {
-        // Check if interview stopped or reached limit
-        if (interviewStopped || question_list.length >= TOTAL_QUESTIONS) {
-          console.log(`?? Interview complete! Questions asked: ${question_list.length}/${TOTAL_QUESTIONS}`);
-          console.log(`?? Reason: interviewStopped=${interviewStopped}, question_list.length=${question_list.length}, TOTAL_QUESTIONS=${TOTAL_QUESTIONS}`);
-          console.trace('?? Call stack:');
+        // Check if interview stopped or reached limit BEFORE asking
+        if (interviewStopped) {
+          console.log(`?? Interview manually stopped at ${question_list.length}/${TOTAL_QUESTIONS} questions`);
+          finishInterview();
+          return;
+        }
+        
+        if (question_list.length >= TOTAL_QUESTIONS) {
+          console.log(`?? Interview complete! All ${TOTAL_QUESTIONS} questions answered.`);
           finishInterview();
           return;
         }
@@ -1395,6 +1416,20 @@
         // If negative feedback, provide the correct answer
         if (verdict === 'negative') {
           const correctAnswers = {
+            // Department-specific (CS) question answers (AdaptiveInterview pools)
+            "What is a variable in programming?": "A variable is a named storage location in memory used to hold data that can be read or updated by the program. It has a name, a type (in some languages), and a value.",
+            "Explain what an if-else statement does.": "An if-else statement evaluates a condition; if the condition is true it executes the 'if' block, otherwise it executes the 'else' block. It's used for branching logic based on boolean conditions.",
+            "What is the difference between = and == in programming?": "'=' is typically the assignment operator (sets a value). '==' is often an equality comparison (checks if values are equal). Note: some languages have '===' for strict equality (no type coercion).",
+            "Explain the difference between a stack and a queue.": "A stack is LIFO (Last-In-First-Out) where the last pushed item is popped first. A queue is FIFO (First-In-First-Out) where items are dequeued in the order they arrived.",
+            "What is the time complexity of binary search?": "Binary search runs in O(log n) time on sorted arrays by repeatedly halving the search range until the target is found or range is empty.",
+            "Describe how a hash table works.": "A hash table maps keys to indices in an underlying array using a hash function. Collisions are handled with chaining or open addressing. Average operations are O(1).",
+            "How would you detect a cycle in a linked list?": "A common method is Floyd's Tortoise and Hare algorithm: advance one pointer by one step and another by two steps; if they ever meet, a cycle exists.",
+            "Explain the difference between SQL and NoSQL databases.": "SQL databases are relational with fixed schemas and ACID guarantees; NoSQL databases are schema-flexible, often favor scalability and partitioning, and can be key-value, document, column-family, or graph-based.",
+            "What are the different types of joins in SQL?": "Common joins: INNER JOIN (intersection), LEFT/RIGHT OUTER JOIN (preserve left/right rows), FULL OUTER JOIN (preserve both), CROSS JOIN (cartesian product).",
+            "Design a distributed caching system like Redis.": "High-level: use sharding (consistent hashing) to distribute keys, replication for fault-tolerance, eviction policies (LRU), and a mechanism for cache invalidation. Consider strong/ eventual consistency and monitoring.",
+            "How would you design a rate limiter for an API?": "Use token bucket or leaky bucket algorithms; track tokens per user/key in an in-memory store (or distributed store like Redis) and enforce per-window limits with sliding windows for fairness.",
+            "Explain the CAP theorem and its implications.": "CAP states that in the presence of a network partition (P), a distributed system can only provide either consistency (C) or availability (A), not both. Design choices depend on application needs.",
+
             "What is the difference between `let`, `const`, and `var`?": "`var` is function-scoped and can be redeclared, `let` is block-scoped and can be reassigned but not redeclared, and `const` is block-scoped and cannot be reassigned or redeclared after initialization.",
             "What are the different data types in JavaScript?": "JavaScript has 7 primitive types: String, Number, Boolean, Undefined, Null, Symbol, and BigInt. Plus Object as a non-primitive type.",
             "What is a closure and how does it work?": "A closure is a function that has access to variables in its outer (enclosing) scope, even after the outer function has returned. It 'closes over' those variables.",
@@ -1492,7 +1527,7 @@
 
         const reportData = {
           sessionId,
-          department: 'ME',
+          department: 'cs',
           topic: topicSelect.value,
           level: levelSelect.value,
           summary: "This is a summary of your performance.",
@@ -1539,17 +1574,37 @@
       }
       */
 
-      startBtn.addEventListener('click', async () => {
+      console.log('🎯 Setting up global button handlers for direct onclick access...');
+      
+      // MAKE ALL HANDLERS GLOBAL AND DIRECTLY ACCESSIBLE - IMMEDIATELY!
+      // These are created BEFORE DOMContentLoaded to ensure they exist when onclick fires
+      window.handleStartInterview = async function() {
+        console.log('🚀 START INTERVIEW CLICKED - Direct onclick handler!');
+        alert('✅ BUTTON CLICKED! Function is working!');
+        const startBtn = document.getElementById('start-btn');
+        const levelSelect = document.getElementById('level-select');
+        const topicSelect = document.getElementById('topic-select');
+        const conversationDiv = document.getElementById('conversation');
+        const userVideo = document.getElementById('user-video');
+        const mockToggle = document.getElementById('mock-toggle');
+        
+        if (!startBtn) {
+          alert('Error: Start button not found!');
+          return;
+        }
+        
         window.__aiStartTime = new Date();
         
         // Hide start button immediately
         startBtn.style.display = 'none';
         startBtn.disabled = true;
-        levelSelect.disabled = true;
-        topicSelect.disabled = true;
+        if (levelSelect) levelSelect.disabled = true;
+        if (topicSelect) topicSelect.disabled = true;
         
         // Show loading message
-        conversationDiv.innerHTML = '<p><strong>AI:</strong> Initializing interview... Please wait.</p>';
+        if (conversationDiv) {
+          conversationDiv.innerHTML = '<p><strong>AI:</strong> Initializing interview... Please wait.</p>';
+        }
         
         // Setup camera first
         const cameraReady = await setupCamera();
@@ -1558,31 +1613,137 @@
         // Load rules and init emotion detection
         try { await loadEmotionRules(); } catch(_) {}
         
-        if (mockToggle.checked || !cameraReady) {
+        if (mockToggle && (mockToggle.checked || !cameraReady)) {
           mockToggle.checked = true;
           startMockEmotion();
-        } else {
+        } else if (userVideo) {
           // Ensure video is fully ready before starting face detection
           await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second for video to stabilize
           
           // Final check: verify video dimensions
           if (userVideo.videoWidth > 0 && userVideo.videoHeight > 0) {
-            console.log('? Starting face detection with video:', userVideo.videoWidth, 'x', userVideo.videoHeight);
+            console.log('✅ Starting face detection with video:', userVideo.videoWidth, 'x', userVideo.videoHeight);
             await initFaceMesh();
             detectFace();
           } else {
-            console.warn('?? Video not ready after camera setup, switching to mock mode');
-            mockToggle.checked = true;
+            console.warn('⚠️ Video not ready after camera setup, switching to mock mode');
+            if (mockToggle) mockToggle.checked = true;
             startMockEmotion();
           }
         }
         
         // Clear loading message
-        conversationDiv.innerHTML = '<p><strong>AI:</strong> Interview starting now. Good luck! ??</p>';
+        if (conversationDiv) {
+          conversationDiv.innerHTML = '<p><strong>AI:</strong> Interview starting now. Good luck! 🎯</p>';
+        }
         
         // Start interview
         askQuestion();
-      });`n        console.log(' startBtn event listener attached successfully');`n      }`n`nlet isFinishing = false; // Guard to prevent multiple calls
+      };
+      
+      window.handleRetryCamera = async function() {
+        console.log('🔄 RETRY CAMERA CLICKED - Direct onclick handler!');
+        cameraRetryAttempts = 0;
+        await setupCamera();
+        await updateDiagnostics();
+      };
+      
+      window.handleAnswer = function() {
+        console.log('💬 ANSWER BUTTON CLICKED - Direct onclick handler!');
+        const answerBtn = document.getElementById('answer-btn');
+        const stopBtn = document.getElementById('stop-btn');
+        const conversationDiv = document.getElementById('conversation');
+        
+        if (answerBtn) answerBtn.style.display = 'none';
+        if (stopBtn) stopBtn.style.display = 'inline-block';
+        if (conversationDiv) {
+          conversationDiv.innerHTML += `<p><strong>AI:</strong> Listening... please begin your answer.</p>`;
+        }
+        startSpeech();
+      };
+      
+      window.handleStop = function() {
+        console.log('⏹️ STOP BUTTON CLICKED - Direct onclick handler!');
+        const stopBtn = document.getElementById('stop-btn');
+        const answerBtn = document.getElementById('answer-btn');
+        const conversationDiv = document.getElementById('conversation');
+        
+        if (stopBtn) stopBtn.style.display = 'none';
+        stopSpeech();
+        if (!isRecognizing && !currentAnswer) {
+          if (conversationDiv) {
+            conversationDiv.innerHTML += `<p><strong>AI:</strong> Stopped listening.</p>`;
+          }
+          if (answerBtn) answerBtn.style.display = 'inline-block';
+        }
+      };
+      
+      window.handleStopInterview = function() {
+        console.log('🛑 STOP INTERVIEW CLICKED - Direct onclick handler!');
+        stopInterview();
+      };
+      
+      console.log('✅✅✅ ALL Global button handlers created successfully ✅✅✅');
+      console.log('🔍 window.handleStartInterview defined:', typeof window.handleStartInterview);
+      console.log('🔍 window.handleAnswer defined:', typeof window.handleAnswer);
+      console.log('🔍 window.handleStop defined:', typeof window.handleStop);
+      console.log('🔍 window.handleRetryCamera defined:', typeof window.handleRetryCamera);
+      console.log('🔍 window.handleStopInterview defined:', typeof window.handleStopInterview);
+
+      // TEST: Flash the start button to confirm it's clickable
+      setTimeout(() => {
+        const startBtn = document.getElementById('start-btn');
+        if (startBtn) {
+          console.log('✅ Start button found! Element:', startBtn);
+          console.log('✅ Button onclick attribute:', startBtn.getAttribute('onclick'));
+          console.log('✅ Button style.pointerEvents:', startBtn.style.pointerEvents);
+          console.log('✅ Button style.zIndex:', startBtn.style.zIndex);
+          
+          // Flash the button green to show it's ready
+          startBtn.style.transition = 'all 0.3s';
+          startBtn.style.background = '#4caf50';
+          startBtn.style.transform = 'scale(1.1)';
+          setTimeout(() => {
+            startBtn.style.background = '';
+            startBtn.style.transform = '';
+          }, 500);
+          
+          console.log('✅ Button is ready! Try clicking it now.');
+          
+          // DIAGNOSTIC: Check what element is actually at the button's position
+          const rect = startBtn.getBoundingClientRect();
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          const elementAtPoint = document.elementFromPoint(centerX, centerY);
+          
+          console.log('🔍 Button position:', { x: centerX, y: centerY });
+          console.log('🔍 Element at button center:', elementAtPoint);
+          console.log('🔍 Is it the button itself?', elementAtPoint === startBtn);
+          
+          if (elementAtPoint !== startBtn) {
+            console.error('❌ BLOCKING ELEMENT FOUND!', elementAtPoint);
+            console.error('❌ Blocking element z-index:', window.getComputedStyle(elementAtPoint).zIndex);
+            console.error('❌ Blocking element pointer-events:', window.getComputedStyle(elementAtPoint).pointerEvents);
+            
+            // Try to fix it by setting the blocker to pointer-events: none
+            if (elementAtPoint) {
+              console.log('🔧 Attempting to fix by setting blocking element to pointer-events: none...');
+              elementAtPoint.style.pointerEvents = 'none';
+              
+              // Check again
+              const newElement = document.elementFromPoint(centerX, centerY);
+              console.log('🔍 Element after fix:', newElement);
+              if (newElement === startBtn) {
+                console.log('✅ FIX SUCCESSFUL! Button is now clickable!');
+              }
+            }
+          }
+        } else {
+          console.error('❌ Start button NOT FOUND in DOM!');
+        }
+      }, 1000);
+
+      let isFinishing = false; // Guard to prevent multiple calls
       
       async function finishInterview() {
         if (isFinishing) {
@@ -1641,7 +1802,7 @@
         // Prepare interview data
         const interviewData = {
           timestamp: new Date().toISOString(),
-          department: 'ME',
+          department: 'CS',
           topic: topicSelect.value,
           level: levelSelect.value,
           questionsAsked: question_list.length,
@@ -1667,7 +1828,7 @@
         try {
           if (typeof processInterviewResult === 'function') {
             console.log('? Processing interview result (stars + leaderboard)...');
-            processedData = await processInterviewResult(interviewData, 'me');
+            processedData = await processInterviewResult(interviewData, 'cs');
             console.log('? Interview result processed successfully');
           } else {
             console.warn('?? processInterviewResult function not found, skipping post-processing');
@@ -1722,7 +1883,7 @@
         // Automatically redirect to report page after 3 seconds
         setTimeout(() => {
           console.log('?? Redirecting to report.html...');
-          window.location.href = './ai-report.html';
+          window.location.href = 'report.html';
         }, 3000);
       }
 
@@ -1731,28 +1892,38 @@
           finishInterview();
         }
       }
+      
+      console.log('✅ All event listeners setup complete');
+      
+      // Note: startBtn event listener is attached around line 1584
 
-      retryCameraBtn.addEventListener('click', async () => {
-        cameraRetryAttempts = 0;
-        await setupCamera();
-        await updateDiagnostics();
-      });
+      if (retryCameraBtn) {
+        retryCameraBtn.addEventListener('click', async () => {
+          cameraRetryAttempts = 0;
+          await setupCamera();
+          await updateDiagnostics();
+        });
+      }
 
-      answerBtn.addEventListener('click', () => {
-        answerBtn.style.display = 'none';
-        stopBtn.style.display = 'inline-block';
-        conversationDiv.innerHTML += `<p><strong>AI:</strong> Listening... please begin your answer.</p>`;
-        startSpeech();
-      });
+      if (answerBtn) {
+        answerBtn.addEventListener('click', () => {
+          answerBtn.style.display = 'none';
+          stopBtn.style.display = 'inline-block';
+          conversationDiv.innerHTML += `<p><strong>AI:</strong> Listening... please begin your answer.</p>`;
+          startSpeech();
+        });
+      }
 
-      stopBtn.addEventListener('click', () => {
-        stopBtn.style.display = 'none';
-        stopSpeech();
-        if (!isRecognizing && !currentAnswer) {
-          conversationDiv.innerHTML += `<p><strong>AI:</strong> Stopped listening.</p>`;
-          answerBtn.style.display = 'inline-block';
-        }
-      });
+      if (stopBtn) {
+        stopBtn.addEventListener('click', () => {
+          stopBtn.style.display = 'none';
+          stopSpeech();
+          if (!isRecognizing && !currentAnswer) {
+            conversationDiv.innerHTML += `<p><strong>AI:</strong> Stopped listening.</p>`;
+            answerBtn.style.display = 'inline-block';
+          }
+        });
+      }
 
       // Stop Interview button
       const stopInterviewBtn = document.getElementById('stop-interview-btn');
@@ -1772,6 +1943,15 @@
           if (!ok) conversationDiv.innerHTML += `<p><strong>AI:</strong> No working camera found.</p>`;
           await updateDiagnostics();
         }
+      });
+      
+      // Final initialization check
+      console.log('? Interview page fully loaded and ready!');
+      console.log('?? Page state:', {
+        THREE: typeof THREE !== 'undefined',
+        RobotInterviewer: typeof RobotInterviewer !== 'undefined',
+        robotInitialized: !!robotInterviewer,
+        buttonsReady: !!(startBtn && answerBtn && stopBtn)
       });
     </script>
   
@@ -1811,20 +1991,6 @@
         }
       }
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="../../assets/js/robot-interviewer.js"></script>
-    <script>
-      (function initBgRobot(){
-        if (typeof THREE === 'undefined' || typeof window.RobotInterviewer === 'undefined') {
-          return setTimeout(initBgRobot, 100);
-        }
-        try {
-          window.bgRobotME = new window.RobotInterviewer('bg-robot-container', THREE, { canvasId:'bg-robot-canvas', trackCursor:true });
-          window.bgRobotME.setState('neutral');
-          console.log('? ME background robot initialized');
-        } catch(e){ console.error('? ME background robot init failed:', e); }
-      })();
-    </script>
   
     <!-- Particle Generation Script -->
     <script>
@@ -1858,9 +2024,7 @@
       }
     </script>
     
-    <!-- Three.js + Robot Interviewer -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="../../assets/js/robot-interviewer.js"></script>
+
     <script>
       // Initialize Background Robot
       (function initBgRobot(){
