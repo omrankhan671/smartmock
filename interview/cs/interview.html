@@ -383,6 +383,10 @@
   <script src="../../assets/js/firebase-config.js"></script>
   <script src="../../assets/js/main.js"></script>
     <script>
+      // Ensure DOM is fully loaded before attaching event listeners
+      document.addEventListener('DOMContentLoaded', function() {
+        console.log('🚀 Quiz script starting - DOM loaded');
+      
       // Quiz MCQ Bank
       const quizBank = {
         javascript: {
@@ -609,6 +613,9 @@
         document.querySelector('.section-card > p').style.display = 'block';
         document.querySelector('.section-card > div').style.display = 'block';
       }
+      
+      console.log('✅ Quiz script fully loaded and initialized');
+      }); // End DOMContentLoaded
     </script>
   
     <!-- Particle Generation Script -->

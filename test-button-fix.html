@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background: #f0f0f0;
+        }
+        .btn {
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        .btn:hover {
+            background: #45a049;
+        }
+        #output {
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            min-height: 100px;
+        }
+        .success { color: green; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>SmartMock Button Test Page</h1>
+    <p>This page tests if buttons are working correctly with proper event listeners.</p>
+    
+    <button id="test-btn-1" class="btn">Test Button 1</button>
+    <button id="test-btn-2" class="btn">Test Button 2</button>
+    <button id="test-btn-3" class="btn">Test Button 3</button>
+    
+    <div id="output">
+        <p>Click any button above to test...</p>
+    </div>
+
+    <script>
+        console.log('🚀 Test script starting...');
+        
+        // Test 1: Immediate execution
+        const btn1 = document.getElementById('test-btn-1');
+        console.log('Button 1 found:', !!btn1);
+        if (btn1) {
+            btn1.addEventListener('click', () => {
+                document.getElementById('output').innerHTML += '<p class="success">✅ Button 1 clicked! (Immediate execution)</p>';
+                console.log('✅ Button 1 clicked');
+            });
+        }
+        
+        // Test 2: DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 DOMContentLoaded fired');
+            const btn2 = document.getElementById('test-btn-2');
+            console.log('Button 2 found:', !!btn2);
+            if (btn2) {
+                btn2.addEventListener('click', () => {
+                    document.getElementById('output').innerHTML += '<p class="success">✅ Button 2 clicked! (DOMContentLoaded)</p>';
+                    console.log('✅ Button 2 clicked');
+                });
+            }
+        });
+        
+        // Test 3: Window onload
+        window.addEventListener('load', () => {
+            console.log('🚀 Window load event fired');
+            const btn3 = document.getElementById('test-btn-3');
+            console.log('Button 3 found:', !!btn3);
+            if (btn3) {
+                btn3.addEventListener('click', () => {
+                    document.getElementById('output').innerHTML += '<p class="success">✅ Button 3 clicked! (Window load)</p>';
+                    console.log('✅ Button 3 clicked');
+                });
+            }
+        });
+        
+        console.log('✅ Test script fully loaded');
+    </script>
+</body>
+</html>
