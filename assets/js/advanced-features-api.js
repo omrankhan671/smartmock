@@ -3,8 +3,14 @@
  * Connects UI to Firebase Cloud Functions and Realtime Database
  */
 
-// Initialize Firebase functions
-const functions = firebase.functions();
+// Lazy initialization of Firebase functions - only when needed
+function getFunctions() {
+  if (typeof firebase === 'undefined' || !firebase.functions) {
+    console.warn('Firebase functions not available');
+    return null;
+  }
+  return firebase.functions();
+}
 
 // ============================================================================
 // RESUME BUILDER API
@@ -25,7 +31,7 @@ const ResumeAPI = {
       const atsScoreResult = await this.calculateATSScore(resumeData);
       resumeData.atsScore = atsScoreResult.score;
 
-      const saveResume = functions.httpsCallable('saveResume');
+      const saveResume = getFunctions().httpsCallable('saveResume');
       const result = await saveResume(resumeData);
       
       return result.data;
@@ -40,7 +46,7 @@ const ResumeAPI = {
    */
   async getUserResumes() {
     try {
-      const getUserResumes = functions.httpsCallable('getUserResumes');
+      const getUserResumes = getFunctions().httpsCallable('getUserResumes');
       const result = await getUserResumes();
       
       return result.data.resumes;
@@ -55,7 +61,7 @@ const ResumeAPI = {
    */
   async calculateATSScore(resumeData) {
     try {
-      const calculateATSScore = functions.httpsCallable('calculateATSScore');
+      const calculateATSScore = getFunctions().httpsCallable('calculateATSScore');
       const result = await calculateATSScore(resumeData);
       
       return result.data;
@@ -70,7 +76,7 @@ const ResumeAPI = {
    */
   async getAISuggestions(section, content, role) {
     try {
-      const getAISuggestions = functions.httpsCallable('getAISuggestions');
+      const getAISuggestions = getFunctions().httpsCallable('getAISuggestions');
       const result = await getAISuggestions({ section, content, role });
       
       return result.data;
@@ -111,7 +117,7 @@ const StudyGroupsAPI = {
         throw new Error('User must be logged in to create a group');
       }
 
-      const createStudyGroup = functions.httpsCallable('createStudyGroup');
+      const createStudyGroup = getFunctions().httpsCallable('createStudyGroup');
       const result = await createStudyGroup(groupData);
       
       return result.data;
@@ -131,7 +137,7 @@ const StudyGroupsAPI = {
         throw new Error('User must be logged in to join a group');
       }
 
-      const joinStudyGroup = functions.httpsCallable('joinStudyGroup');
+      const joinStudyGroup = getFunctions().httpsCallable('joinStudyGroup');
       const result = await joinStudyGroup({ groupId });
       
       return result.data;
@@ -146,7 +152,7 @@ const StudyGroupsAPI = {
    */
   async getGroups(filters = {}) {
     try {
-      const getStudyGroups = functions.httpsCallable('getStudyGroups');
+      const getStudyGroups = getFunctions().httpsCallable('getStudyGroups');
       const result = await getStudyGroups(filters);
       
       return result.data.groups;
@@ -166,7 +172,7 @@ const StudyGroupsAPI = {
         throw new Error('User must be logged in to post messages');
       }
 
-      const postGroupMessage = functions.httpsCallable('postGroupMessage');
+      const postGroupMessage = getFunctions().httpsCallable('postGroupMessage');
       const result = await postGroupMessage({ groupId, message });
       
       return result.data;
@@ -205,7 +211,7 @@ const PeerReviewAPI = {
         throw new Error('User must be logged in to request review');
       }
 
-      const requestPeerReview = functions.httpsCallable('requestPeerReview');
+      const requestPeerReview = getFunctions().httpsCallable('requestPeerReview');
       const result = await requestPeerReview(reviewData);
       
       return result.data;
@@ -225,7 +231,7 @@ const PeerReviewAPI = {
         throw new Error('User must be logged in to submit review');
       }
 
-      const submitReview = functions.httpsCallable('submitReview');
+      const submitReview = getFunctions().httpsCallable('submitReview');
       const result = await submitReview({ requestId, ratings, feedback });
       
       return result.data;
@@ -240,7 +246,7 @@ const PeerReviewAPI = {
    */
   async getAvailableReviews() {
     try {
-      const getAvailableReviews = functions.httpsCallable('getAvailableReviews');
+      const getAvailableReviews = getFunctions().httpsCallable('getAvailableReviews');
       const result = await getAvailableReviews();
       
       return result.data.reviews;
@@ -255,7 +261,7 @@ const PeerReviewAPI = {
    */
   async getReviewsForRequest(requestId) {
     try {
-      const getReviewsForRequest = functions.httpsCallable('getReviewsForRequest');
+      const getReviewsForRequest = getFunctions().httpsCallable('getReviewsForRequest');
       const result = await getReviewsForRequest({ requestId });
       
       return result.data.reviews;
@@ -294,7 +300,7 @@ const UserStatsAPI = {
         throw new Error('User must be logged in');
       }
 
-      const getUserStats = functions.httpsCallable('getUserStats');
+      const getUserStats = getFunctions().httpsCallable('getUserStats');
       const result = await getUserStats();
       
       return result.data.stats;
