@@ -49,53 +49,73 @@ async function initializeLeaderboard() {
 // Setup event listeners
 function setupEventListeners() {
     // Filters
-    document.getElementById('department-filter').addEventListener('change', applyFilters);
-    document.getElementById('timeframe-filter').addEventListener('change', applyFilters);
+    const deptFilter = document.getElementById('department-filter');
+    const timeFilter = document.getElementById('timeframe-filter');
+    if (deptFilter) deptFilter.addEventListener('change', applyFilters);
+    if (timeFilter) timeFilter.addEventListener('change', applyFilters);
     
     // Search
-    document.getElementById('search-input').addEventListener('input', debounce(handleSearch, 300));
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) searchInput.addEventListener('input', debounce(handleSearch, 300));
     
     // Refresh
-    document.getElementById('refresh-btn').addEventListener('click', () => {
-        loadLeaderboardData();
-    });
+    const refreshBtn = document.getElementById('refresh-btn');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', () => {
+            loadLeaderboardData();
+        });
+    }
     
     // Pagination
-    document.getElementById('prev-btn').addEventListener('click', () => {
-        if (currentPage > 1) {
-            currentPage--;
-            renderLeaderboard();
-        }
-    });
-    
-    document.getElementById('next-btn').addEventListener('click', () => {
-        const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-        if (currentPage < totalPages) {
-            currentPage++;
-            renderLeaderboard();
-        }
-    });
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderLeaderboard();
+            }
+        });
+    }
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderLeaderboard();
+            }
+        });
+    }
     
     // Close performance card
-    document.getElementById('close-performance')?.addEventListener('click', () => {
-        document.getElementById('user-performance-card').style.display = 'none';
-    });
+    const closePerf = document.getElementById('close-performance');
+    if (closePerf) {
+        closePerf.addEventListener('click', () => {
+            const perfCard = document.getElementById('user-performance-card');
+            if (perfCard) perfCard.style.display = 'none';
+        });
+    }
     
     // Hamburger menu
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
-    hamburger?.addEventListener('click', () => {
-        hamburger.classList.toggle('active');
-        navMenu.classList.toggle('active');
-    });
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+    }
     
     // Logout
-    document.getElementById('logout-btn')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        firebase.auth().signOut().then(() => {
-            window.location.href = 'index.html';
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            firebase.auth().signOut().then(() => {
+                window.location.href = 'index.html';
+            });
         });
-    });
+    }
 }
 
 // Load leaderboard data from Firebase
@@ -151,17 +171,22 @@ function updateStats() {
         ? Math.round(allLeaderboardData.reduce((sum, item) => sum + (item.bestScore || 0), 0) / totalUsers) 
         : 0;
     
-    document.getElementById('total-users').textContent = totalUsers.toLocaleString();
-    document.getElementById('total-interviews').textContent = totalInterviews.toLocaleString();
-    document.getElementById('avg-score').textContent = avgScore;
+    const totalUsersEl = document.getElementById('total-users');
+    const totalInterviewsEl = document.getElementById('total-interviews');
+    const avgScoreEl = document.getElementById('avg-score');
+    const userRankEl = document.getElementById('user-rank');
+    
+    if (totalUsersEl) totalUsersEl.textContent = totalUsers.toLocaleString();
+    if (totalInterviewsEl) totalInterviewsEl.textContent = totalInterviews.toLocaleString();
+    if (avgScoreEl) avgScoreEl.textContent = avgScore;
     
     // Find current user rank
-    if (currentUser) {
+    if (currentUser && userRankEl) {
         const userEntry = allLeaderboardData.find(item => item.userId === currentUser.uid);
         if (userEntry) {
-            document.getElementById('user-rank').textContent = `#${userEntry.rank}`;
+            userRankEl.textContent = `#${userEntry.rank}`;
         } else {
-            document.getElementById('user-rank').textContent = '--';
+            userRankEl.textContent = '--';
         }
     }
 }
@@ -288,15 +313,23 @@ function renderLeaderboard() {
 function updatePagination() {
     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
     
-    document.getElementById('page-info').textContent = `Page ${currentPage} of ${totalPages || 1}`;
-    document.getElementById('prev-btn').disabled = currentPage === 1;
-    document.getElementById('next-btn').disabled = currentPage >= totalPages || totalPages === 0;
+    const pageInfo = document.getElementById('page-info');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    
+    if (pageInfo) pageInfo.textContent = `Page ${currentPage} of ${totalPages || 1}`;
+    if (prevBtn) prevBtn.disabled = currentPage === 1;
+    if (nextBtn) nextBtn.disabled = currentPage >= totalPages || totalPages === 0;
 }
 
 // Apply filters
 function applyFilters() {
-    const department = document.getElementById('department-filter').value;
-    const timeframe = document.getElementById('timeframe-filter').value;
+    const deptFilter = document.getElementById('department-filter');
+    const timeFilter = document.getElementById('timeframe-filter');
+    if (!deptFilter || !timeFilter) return;
+    
+    const department = deptFilter.value;
+    const timeframe = timeFilter.value;
     
     filteredData = [...allLeaderboardData];
     // Ensure sorting preserved after filtering
@@ -394,26 +427,35 @@ async function loadUserPerformance() {
             const improvement = data.improvement || 0;
             
             // Update UI
-            document.getElementById('user-global-rank').textContent = `#${globalRank || '--'}`;
-            document.getElementById('user-dept-rank').textContent = `#${deptRank || '--'}`;
-            document.getElementById('user-best-score').textContent = data.bestScore || 0;
-            document.getElementById('user-total-interviews').textContent = data.totalInterviews || 0;
-            document.getElementById('user-avg-score').textContent = avgScore;
-            
+            const globalRankEl = document.getElementById('user-global-rank');
+            const deptRankEl = document.getElementById('user-dept-rank');
+            const bestScoreEl = document.getElementById('user-best-score');
+            const totalInterviewsEl = document.getElementById('user-total-interviews');
+            const avgScoreEl = document.getElementById('user-avg-score');
             const improvementEl = document.getElementById('user-improvement');
-            if (improvement > 0) {
-                improvementEl.textContent = `+${improvement}%`;
-                improvementEl.style.color = '#22C55E';
-            } else if (improvement < 0) {
-                improvementEl.textContent = `${improvement}%`;
-                improvementEl.style.color = '#EF4444';
-            } else {
-                improvementEl.textContent = '0%';
-                improvementEl.style.color = '#9CA3AF';
+            const perfCard = document.getElementById('user-performance-card');
+            
+            if (globalRankEl) globalRankEl.textContent = `#${globalRank || '--'}`;
+            if (deptRankEl) deptRankEl.textContent = `#${deptRank || '--'}`;
+            if (bestScoreEl) bestScoreEl.textContent = data.bestScore || 0;
+            if (totalInterviewsEl) totalInterviewsEl.textContent = data.totalInterviews || 0;
+            if (avgScoreEl) avgScoreEl.textContent = avgScore;
+            
+            if (improvementEl) {
+                if (improvement > 0) {
+                    improvementEl.textContent = `+${improvement}%`;
+                    improvementEl.style.color = '#22C55E';
+                } else if (improvement < 0) {
+                    improvementEl.textContent = `${improvement}%`;
+                    improvementEl.style.color = '#EF4444';
+                } else {
+                    improvementEl.textContent = '0%';
+                    improvementEl.style.color = '#9CA3AF';
+                }
             }
             
             // Show performance card
-            document.getElementById('user-performance-card').style.display = 'block';
+            if (perfCard) perfCard.style.display = 'block';
         }
     } catch (error) {
         console.error('Error loading user performance:', error);
@@ -540,31 +582,40 @@ function debounce(func, wait) {
 }
 
 function showLoading() {
-    document.getElementById('leaderboard-tbody').innerHTML = `
-        <tr>
-            <td colspan="7" class="loading-row">
-                <div class="loading-spinner"></div>
-                <p>Loading rankings...</p>
-            </td>
-        </tr>
-    `;
+    const tbody = document.getElementById('leaderboard-tbody');
+    if (tbody) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" class="loading-row">
+                    <div class="loading-spinner"></div>
+                    <p>Loading rankings...</p>
+                </td>
+            </tr>
+        `;
+    }
     
-    document.getElementById('podium-section').innerHTML = `
-        <div class="podium-placeholder">
-            <div class="loading-spinner"></div>
-            <p>Loading top performers...</p>
-        </div>
-    `;
+    const podium = document.getElementById('podium-section');
+    if (podium) {
+        podium.innerHTML = `
+            <div class="podium-placeholder">
+                <div class="loading-spinner"></div>
+                <p>Loading top performers...</p>
+            </div>
+        `;
+    }
 }
 
 function showError(message) {
-    document.getElementById('leaderboard-tbody').innerHTML = `
-        <tr>
-            <td colspan="7" style="text-align: center; padding: 40px; color: #EF4444;">
-                ❌ ${message}
-            </td>
-        </tr>
-    `;
+    const tbody = document.getElementById('leaderboard-tbody');
+    if (tbody) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" style="text-align: center; padding: 40px; color: #EF4444;">
+                    ❌ ${message}
+                </td>
+            </tr>
+        `;
+    }
 }
 
 // Export function for use in AI interview pages

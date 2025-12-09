@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -15,7 +15,7 @@
       media-src 'self' blob:;
       worker-src 'self' blob:;
     ">
-    <title>SmartMock – ME AI Interview</title>
+    <title>SmartMock � ME AI Interview</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23007bff'/%3E%3Ctext x='32' y='39' font-size='28' text-anchor='middle' fill='white' font-family='Arial'%3ES%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -547,7 +547,7 @@
     <header class="site-header">
       <div class="site-header-inner container">
         <nav class="menu menu-left">
-          <div class="menu-button">☰ Menu</div>
+          <div class="menu-button">? Menu</div>
           <ul class="dropdown">
             <li><a href="../../home.html">Home</a></li>
             <li><a href="../../dashboard.html">Dashboard</a></li>
@@ -616,7 +616,7 @@
 
     <main class="container">
       <section>
-        <h2>Mechanical Engineering – AI Interview</h2>
+        <h2>Mechanical Engineering � AI Interview</h2>
         <div class="ai-interview-container">
           <div class="video-container">
             <video id="user-video" autoplay muted playsinline></video>
@@ -658,7 +658,7 @@
         </div>
       </section>
     </main>
-    <footer class="site-footer">© <span id="year"></span> SmartMock.</footer>
+    <footer class="site-footer">� <span id="year"></span> SmartMock.</footer>
     <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -675,7 +675,7 @@
     <script src="../../assets/js/i18n-accessibility.js"></script>
     
     <!-- Leaderboard integration -->
-    <script src="../../assets/js/leaderboard.js"></script>
+    <script src="../../assets/js/leaderboard.js?v=2.0.1"></script>
     <script src="../../assets/js/interview-postprocess.js"></script>
     
 
@@ -740,11 +740,11 @@
       }
 
       function avatarHappy() {
-        setAvatarState('happy', '😊 Great answer!');
+        setAvatarState('happy', '?? Great answer!');
       }
 
       function avatarSad() {
-        setAvatarState('sad', '😔 Needs improvement');
+        setAvatarState('sad', '?? Needs improvement');
       }
 
       function avatarNeutral() {
@@ -800,7 +800,7 @@
             ? { video: { deviceId: { ideal: deviceId }, width: { ideal: 640 }, height: { ideal: 480 } }, audio: false }
             : { video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }, audio: false };
           
-          console.log('📷 Requesting camera with constraints:', constraints);
+          console.log('?? Requesting camera with constraints:', constraints);
           const s = await navigator.mediaDevices.getUserMedia(constraints);
           stream = s;
           
@@ -813,18 +813,18 @@
           // Wait for video to be ready with longer timeout
           await new Promise((resolve, reject) => {
             const timeout = setTimeout(() => {
-              console.warn('⏰ Video metadata load timeout, continuing anyway');
+              console.warn('? Video metadata load timeout, continuing anyway');
               resolve();
             }, 5000);
             
             userVideo.onloadedmetadata = () => {
               clearTimeout(timeout);
-              console.log('✅ Video metadata loaded:', userVideo.videoWidth, 'x', userVideo.videoHeight);
+              console.log('? Video metadata loaded:', userVideo.videoWidth, 'x', userVideo.videoHeight);
               resolve();
             };
             userVideo.onerror = (err) => {
               clearTimeout(timeout);
-              console.error('❌ Video element error:', err);
+              console.error('? Video element error:', err);
               reject(err);
             };
           });
@@ -834,11 +834,11 @@
           while (playAttempts < 3) {
             try {
               await userVideo.play();
-              console.log('✅ Video playing successfully');
+              console.log('? Video playing successfully');
               return true;
             } catch(playErr) {
               playAttempts++;
-              console.warn(`⚠️ Video play attempt ${playAttempts} failed:`, playErr.name);
+              console.warn(`?? Video play attempt ${playAttempts} failed:`, playErr.name);
               if (playAttempts < 3) {
                 await new Promise(r => setTimeout(r, 200 * playAttempts));
               }
@@ -846,11 +846,11 @@
           }
           
           // If we got here, play failed but stream exists
-          console.warn('⚠️ Video play failed but stream exists, continuing');
+          console.warn('?? Video play failed but stream exists, continuing');
           return true;
           
         } catch (e) {
-          console.error('❌ openStreamForDevice error:', e.name, e.message);
+          console.error('? openStreamForDevice error:', e.name, e.message);
           return false;
         }
       }
@@ -892,7 +892,7 @@
 
       async function setupCamera() {
         try {
-          console.log('🎥 Setting up camera...');
+          console.log('?? Setting up camera...');
           
           if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
             throw new Error('getUserMedia not supported in this browser.');
@@ -905,11 +905,11 @@
           // Open with preferred or selected device first
           const preferred = localStorage.getItem(PREF_CAM_KEY);
           const selectedId = cameraSelect.value || preferred || '';
-          console.log('🎥 Attempting to open camera:', selectedId || 'auto');
+          console.log('?? Attempting to open camera:', selectedId || 'auto');
           
           let opened = await openStreamForDevice(selectedId);
           if (!opened) {
-            console.log('🎥 First attempt failed, trying auto mode...');
+            console.log('?? First attempt failed, trying auto mode...');
             // Try auto (facingMode)
             opened = await openStreamForDevice('');
           }
@@ -918,33 +918,33 @@
           await populateCameras(opened ? (selectedId || localStorage.getItem(PREF_CAM_KEY) || '') : '');
           
           if (opened) {
-            console.log('✅ Camera setup successful');
+            console.log('? Camera setup successful');
             // Verify video is actually playing
             setTimeout(() => {
               if (userVideo.videoWidth > 0 && userVideo.videoHeight > 0) {
-                console.log(`✅ Video dimensions: ${userVideo.videoWidth}x${userVideo.videoHeight}`);
+                console.log(`? Video dimensions: ${userVideo.videoWidth}x${userVideo.videoHeight}`);
               } else {
-                console.warn('⚠️ Video element has no dimensions - stream may not be working');
+                console.warn('?? Video element has no dimensions - stream may not be working');
               }
             }, 500);
             return userVideo;
           }
           
           // If still not opened, cycle through all cameras
-          console.log('🎥 Trying all available cameras...');
+          console.log('?? Trying all available cameras...');
           const cycled = await tryAllCameras();
           if (cycled) {
-            console.log('✅ Camera found in cycle');
+            console.log('? Camera found in cycle');
             return userVideo;
           }
           
           // Graceful fallback: enable mock mode and continue
-          console.warn('⚠️ No working camera found, switching to mock mode');
+          console.warn('?? No working camera found, switching to mock mode');
           emotionDisplay.textContent = 'Camera not found. Switching to Mock Emotion mode.';
           if (mockToggle) { mockToggle.checked = true; }
           return null;
         } catch (err) {
-          console.error('❌ Camera error:', err);
+          console.error('? Camera error:', err);
           const name = err && err.name ? err.name : 'Error';
           let hint = '';
           switch (name) {
@@ -1157,7 +1157,7 @@
         
         // Check if video has valid dimensions before sending to FaceMesh
         if (!userVideo || userVideo.videoWidth === 0 || userVideo.videoHeight === 0) {
-          console.log('⏳ Video not ready yet, dimensions:', userVideo?.videoWidth, 'x', userVideo?.videoHeight);
+          console.log('? Video not ready yet, dimensions:', userVideo?.videoWidth, 'x', userVideo?.videoHeight);
           setTimeout(detectFace, 150);
           return;
         }
@@ -1172,10 +1172,10 @@
 
       // Web Speech API integration
       function initSpeechRecognition(){
-        console.log('🎤 Initializing Speech Recognition...');
+        console.log('?? Initializing Speech Recognition...');
         const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!SR) {
-          console.warn('❌ Speech Recognition API not supported in this browser.');
+          console.warn('? Speech Recognition API not supported in this browser.');
           return null;
         }
         const r = new SR();
@@ -1186,21 +1186,21 @@
         r.onstart = () => {
           isRecognizing = true;
           currentAnswer = "";
-          console.log('🎤 Speech Recognition started.');
+          console.log('?? Speech Recognition started.');
         };
         r.onresult = (ev) => {
           let txt = '';
           for (let i=ev.resultIndex; i<ev.results.length; i++) { txt += ev.results[i][0].transcript + ' '; }
           currentAnswer = txt.trim();
-          console.log('🎤 Speech Recognition result:', currentAnswer);
+          console.log('?? Speech Recognition result:', currentAnswer);
         };
         r.onerror = (ev) => {
-          console.error('❌ Speech Recognition error:', ev.error);
+          console.error('? Speech Recognition error:', ev.error);
           conversationDiv.innerHTML += `<p><strong>AI:</strong> Speech error (${ev.error}). You can type your answer instead.</p>`;
         };
         r.onend = () => {
           isRecognizing = false;
-          console.log('🎤 Speech Recognition ended. Final answer:', currentAnswer);
+          console.log('?? Speech Recognition ended. Final answer:', currentAnswer);
           if (currentAnswer) handleFinalAnswer(currentAnswer);
           answerBtn.style.display = 'inline-block';
           stopBtn.style.display = 'none';
@@ -1209,9 +1209,9 @@
       }
 
       function startSpeech(){
-        console.log('🎤 Attempting to start speech recognition...');
+        console.log('?? Attempting to start speech recognition...');
         if (isRecognizing) {
-          console.log('🎤 Speech recognition already running.');
+          console.log('?? Speech recognition already running.');
           return;
         }
         if (!recognition) recognition = initSpeechRecognition();
@@ -1221,9 +1221,9 @@
         }
         try {
           recognition.start();
-          console.log('🎤 recognition.start() called.');
+          console.log('?? recognition.start() called.');
         } catch (e) {
-          console.error('❌ Error calling recognition.start():', e);
+          console.error('? Error calling recognition.start():', e);
           conversationDiv.innerHTML += `<p><strong>AI:</strong> Error starting speech recognition. Please check microphone permissions.</p>`;
         }
       }
@@ -1316,14 +1316,14 @@
       async function askQuestion() {
         // Check if interview stopped or reached limit
         if (interviewStopped || question_list.length >= TOTAL_QUESTIONS) {
-          console.log(`🎯 Interview complete! Questions asked: ${question_list.length}/${TOTAL_QUESTIONS}`);
-          console.log(`🔍 Reason: interviewStopped=${interviewStopped}, question_list.length=${question_list.length}, TOTAL_QUESTIONS=${TOTAL_QUESTIONS}`);
-          console.trace('📍 Call stack:');
+          console.log(`?? Interview complete! Questions asked: ${question_list.length}/${TOTAL_QUESTIONS}`);
+          console.log(`?? Reason: interviewStopped=${interviewStopped}, question_list.length=${question_list.length}, TOTAL_QUESTIONS=${TOTAL_QUESTIONS}`);
+          console.trace('?? Call stack:');
           finishInterview();
           return;
         }
         
-        console.log(`❓ Asking question ${question_list.length + 1}/${TOTAL_QUESTIONS}`);
+        console.log(`? Asking question ${question_list.length + 1}/${TOTAL_QUESTIONS}`);
         
         const topic = topicSelect.value;
         const level = levelSelect.value;
@@ -1426,7 +1426,7 @@
             "What are higher-order functions?": "Functions that either take other functions as arguments or return functions. Examples: map, filter, reduce, and function factories.",
             "Explain event delegation.": "Event delegation is attaching a single event listener to a parent element instead of multiple listeners to children, leveraging event bubbling to handle events from child elements.",
             
-            "Explain the prototype chain in detail.": "Every object has an internal [[Prototype]] link. Property lookups traverse the chain from object → Object.prototype → null. Constructor functions' prototypes are shared among instances, enabling efficient method sharing.",
+            "Explain the prototype chain in detail.": "Every object has an internal [[Prototype]] link. Property lookups traverse the chain from object ? Object.prototype ? null. Constructor functions' prototypes are shared among instances, enabling efficient method sharing.",
             "What is memoization and how would you implement it?": "Memoization caches function results based on inputs. Implementation: use a Map to store results keyed by stringified arguments, check cache before computing, and store new results.",
             "What are the different ways to handle asynchronous operations?": "Callbacks, Promises (then/catch), async/await, event emitters, streams, and reactive programming with RxJS. Modern code prefers async/await for readability.",
             "Explain the module pattern in JavaScript.": "A design pattern using closures to create private variables and public APIs. Classic: IIFE returning object with public methods. Modern: ES6 modules with import/export.",
@@ -1453,7 +1453,7 @@
             "What is a linked list and how does it differ from an array?": "A linked list is a sequence of nodes where each node contains data and a pointer to the next node. Unlike arrays, it allows O(1) insertion/deletion at known positions but O(n) access by index.",
             "What is a stack and what operations does it support?": "A stack is a LIFO (Last-In-First-Out) data structure supporting push (add to top), pop (remove from top), peek (view top), and isEmpty operations, all in O(1) time.",
             "What is a queue and how does it work?": "A queue is a FIFO (First-In-First-Out) data structure supporting enqueue (add to rear), dequeue (remove from front), peek, and isEmpty operations.",
-            "Explain what Big O notation means.": "Big O notation describes the upper bound of time or space complexity as input size grows. It focuses on the dominant term and ignores constants. Common: O(1), O(log n), O(n), O(n log n), O(n²).",
+            "Explain what Big O notation means.": "Big O notation describes the upper bound of time or space complexity as input size grows. It focuses on the dominant term and ignores constants. Common: O(1), O(log n), O(n), O(n log n), O(n�).",
             "What is the difference between a linear and binary search?": "Linear search checks each element sequentially (O(n)). Binary search divides sorted array in half each iteration (O(log n)) but requires sorted data.",
             "What is a hash table?": "A hash table stores key-value pairs using a hash function to compute array indices. Provides O(1) average insert/search/delete. Handles collisions via chaining or open addressing.",
             "Explain what recursion is.": "Recursion is when a function calls itself to solve smaller instances of the same problem. Must have: base case (termination) and recursive case (problem reduction).",
@@ -1481,10 +1481,10 @@
 
         // Check if we've reached the limit, if not ask next question
         if (question_list.length < TOTAL_QUESTIONS) {
-          console.log(`✅ Answer evaluated. Moving to next question (${question_list.length + 1}/${TOTAL_QUESTIONS})`);
+          console.log(`? Answer evaluated. Moving to next question (${question_list.length + 1}/${TOTAL_QUESTIONS})`);
           setTimeout(() => askQuestion(), 2000); // Wait 2 seconds before next question
         } else {
-          console.log(`🏁 All ${TOTAL_QUESTIONS} questions completed. Will call finishInterview() on next askQuestion check.`);
+          console.log(`?? All ${TOTAL_QUESTIONS} questions completed. Will call finishInterview() on next askQuestion check.`);
         }
         // Note: finishInterview() is called automatically in askQuestion() when limit reached
       }
@@ -1526,22 +1526,22 @@
           saveInterviewReport(reportData)
             .then(result => {
               if (result.success) {
-                console.log('✅ Interview report saved to Firebase:', result.sessionId);
+                console.log('? Interview report saved to Firebase:', result.sessionId);
                 localStorage.setItem('ai_interview_report', JSON.stringify(reportData));
                 window.location.href = `./ai-report.html?sessionId=${encodeURIComponent(sessionId)}`;
               } else {
-                console.warn('⚠️ Firebase save failed, using localStorage only');
+                console.warn('?? Firebase save failed, using localStorage only');
                 localStorage.setItem('ai_interview_report', JSON.stringify(reportData));
                 window.location.href = `./ai-report.html?sessionId=${encodeURIComponent(sessionId)}`;
               }
             })
             .catch(error => {
-              console.error('❌ Error saving report:', error);
+              console.error('? Error saving report:', error);
               localStorage.setItem('ai_interview_report', JSON.stringify(reportData));
               window.location.href = `./ai-report.html?sessionId=${encodeURIComponent(sessionId)}`;
             });
         } else {
-          console.warn('⚠️ Firebase not available, using localStorage');
+          console.warn('?? Firebase not available, using localStorage');
           localStorage.setItem('ai_interview_report', JSON.stringify(reportData));
           window.location.href = `./ai-report.html?sessionId=${encodeURIComponent(sessionId)}`;
         }
@@ -1578,18 +1578,18 @@
           
           // Final check: verify video dimensions
           if (userVideo.videoWidth > 0 && userVideo.videoHeight > 0) {
-            console.log('✅ Starting face detection with video:', userVideo.videoWidth, 'x', userVideo.videoHeight);
+            console.log('? Starting face detection with video:', userVideo.videoWidth, 'x', userVideo.videoHeight);
             await initFaceMesh();
             detectFace();
           } else {
-            console.warn('⚠️ Video not ready after camera setup, switching to mock mode');
+            console.warn('?? Video not ready after camera setup, switching to mock mode');
             mockToggle.checked = true;
             startMockEmotion();
           }
         }
         
         // Clear loading message
-        conversationDiv.innerHTML = '<p><strong>AI:</strong> Interview starting now. Good luck! 🚀</p>';
+        conversationDiv.innerHTML = '<p><strong>AI:</strong> Interview starting now. Good luck! ??</p>';
         
         // Start interview
         askQuestion();
@@ -1599,31 +1599,31 @@
       
       async function finishInterview() {
         if (isFinishing) {
-          console.log('⚠️ finishInterview() already in progress, skipping');
+          console.log('?? finishInterview() already in progress, skipping');
           return;
         }
         isFinishing = true;
-        console.log('🎬 finishInterview() called');
+        console.log('?? finishInterview() called');
         interviewStopped = true;
         
         // Stop camera and speech recognition
         if (stream) {
           stream.getTracks().forEach(track => track.stop());
-          console.log('📷 Camera stopped');
+          console.log('?? Camera stopped');
         }
         if (isRecognizing) {
           stopSpeech();
-          console.log('🎤 Speech recognition stopped');
+          console.log('?? Speech recognition stopped');
         }
         
         // Stop mock emotion if running
         if (mockTimer) {
           clearInterval(mockTimer);
           mockTimer = null;
-          console.log('🤖 Mock emotion stopped');
+          console.log('?? Mock emotion stopped');
         }
         
-        console.log('📊 Calculating metrics...');
+        console.log('?? Calculating metrics...');
         
         // Calculate final metrics
         const totalAnswerTime = answerTimes.reduce((sum, time) => sum + time, 0) || 0;
@@ -1644,7 +1644,7 @@
           ? Object.keys(emotionCounts).reduce((a, b) => emotionCounts[a] > emotionCounts[b] ? a : b, 'neutral')
           : 'neutral';
         
-        console.log('📈 Metrics calculated:', {
+        console.log('?? Metrics calculated:', {
           avgWPM: avgWPM.toFixed(0),
           overallScore: (overallScore * 100).toFixed(1) + '%',
           dominantEmotion,
@@ -1673,20 +1673,20 @@
           completed: question_list.length >= TOTAL_QUESTIONS
         };
         
-        console.log('💾 Interview data prepared:', interviewData);
+        console.log('?? Interview data prepared:', interviewData);
         
         // Process interview result: calculate stars and update leaderboard
         let processedData = interviewData;
         try {
           if (typeof processInterviewResult === 'function') {
-            console.log('⭐ Processing interview result (stars + leaderboard)...');
+            console.log('? Processing interview result (stars + leaderboard)...');
             processedData = await processInterviewResult(interviewData, 'me');
-            console.log('✅ Interview result processed successfully');
+            console.log('? Interview result processed successfully');
           } else {
-            console.warn('⚠️ processInterviewResult function not found, skipping post-processing');
+            console.warn('?? processInterviewResult function not found, skipping post-processing');
           }
         } catch (processError) {
-          console.error('❌ Error processing interview result:', processError);
+          console.error('? Error processing interview result:', processError);
           // Continue with original data
         }
         
@@ -1695,20 +1695,20 @@
           const user = firebase.auth().currentUser;
           if (user) {
             const sessionId = Date.now().toString();
-            console.log('🔥 Saving to Firebase...', `interviews/${user.uid}/${sessionId}`);
+            console.log('?? Saving to Firebase...', `interviews/${user.uid}/${sessionId}`);
             await firebase.database().ref(`interviews/${user.uid}/${sessionId}`).set(processedData);
-            console.log('✅ Interview saved successfully to Firebase with stars:', processedData.stars);
+            console.log('? Interview saved successfully to Firebase with stars:', processedData.stars);
           } else {
-            console.warn('⚠️ No user logged in, cannot save to Firebase');
+            console.warn('?? No user logged in, cannot save to Firebase');
           }
         } catch (error) {
-          console.error('❌ Error saving interview:', error);
+          console.error('? Error saving interview:', error);
         }
         
         // Display completion message
         conversationDiv.innerHTML += `
           <div style="margin-top: 20px; padding: 20px; background: #e8f5e9; border-radius: 8px; text-align: center;">
-            <h3>🎉 Interview Complete!</h3>
+            <h3>?? Interview Complete!</h3>
             <p><strong>Questions Answered:</strong> ${question_list.length}/${TOTAL_QUESTIONS}</p>
             <p><strong>Overall Score:</strong> ${(overallScore * 100).toFixed(1)}%</p>
             <p><strong>Stars Awarded:</strong> ${renderStars(processedData.stars || 0)}</p>
@@ -1731,10 +1731,10 @@
         // Speak completion message
         speak('Interview complete! Great job. Redirecting to your detailed report.', { rate: 1.0, pitch: 1.05 });
         
-        console.log('⏰ Setting redirect timer for 3 seconds...');
+        console.log('? Setting redirect timer for 3 seconds...');
         // Automatically redirect to report page after 3 seconds
         setTimeout(() => {
-          console.log('🚀 Redirecting to report.html...');
+          console.log('?? Redirecting to report.html...');
           window.location.href = './ai-report.html';
         }, 3000);
       }
@@ -1834,8 +1834,8 @@
         try {
           window.bgRobotME = new window.RobotInterviewer('bg-robot-container', THREE, { canvasId:'bg-robot-canvas', trackCursor:true });
           window.bgRobotME.setState('neutral');
-          console.log('✅ ME background robot initialized');
-        } catch(e){ console.error('❌ ME background robot init failed:', e); }
+          console.log('? ME background robot initialized');
+        } catch(e){ console.error('? ME background robot init failed:', e); }
       })();
     </script>
   
@@ -1886,9 +1886,9 @@
             trackCursor: true
           });
           window.bgRobot.setState('neutral');
-          console.log('✅ Background robot initialized');
+          console.log('? Background robot initialized');
         } catch (e) {
-          console.error('❌ Failed to init background robot:', e);
+          console.error('? Failed to init background robot:', e);
         }
       })();
       
