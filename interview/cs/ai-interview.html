@@ -616,7 +616,8 @@
   <script src="../../assets/js/robot-interviewer.js"></script>
   
     <script>
-      // Debug logging
+      // DEBUG: Test if script loads
+      console.log('✅✅✅ SCRIPT LOADED SUCCESSFULLY ✅✅✅');
       console.log('?? Interview page script starting...');
       
       // Initialize v2.0 features
@@ -1572,6 +1573,7 @@
       
       // MAKE ALL HANDLERS GLOBAL AND DIRECTLY ACCESSIBLE
       window.handleStartInterview = async function() {
+        alert('✅ BUTTON CLICKED! Function is working!');
         console.log('🚀 START INTERVIEW CLICKED - Direct onclick handler!');
         const startBtn = document.getElementById('start-btn');
         const levelSelect = document.getElementById('level-select');
@@ -1675,7 +1677,12 @@
         stopInterview();
       };
       
-      console.log('✅ ALL Global button handlers created successfully');
+      console.log('✅✅✅ ALL Global button handlers created successfully ✅✅✅');
+      console.log('🔍 window.handleStartInterview defined:', typeof window.handleStartInterview);
+      console.log('🔍 window.handleAnswer defined:', typeof window.handleAnswer);
+      console.log('🔍 window.handleStop defined:', typeof window.handleStop);
+      console.log('🔍 window.handleRetryCamera defined:', typeof window.handleRetryCamera);
+      console.log('🔍 window.handleStopInterview defined:', typeof window.handleStopInterview);
 
       let isFinishing = false; // Guard to prevent multiple calls
       
