@@ -230,6 +230,10 @@
       <section>
         <h2>Quick Actions</h2>
         <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+          <div class="card hover-card" onclick="startTour()">
+            <h4>✨ Take a Tour</h4>
+            <p class="muted">See what's new</p>
+          </div>
           <div class="card hover-card" onclick="window.location.href='interview/cs/ai-interview.html'">
             <h4>💻 CS Interview</h4>
             <p class="muted">AI-powered mock interview</p>
@@ -490,5 +494,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="assets/js/robot-interviewer.js"></script>
     <script src="assets/js/purple-particles-bg.js"></script>
+  <script>
+      function startTour() {
+        alert('Welcome to the SmartMock dashboard! This tour will guide you through the main features.');
+      }
+    </script>
   </body>
 </html>

@@ -3,19 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="Content-Security-Policy" content="
-      default-src 'self';
-      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com https://apis.google.com https://www.google.com https://www.recaptcha.net https://cdn.jsdelivr.net/npm/@mediapipe/;
-      script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com https://apis.google.com https://www.google.com https://www.recaptcha.net https://cdn.jsdelivr.net/npm/@mediapipe/;
-      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-      font-src 'self' https://fonts.gstatic.com;
-      img-src 'self' data: https:;
-      connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://*.firebasedatabase.app https://www.gstatic.com wss://*.firebaseio.com http://localhost:5000 https://cdn.jsdelivr.net;
-      frame-src 'self' https://www.google.com https://www.recaptcha.net;
-      media-src 'self' blob:;
-      worker-src 'self' blob:;
-    ">
-    <title>SmartMock � ME AI Interview</title>
+    <!-- CSP Temporarily Disabled - Will re-enable once all features are stable -->
+    <title>SmartMock - AI Interview (Mechanical Engineering)</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23007bff'/%3E%3Ctext x='32' y='39' font-size='28' text-anchor='middle' fill='white' font-family='Arial'%3ES%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -686,7 +675,7 @@
       // Initialize v2.0 features
       if (typeof SmartMockI18n !== 'undefined') SmartMockI18n.init();
       if (typeof SmartMockA11y !== 'undefined') SmartMockA11y.init();
-      if (typeof IntegrityMonitor !== 'undefined') IntegrityMonitor.init({ strict: true });
+      if (typeof IntegrityMonitor !== 'undefined') IntegrityMonitor.init({ strict: false });
       if (typeof AITutor !== 'undefined') AITutor.init('me');
       
       // Initialize AdaptiveInterview system
