@@ -18,6 +18,11 @@ const departmentNames = {
 
 // Initialize when DOM loads
 document.addEventListener('DOMContentLoaded', () => {
+    // Only initialize on pages that contain the leaderboard elements
+    if (!document.getElementById('leaderboard-tbody') && !document.getElementById('podium-section')) {
+        // Not a leaderboard page - skip initialization to avoid null DOM errors
+        return;
+    }
     initializeLeaderboard();
     setupEventListeners();
 });
