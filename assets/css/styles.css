@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --bg: #0b0f1a;
   --bg-rgb: 11, 15, 26;
   --bg-elev: #0f1526;
@@ -63,7 +63,7 @@ body::before {
     radial-gradient(circle at 80% 20%, rgba(0,229,255,0.15), transparent 50%),
     radial-gradient(circle at 40% 40%, rgba(27,204,142,0.1), transparent 50%);
   animation: gradientShift 20s ease infinite;
-  pointer-events: none;
+/* REMOVED pointer-events:none to restore interactivity */
   z-index: -1;
 }
 
@@ -302,7 +302,7 @@ nav.menu.menu-left > .dropdown { left: 0; right: auto; }
   left: calc(100% + 8px);
 }
 .dropdown > .has-submenu > a::after {
-  content: '▸';
+  content: 'â–¸';
   float: right;
   color: var(--muted);
 }
@@ -979,4 +979,5 @@ html {
   border-color: var(--accent);
   color: var(--accent);
 }
+
 

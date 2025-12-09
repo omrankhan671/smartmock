@@ -1,4 +1,4 @@
-/* 
+﻿/* 
  * SMARTMOCK Futuristic AI Interview Platform - Dark Neon UI
  * Cyberpunk-inspired glassmorphic interface with 3D effects
  */
@@ -340,7 +340,7 @@ body {
   background: var(--gradient-glass);
   opacity: 0;
   transition: opacity 0.3s ease;
-  pointer-events: none;
+/* REMOVED pointer-events:none to restore interactivity */
 }
 
 .glass-panel:hover::before {
@@ -521,7 +521,7 @@ body {
 }
 
 .feature-item::before {
-  content: '▸';
+  content: 'â–¸';
   color: var(--neon-cyan);
   font-size: 1.5rem;
   transition: all 0.3s ease;
@@ -745,3 +745,4 @@ body {
     color: black;
   }
 }
+

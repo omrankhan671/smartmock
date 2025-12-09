@@ -1,4 +1,4 @@
-/* SmartMock 3D Animation System */
+﻿/* SmartMock 3D Animation System */
 :root {
   /* Core Theme */
   --bg-deep: #080C18;
@@ -148,7 +148,7 @@
     transparent 100%
   );
   animation: hologram 3s linear infinite;
-  pointer-events: none;
+/* REMOVED pointer-events:none to restore interactivity */
 }
 
 @keyframes hologram {

@@ -1,4 +1,4 @@
-/* 
+﻿/* 
  * SMARTMOCK 3D Scene Styles
  * Usage: Put avatar GLB at assets/avatar.glb (optional). Open index.html in a web server.
  */
@@ -92,7 +92,7 @@ body {
 .preloader.hidden {
   opacity: 0;
   visibility: hidden;
-  pointer-events: none;
+/* REMOVED pointer-events:none to restore interactivity */
 }
 
 .preloader-ring {
@@ -152,7 +152,7 @@ body {
   transform: translateX(-50%);
   z-index: 10;
   text-align: center;
-  pointer-events: none;
+/* REMOVED pointer-events:none to restore interactivity */
 }
 
 .logo-text {
@@ -213,7 +213,7 @@ body {
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.8);
   letter-spacing: 0.05em;
-  pointer-events: none;
+/* REMOVED pointer-events:none to restore interactivity */
 }
 
 /* Pricing Panel */
@@ -304,7 +304,7 @@ body.loaded {
   letter-spacing: 0.05em;
   opacity: 0;
   transition: opacity 0.3s ease;
-  pointer-events: none;
+/* REMOVED pointer-events:none to restore interactivity */
 }
 
 .performance-mode.visible {

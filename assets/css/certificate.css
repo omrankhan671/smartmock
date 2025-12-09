@@ -1,4 +1,4 @@
-
+﻿
 .certificate-wrap {
   display: flex;
   flex-direction: column;
@@ -41,7 +41,7 @@
   color: rgba(102, 126, 234, 0.05);
   z-index: 0;
   letter-spacing: 10px;
-  pointer-events: none;
+/* REMOVED pointer-events:none to restore interactivity */
 }
 
 /* Header Styles */
@@ -399,3 +399,4 @@
     width: 100%;
   }
 }
+

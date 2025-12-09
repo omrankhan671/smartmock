@@ -277,7 +277,7 @@
         width: 100%;
         height: 100%;
         background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 70%);
-        pointer-events: none;
+/* REMOVED pointer-events:none to restore interactivity */
         z-index: 0;
       }
       
@@ -287,7 +287,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        pointer-events: none;
+/* REMOVED pointer-events:none to restore interactivity */
         z-index: 0;
         overflow: hidden;
       }
@@ -548,7 +548,7 @@
           rgba(168, 85, 247, 0.05) 0%, 
           transparent 70%
         );
-        pointer-events: none;
+/* REMOVED pointer-events:none to restore interactivity */
         z-index: 0;
         will-change: transform;
         transition: background 0.3s ease;
@@ -560,7 +560,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        pointer-events: none;
+/* REMOVED pointer-events:none to restore interactivity */
         z-index: 0;
         overflow: hidden;
         will-change: transform;
@@ -816,7 +816,7 @@
         position: fixed; 
         inset: 0; 
         z-index: -1; 
-        pointer-events: none;
+/* REMOVED pointer-events:none to restore interactivity */
         will-change: transform;
         transform-style: preserve-3d;
         perspective: 2000px;
@@ -1738,5 +1738,6 @@
     </script>
   </body>
 </html>
+
 
 
