@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SmartMock – Computer Science Interview</title>
+    <title>SmartMock ï¿½ Computer Science Interview</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -328,7 +328,7 @@
 
     <main class="container">
       <section>
-        <h2>Computer Science – Interview Quiz</h2>
+        <h2>Computer Science ï¿½ Interview Quiz</h2>
         <div class="section-card">
           <p class="muted">Test your knowledge with multiple-choice questions and get instant feedback.</p>
           
@@ -375,7 +375,7 @@
         </div>
       </section>
     </main>
-    <footer class="site-footer">© <span id="year"></span> SmartMock.</footer>
+    <footer class="site-footer">ï¿½ <span id="year"></span> SmartMock.</footer>
     <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -389,7 +389,7 @@
           beginner: [
             { q: "What keyword is used to declare a block-scoped variable?", options: ["var", "let", "const", "function"], correct: 1, explanation: "`let` creates block-scoped variables that can be reassigned." },
             { q: "Which of these is NOT a primitive data type in JavaScript?", options: ["string", "number", "array", "boolean"], correct: 2, explanation: "Arrays are objects, not primitive types. Primitives include string, number, boolean, null, undefined, symbol, and bigint." },
-            { q: "What does `===` check in JavaScript?", options: ["Value only", "Type only", "Value and type", "Reference"], correct: 2, explanation: "`===` is strict equality—it checks both value and type without coercion." },
+            { q: "What does `===` check in JavaScript?", options: ["Value only", "Type only", "Value and type", "Reference"], correct: 2, explanation: "`===` is strict equalityï¿½it checks both value and type without coercion." },
             { q: "How do you create a single-line comment in JavaScript?", options: ["/* comment */", "// comment", "# comment", "<!-- comment -->"], correct: 1, explanation: "Single-line comments use `//`. Multi-line use `/* */`." },
             { q: "What is the result of `typeof null`?", options: ["'null'", "'undefined'", "'object'", "'number'"], correct: 2, explanation: "A historical bug: `typeof null` returns 'object'." }
           ],
@@ -433,21 +433,21 @@
         },
         dsa: {
           beginner: [
-            { q: "What is the time complexity of accessing an array element by index?", options: ["O(1)", "O(n)", "O(log n)", "O(n²)"], correct: 0, explanation: "Array access by index is constant time O(1)." },
+            { q: "What is the time complexity of accessing an array element by index?", options: ["O(1)", "O(n)", "O(log n)", "O(nï¿½)"], correct: 0, explanation: "Array access by index is constant time O(1)." },
             { q: "What data structure follows LIFO principle?", options: ["Queue", "Stack", "Array", "Tree"], correct: 1, explanation: "Stacks follow Last-In-First-Out (LIFO)." },
             { q: "What is Big O notation used for?", options: ["Syntax checking", "Performance analysis", "Memory allocation", "Type checking"], correct: 1, explanation: "Big O describes algorithm time/space complexity." },
             { q: "Which search is faster on sorted data?", options: ["Linear", "Binary", "Random", "Sequential"], correct: 1, explanation: "Binary search is O(log n) on sorted data." },
             { q: "What does a queue follow?", options: ["LIFO", "FIFO", "FILO", "Random"], correct: 1, explanation: "Queues follow First-In-First-Out (FIFO)." }
           ],
           intermediate: [
-            { q: "What is the average time complexity of quicksort?", options: ["O(n)", "O(n log n)", "O(n²)", "O(log n)"], correct: 1, explanation: "Quicksort averages O(n log n), worst case O(n²)." },
+            { q: "What is the average time complexity of quicksort?", options: ["O(n)", "O(n log n)", "O(nï¿½)", "O(log n)"], correct: 1, explanation: "Quicksort averages O(n log n), worst case O(nï¿½)." },
             { q: "What property must a binary search tree satisfy?", options: ["Balanced height", "Left < Root < Right", "Complete tree", "All leaves same level"], correct: 1, explanation: "BST: left subtree < root < right subtree." },
             { q: "What is a hash table collision?", options: ["Memory overflow", "Two keys hash to same index", "Invalid key", "NULL pointer"], correct: 1, explanation: "Collisions occur when different keys hash to the same slot." },
             { q: "What is dynamic programming based on?", options: ["Randomization", "Memoization of subproblems", "Greedy choice", "Backtracking"], correct: 1, explanation: "DP stores solutions to subproblems to avoid recomputation." },
             { q: "What traversal visits root between left and right?", options: ["Preorder", "Inorder", "Postorder", "Level-order"], correct: 1, explanation: "Inorder: left, root, right." }
           ],
           advanced: [
-            { q: "What is the space complexity of merge sort?", options: ["O(1)", "O(log n)", "O(n)", "O(n²)"], correct: 2, explanation: "Merge sort requires O(n) auxiliary space for merging." },
+            { q: "What is the space complexity of merge sort?", options: ["O(1)", "O(log n)", "O(n)", "O(nï¿½)"], correct: 2, explanation: "Merge sort requires O(n) auxiliary space for merging." },
             { q: "What data structure does Dijkstra's algorithm typically use?", options: ["Stack", "Queue", "Min-heap", "Hash table"], correct: 2, explanation: "Dijkstra's uses a min-heap (priority queue) for efficiency." },
             { q: "What is amortized analysis?", options: ["Worst case only", "Average cost over sequence", "Best case scenario", "Space analysis"], correct: 1, explanation: "Amortized analysis averages cost over a sequence of operations." },
             { q: "Which tree guarantees O(log n) operations?", options: ["Binary tree", "Red-black tree", "Binary search tree", "Complete tree"], correct: 1, explanation: "Red-black trees self-balance to guarantee O(log n)." },
@@ -474,10 +474,17 @@
       const finishBtn = document.getElementById('finish-quiz-btn');
       const restartBtn = document.getElementById('restart-quiz-btn');
       
-      if (startQuizBtn) if (startQuizBtn) startQuizBtn.addEventListener('click', startQuiz);
-      if (nextBtn) if (nextBtn) nextBtn.addEventListener('click', nextQuestion);
-      if (finishBtn) if (finishBtn) finishBtn.addEventListener('click', showResults);
-      if (restartBtn) if (restartBtn) restartBtn.addEventListener('click', resetQuiz);
+      console.log('ðŸ” Quiz buttons:', { startQuizBtn, nextBtn, finishBtn, restartBtn });
+      
+      if (startQuizBtn) {
+        startQuizBtn.addEventListener('click', startQuiz);
+        console.log('âœ… Start quiz button listener attached');
+      } else {
+        console.error('âŒ Start quiz button not found!');
+      }
+      if (nextBtn) nextBtn.addEventListener('click', nextQuestion);
+      if (finishBtn) finishBtn.addEventListener('click', showResults);
+      if (restartBtn) restartBtn.addEventListener('click', resetQuiz);
       
       function startQuiz() {
         currentTopic = document.getElementById('quiz-topic').value;
