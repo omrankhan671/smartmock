@@ -1710,6 +1710,38 @@
           
           console.log('✅ Button is ready! Try clicking it now.');
           
+          // ULTIMATE FIX: Remove pointer-events from EVERYTHING that might block
+          console.log('🔧 ULTIMATE FIX: Removing ALL pointer-events blocking...');
+          document.querySelectorAll('*').forEach(el => {
+            const computed = window.getComputedStyle(el);
+            if (computed.pointerEvents === 'none' && !el.classList.contains('particles-container') && el.id !== 'particlesContainer' && el.id !== 'bg-robot-container') {
+              el.style.pointerEvents = 'auto';
+              console.log('🔧 Fixed element:', el.tagName, el.className, el.id);
+            }
+          });
+          
+          // Force controls-container specifically
+          const controlsContainer = document.querySelector('.controls-container');
+          if (controlsContainer) {
+            controlsContainer.style.setProperty('pointer-events', 'auto', 'important');
+            console.log('✅ Controls container forced to auto');
+          }
+          
+          console.log('✅✅✅ ALL BLOCKING REMOVED ✅✅✅');
+          
+          // KEYBOARD SHORTCUT BACKUP: Press 'S' to start interview
+          document.addEventListener('keydown', function(e) {
+            if (e.key === 's' || e.key === 'S') {
+              if (startBtn && startBtn.style.display !== 'none') {
+                console.log('⌨️ KEYBOARD SHORTCUT: S pressed, starting interview...');
+                if (window.handleStartInterview) {
+                  window.handleStartInterview();
+                }
+              }
+            }
+          });
+          console.log('⌨️ Keyboard shortcut registered: Press "S" to start interview');
+          
           // DIAGNOSTIC: Check what element is actually at the button's position
           const rect = startBtn.getBoundingClientRect();
           const centerX = rect.left + rect.width / 2;
