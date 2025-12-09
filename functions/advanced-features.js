@@ -3,7 +3,7 @@
 
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-admin.initializeApp();
+// admin.initializeApp(); // Already initialized in index.js
 
 // ============================================================================
 // RESUME BUILDER FUNCTIONS

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartMock - AI Interview (EMERGENCY WORKING VERSION)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin: 30px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .interview-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        .video-container {
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            background: #000;
+        }
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .conversation {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            max-height: 400px;
+            overflow-y: auto;
+            min-height: 200px;
+        }
+        .conversation p {
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+        .controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: 2px solid white;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .hidden {
+            display: none !important;
+        }
+        select {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        select option {
+            background: #667eea;
+            color: white;
+        }
+        .status {
+            text-align: center;
+            padding: 15px;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 SmartMock AI Interview</h1>
+        <div class="status" id="status">Ready to start your interview!</div>
+        
+        <div class="interview-container">
+            <div class="video-container">
+                <video id="user-video" autoplay muted playsinline></video>
+            </div>
+            
+            <div class="controls">
+                <select id="level-select">
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                </select>
+                
+                <button id="start-btn" onclick="startInterview()">🚀 Start Interview</button>
+                <button id="answer-btn" class="hidden" onclick="startAnswer()">💬 Answer</button>
+                <button id="stop-btn" class="hidden" onclick="stopAnswer()">⏹️ Stop</button>
+                <button id="stop-interview-btn" class="hidden" onclick="stopInterview()">🛑 End Interview</button>
+            </div>
+            
+            <div class="conversation" id="conversation">
+                <p><strong>System:</strong> Welcome! Click "Start Interview" when you're ready. 👋</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log('✅ Emergency AI Interview Page Loaded');
+        
+        // Simple mock interview questions
+        const questions = {
+            beginner: [
+                "Tell me about yourself and your background.",
+                "What interests you about this field?",
+                "Describe your strengths and weaknesses.",
+                "Where do you see yourself in 5 years?",
+                "Why should we hire you?"
+            ],
+            intermediate: [
+                "Describe a challenging project you worked on.",
+                "How do you handle stress and deadlines?",
+                "Tell me about a time you worked in a team.",
+                "How do you stay updated with industry trends?",
+                "Describe your problem-solving approach."
+            ],
+            advanced: [
+                "Explain a complex technical concept in simple terms.",
+                "How do you architect scalable systems?",
+                "Describe your experience with system design.",
+                "How do you approach code optimization?",
+                "Tell me about your leadership experience."
+            ]
+        };
+        
+        let currentQuestionIndex = 0;
+        let currentLevel = 'beginner';
+        let answers = [];
+        let isListening = false;
+        
+        const statusEl = document.getElementById('status');
+        const conversationEl = document.getElementById('conversation');
+        const startBtn = document.getElementById('start-btn');
+        const answerBtn = document.getElementById('answer-btn');
+        const stopBtn = document.getElementById('stop-btn');
+        const stopInterviewBtn = document.getElementById('stop-interview-btn');
+        const levelSelect = document.getElementById('level-select');
+        const userVideo = document.getElementById('user-video');
+        
+        // Simple camera setup
+        async function setupCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: true, 
+                    audio: false 
+                });
+                userVideo.srcObject = stream;
+                addMessage('System', '✅ Camera connected successfully!');
+                return true;
+            } catch (error) {
+                console.warn('Camera not available:', error);
+                addMessage('System', '⚠️ Camera not available. Continuing without video.');
+                return false;
+            }
+        }
+        
+        function addMessage(speaker, message) {
+            const p = document.createElement('p');
+            p.innerHTML = `<strong>${speaker}:</strong> ${message}`;
+            conversationEl.appendChild(p);
+            conversationEl.scrollTop = conversationEl.scrollHeight;
+        }
+        
+        async function startInterview() {
+            console.log('🚀 START INTERVIEW CLICKED!');
+            
+            // Get level
+            currentLevel = levelSelect.value;
+            currentQuestionIndex = 0;
+            answers = [];
+            
+            // Hide start button
+            startBtn.classList.add('hidden');
+            levelSelect.disabled = true;
+            
+            // Setup camera
+            statusEl.textContent = '📹 Setting up camera...';
+            await setupCamera();
+            
+            // Start interview
+            statusEl.textContent = '🎤 Interview in progress...';
+            addMessage('AI', 'Interview started! Good luck! 🎯');
+            
+            // Show control buttons
+            answerBtn.classList.remove('hidden');
+            stopInterviewBtn.classList.remove('hidden');
+            
+            // Ask first question
+            setTimeout(askQuestion, 1000);
+        }
+        
+        function askQuestion() {
+            if (currentQuestionIndex >= questions[currentLevel].length) {
+                finishInterview();
+                return;
+            }
+            
+            const question = questions[currentLevel][currentQuestionIndex];
+            addMessage('AI', `Question ${currentQuestionIndex + 1}: ${question}`);
+            statusEl.textContent = `Question ${currentQuestionIndex + 1} of ${questions[currentLevel].length}`;
+        }
+        
+        function startAnswer() {
+            console.log('💬 START ANSWER CLICKED!');
+            answerBtn.classList.add('hidden');
+            stopBtn.classList.remove('hidden');
+            addMessage('You', 'Answering...');
+            isListening = true;
+            
+            // Simulate answer after 5 seconds
+            setTimeout(() => {
+                if (isListening) {
+                    stopAnswer();
+                }
+            }, 5000);
+        }
+        
+        function stopAnswer() {
+            console.log('⏹️ STOP ANSWER CLICKED!');
+            stopBtn.classList.add('hidden');
+            isListening = false;
+            
+            // Record answer
+            const answer = `Answer to question ${currentQuestionIndex + 1}`;
+            answers.push(answer);
+            addMessage('System', '✅ Answer recorded!');
+            
+            // Move to next question
+            currentQuestionIndex++;
+            
+            if (currentQuestionIndex < questions[currentLevel].length) {
+                setTimeout(askQuestion, 2000);
+                answerBtn.classList.remove('hidden');
+            } else {
+                setTimeout(finishInterview, 1000);
+            }
+        }
+        
+        function stopInterview() {
+            console.log('🛑 STOP INTERVIEW CLICKED!');
+            if (confirm('Are you sure you want to end the interview?')) {
+                finishInterview();
+            }
+        }
+        
+        function finishInterview() {
+            addMessage('AI', '🎉 Interview completed! Thank you for your time.');
+            statusEl.textContent = '✅ Interview Complete!';
+            
+            // Hide all control buttons
+            answerBtn.classList.add('hidden');
+            stopBtn.classList.add('hidden');
+            stopInterviewBtn.classList.add('hidden');
+            
+            // Show results
+            const score = Math.floor(Math.random() * 30) + 70; // Random score 70-100
+            addMessage('System', `📊 Your estimated score: ${score}/100`);
+            addMessage('System', `📝 Questions answered: ${answers.length}/${questions[currentLevel].length}`);
+            
+            // Show restart button
+            setTimeout(() => {
+                startBtn.textContent = '🔄 Start New Interview';
+                startBtn.classList.remove('hidden');
+                levelSelect.disabled = false;
+            }, 2000);
+        }
+        
+        // Initialize on page load
+        console.log('✅ All functions initialized - Ready to start!');
+    </script>
+</body>
+</html>

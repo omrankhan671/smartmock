@@ -3,8 +3,6 @@ function initializeFirebase() {
   // Check if Firebase SDK is loaded
   if (typeof firebase === 'undefined') {
     console.error('❌ Firebase SDK not loaded. Make sure firebase-app-compat.js is included before this script.');
-    window.firebaseAvailable = false;
-    showOfflineMessage();
     return;
   }
 
@@ -20,40 +18,37 @@ function initializeFirebase() {
 
   try {
     // Check if already initialized
-    if (firebase.apps && firebase.apps.length === 0) {
+    if (firebase.apps.length === 0) {
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
       console.log("✅ Firebase initialized successfully");
-      window.firebaseAvailable = true;
     } else {
       console.log("ℹ️ Firebase already initialized");
-      window.firebaseAvailable = true;
+    }
+    
+    // Connect to Firebase Emulators (for local development)
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      console.log("🔧 Connecting to Firebase Emulators...");
+      firebase.functions().useEmulator('127.0.0.1', 5001);
+      console.log("✅ Connected to Functions Emulator at http://127.0.0.1:5001");
     }
     
     // Initialize Firebase services
-    if (firebase.auth && typeof firebase.auth === 'function') {
-      window.auth = firebase.auth();
-    }
-    if (firebase.database && typeof firebase.database === 'function') {
-      window.database = firebase.database();
-    }
+    window.auth = firebase.auth();
+    window.database = firebase.database();
     
     // Set persistence to LOCAL (persists even when browser is closed)
-    if (auth && auth.setPersistence) {
-      auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-        .then(() => {
-          console.log("✅ Firebase Auth persistence set to LOCAL");
-        })
-        .catch((error) => {
-          console.error("❌ Error setting persistence:", error);
-        });
-    }
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+      .then(() => {
+        console.log("✅ Firebase Auth persistence set to LOCAL");
+      })
+      .catch((error) => {
+        console.error("❌ Error setting persistence:", error);
+      });
   } catch (error) {
     console.error('❌ Firebase initialization error:', error);
     console.error('Make sure your Firebase project exists and the credentials are correct.');
     console.error('Visit https://console.firebase.google.com/ to set up your project.');
-    window.firebaseAvailable = false;
-    showOfflineMessage();
     return;
   }
   
@@ -586,48 +581,6 @@ function getCurrentUserEmail() {
 // Get current user display name
 function getCurrentUserDisplayName() {
   return auth.currentUser?.displayName || localStorage.getItem('userName') || 'User';
-}
-
-// ============================================
-// OFFLINE ERROR HANDLING
-// ============================================
-
-function showOfflineMessage() {
-  // Only show on auth pages
-  if (!window.location.pathname.includes('index.html') && !window.location.pathname.endsWith('/')) {
-    return;
-  }
-  
-  const banner = document.createElement('div');
-  banner.id = 'offline-banner';
-  banner.style.cssText = `
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    padding: 20px;
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    color: white;
-    text-align: center;
-    z-index: 9999;
-    font-weight: 600;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  `;
-  
-  banner.innerHTML = `
-    <div style="margin-bottom: 10px;">⚠️ Connection Issues Detected</div>
-    <div style="font-size: 14px; opacity: 0.95;">
-      Firebase services are unavailable. Please:
-      <ul style="margin: 8px 0; padding-left: 20px; text-align: left;">
-        <li>Check your internet connection</li>
-        <li>Try refreshing the page</li>
-        <li>Clear browser cache (Ctrl+Shift+Delete)</li>
-        <li>Check console (F12) for errors</li>
-      </ul>
-    </div>
-  `;
-  
-  document.body.insertBefore(banner, document.body.firstChild);
 }
 
 // Initialize Firebase immediately when this script loads

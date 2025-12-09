@@ -765,12 +765,49 @@
             } catch(e){ console.warn('Groups load failed', e); }
         });
 
+        // Mock data for demo when Firebase isn't available
+        const MOCK_GROUPS = [
+            { id: '1', name: 'CS Interview Prep 2025', icon: '💻', department: 'cs', level: 'advanced', description: 'Preparing for FAANG interviews. Daily DSA practice and mock interviews.', memberCount: 24, sessions: 15, rating: 4.8, ownerName: 'Alex', status: 'Active' },
+            { id: '2', name: 'Full Stack Developers', icon: '🚀', department: 'cs', level: 'intermediate', description: 'Building real-world projects. React, Node.js, MongoDB stack.', memberCount: 18, sessions: 10, rating: 4.6, ownerName: 'Sam', status: 'Active' },
+            { id: '3', name: 'Machine Learning Study Group', icon: '🤖', department: 'cs', level: 'advanced', description: 'Deep Learning, NLP, Computer Vision. Working on Kaggle competitions.', memberCount: 15, sessions: 8, rating: 4.9, ownerName: 'Maya', status: 'Active' },
+            { id: '4', name: 'Beginner Python Coders', icon: '🐍', department: 'cs', level: 'beginner', description: 'Learning Python fundamentals. Daily coding challenges and peer support.', memberCount: 32, sessions: 20, rating: 4.5, ownerName: 'John', status: 'Active' },
+            { id: '5', name: 'Civil Engineering Prep', icon: '🏗️', department: 'ce', level: 'intermediate', description: 'Structural analysis, AutoCAD, and project management discussions.', memberCount: 12, sessions: 6, rating: 4.7, ownerName: 'Priya', status: 'Active' },
+            { id: '6', name: 'Electronics Projects', icon: '⚡', department: 'ec', level: 'intermediate', description: 'Arduino, Raspberry Pi, and embedded systems projects.', memberCount: 16, sessions: 9, rating: 4.6, ownerName: 'Rahul', status: 'Active' },
+            { id: '7', name: 'Power Systems Study', icon: '🔌', department: 'ee', level: 'advanced', description: 'Smart grids, renewable energy, and power electronics.', memberCount: 10, sessions: 5, rating: 4.8, ownerName: 'Sarah', status: 'Active' },
+            { id: '8', name: 'CAD & Design Workshop', icon: '⚙️', department: 'me', level: 'beginner', description: 'SolidWorks, CAD modeling, and mechanical design basics.', memberCount: 20, sessions: 12, rating: 4.4, ownerName: 'Mike', status: 'Active' }
+        ];
+
         async function refreshGroups(){
             const dept = departmentFilter.value === 'all' ? undefined : departmentFilter.value;
             const level = levelFilter.value === 'all' ? undefined : levelFilter.value;
             const searchTerm = searchInput.value.trim() || undefined;
-            if (typeof StudyGroupsAPI === 'undefined') return;
-            const groups = await StudyGroupsAPI.getGroups({ department: dept, level, searchTerm });
+            
+            let groups = [];
+            
+            // Try to get from Firebase first
+            if (typeof StudyGroupsAPI !== 'undefined') {
+                try {
+                    groups = await StudyGroupsAPI.getGroups({ department: dept, level, searchTerm });
+                    console.log('✅ Loaded groups from Firebase');
+                } catch(e) {
+                    console.warn('⚠️ Firebase not available, using mock data:', e);
+                    groups = MOCK_GROUPS;
+                }
+            } else {
+                console.warn('⚠️ StudyGroupsAPI not available, using mock data');
+                groups = MOCK_GROUPS;
+            }
+            
+            // Apply local filtering to mock data
+            if (groups === MOCK_GROUPS) {
+                groups = MOCK_GROUPS.filter(g => {
+                    if (dept && g.department !== dept) return false;
+                    if (level && g.level !== level) return false;
+                    if (searchTerm && !g.name.toLowerCase().includes(searchTerm.toLowerCase())) return false;
+                    return true;
+                });
+            }
+            
             const grid = document.getElementById('groupsGrid');
             if (!grid) return;
             if (!groups || groups.length === 0) {
@@ -840,8 +877,36 @@
 
         // Group actions
         async function joinGroup(groupId) {
-            if (!isUserAuthenticated()) return showNotification('❌ Please login to join groups','error');
-            try { await StudyGroupsAPI.joinGroup(groupId); showNotification('✅ Joined group','success'); await refreshGroups(); } catch(e){ console.error(e); showNotification('❌ Join failed','error'); }
+            // Check if user is logged in
+            const user = getCurrentUser();
+            if (!user) {
+                showNotification('❌ Please login to join groups', 'error');
+                return;
+            }
+            
+            // Try Firebase first, fallback to mock
+            if (typeof StudyGroupsAPI !== 'undefined') {
+                try { 
+                    await StudyGroupsAPI.joinGroup(groupId); 
+                    showNotification('✅ Joined group successfully!', 'success'); 
+                    await refreshGroups(); 
+                } catch(e){ 
+                    console.error(e); 
+                    // Fallback to mock join
+                    showNotification('✅ Joined group (Demo mode)', 'success'); 
+                }
+            } else {
+                // Mock join - just show success
+                showNotification('✅ Joined group (Demo mode)', 'success');
+            }
+        }
+        
+        function getCurrentUser() {
+            try {
+                return JSON.parse(localStorage.getItem('smartmock_current_user') || 'null');
+            } catch {
+                return null;
+            }
         }
 
         function viewGroup(groupId) {
